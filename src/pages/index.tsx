@@ -1,9 +1,10 @@
-import styles from './index.less';
+import { SearchBox } from '@fluentui/react';
+import { FC } from 'react';
 
-export default function IndexPage() {
-  return (
-    <div>
-      <h1 className={styles.title}>Page index</h1>
-    </div>
-  );
-}
+const HomePage: FC = () => (
+  <div className="px-6 pt-4">
+    <SearchBox placeholder="搜索扩展" />
+  </div>
+);
+
+export default HomePage;

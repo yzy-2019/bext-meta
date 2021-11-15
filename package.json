@@ -20,7 +20,9 @@
     ]
   },
   "dependencies": {
-    "@ant-design/pro-layout": "^6.5.0",
+    "@fluentui/react": "^8.42.0",
+    "ahooks": "^2.10.12",
+    "lodash-es": "^4.17.21",
     "react": "17.x",
     "react-dom": "17.x",
     "umi": "^3.5.20"
@@ -32,6 +34,9 @@
     "@umijs/test": "^3.5.20",
     "lint-staged": "^10.0.7",
     "prettier": "^2.2.0",
+    "shelljs": "^0.8.4",
+    "simple-git": "^2.47.0",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat",
     "typescript": "^4.1.2",
     "yorkie": "^2.0.0"
   }
