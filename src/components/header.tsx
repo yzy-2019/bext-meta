@@ -9,7 +9,7 @@ import {
   Coachmark,
   DirectionalHint,
 } from '@fluentui/react';
-import React, { useCallback, useEffect, useRef, useState, FC } from 'react';
+import { useCallback, useEffect, useRef, useState, FC } from 'react';
 
 import { useHistory, useLocation } from 'umi';
 import { useBoolean, useResponsive } from 'ahooks';
@@ -79,7 +79,7 @@ export const Header: FC = () => {
           onLinkClick={(item) => onLinkClick(item?.props.itemKey || '/')}
         >
           <PivotItem headerText="首页" itemKey="/" />
-          <PivotItem headerText="插件" itemKey="/ext" />
+          <PivotItem headerText="插件" itemKey="/meta" />
           <PivotItem headerText="开发" itemKey="/dev" />
           <PivotItem
             headerText="关于"

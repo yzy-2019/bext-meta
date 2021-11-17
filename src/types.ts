@@ -1,12 +1,12 @@
 export interface Meta {
-  id: string;
+  id: string; // 唯一id，取文件名
   name: string;
   tags: string[];
-  synopsis: string;
-  detail: string;
-  source: string;
-  lang: string;
-  build: string;
+  synopsis: string; // 简介
+  readme: string; // 详情
+  type: 'ext'; // 类型
+  source: Record<string, string>; // 源文件
+  build: string; // 产物
 }
 
 export interface MetaVersion {

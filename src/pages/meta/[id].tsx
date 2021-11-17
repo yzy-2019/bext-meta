@@ -23,7 +23,7 @@ const ExtDetailPage: FC = () => {
     error,
     data: metaIndex,
     mutate,
-  } = useRequest<MetaIndex>(`/public/meta/${params.id}/index.json`, {
+  } = useRequest<MetaIndex>(`/meta/${params.id}/index.json`, {
     refreshDeps: [params.id],
   });
   const persistMutate = usePersistFn(mutate);
@@ -32,7 +32,7 @@ const ExtDetailPage: FC = () => {
     run: onVersionChange,
     error: metaError,
   } = useRequest(
-    (version: MetaVersion) => `/public/meta/${params.id}/${version.hash}.json`,
+    (version: MetaVersion) => `/meta/${params.id}/${version.hash}.json`,
     {
       onSuccess: (meta) => persistMutate((data) => ({ ...data, meta })),
       manual: true,
@@ -63,7 +63,7 @@ const ExtDetailPage: FC = () => {
           .map(({ author_email }) => author_email)
           .join(','),
         url: '*',
-        code: meta.build,
+        code: '',
       });
     }
   };
