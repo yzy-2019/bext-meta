@@ -1,5 +1,5 @@
 import { defineConfig } from 'umi';
-import font from '@/assets/font';
+import font from './src/assets/font';
 
 export default defineConfig({
   nodeModulesTransform: {

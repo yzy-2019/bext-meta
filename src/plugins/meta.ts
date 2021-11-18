@@ -2,14 +2,15 @@ import { IApi, utils } from 'umi';
 import fs from 'fs';
 import shelljs from 'shelljs';
 import simpleGit, { SimpleGit } from 'simple-git';
-import { MetaVersion } from '@/types';
+import { MetaVersion, Meta } from '@/types';
 import first from 'lodash/first';
+import pick from 'lodash/pick';
+import path from 'path';
 
 let gitInstance: SimpleGit;
-
 const metaConfig = {
   dir: 'meta',
-  public: 'config/public/meta',
+  public: 'public/meta',
 };
 
 export default (api: IApi) => {
@@ -29,19 +30,32 @@ export default (api: IApi) => {
     });
   });
 
-  api.addTmpGenerateWatcherPaths(() => [metaConfig.dir]);
+  api.addTmpGenerateWatcherPaths(() => metaConfig.dir);
 
-  api.onGenerateFiles(({ files }) => {
-    if (files.length) {
-      console.log('generate ', files);
-    } else {
-      console.log('全量生成');
+  api.onGenerateFiles(async () => {
+    const metas = await generatePublicMeta();
+    for (const { fileMap, id } of metas) {
+      const dir = path.join(metaConfig.public, id);
+      shelljs.rm('-rf', dir);
+      await api.utils.mkdirp(dir);
+      fileMap.forEach((content, fileName) =>
+        fs.writeFileSync(path.join(metaConfig.public, id, fileName), content),
+      );
     }
+    fs.writeFileSync(
+      path.join(metaConfig.public, 'index.json'),
+      JSON.stringify(
+        metas.map(({ currentJson, id }) => ({
+          id,
+          ...pick(currentJson, ['name', 'version', 'tags', 'type', 'synopsis']),
+        })),
+      ),
+    );
   });
 };
 
 async function generatePublicMeta() {
-  const metas = await Promise.all(
+  return await Promise.all(
     fs.readdirSync(metaConfig.dir).map(async (fileName) => {
       const fileMap = new Map<string, string>();
       const id = fileName.replace(/\.json$/, '');
@@ -61,12 +75,13 @@ async function generatePublicMeta() {
         fileMap.set(`${version.hash}.json`, content);
       }
 
-      const diskContent = fs.readFileSync(filePath, { encoding: 'utf-8' });
+      const currentContent = fs.readFileSync(filePath, { encoding: 'utf-8' });
+      const currentJson: Meta = JSON.parse(currentContent);
 
       if (
         versions.length === 0 ||
-        fileMap.get(`${first(versions)?.hash}.json`)?.trim() ===
-          diskContent.trim()
+        fileMap.get(`${first(versions)?.hash}.json`)?.trim() !==
+          currentContent.trim()
       ) {
         versions.unshift({
           hash: 'WIP',
@@ -76,35 +91,21 @@ async function generatePublicMeta() {
             (await gitInstance.getConfig('user.name')).value || 'UNKNOWN',
           author_email:
             (await gitInstance.getConfig('user.email')).value || 'UNKNOWN',
-          version: JSON.parse(diskContent).version,
+          version: `${currentJson.version}(WIP)`,
         });
-        fileMap.set('wip.json', diskContent);
+        fileMap.set('WIP.json', currentContent);
       }
 
       fileMap.set(
         'index.json',
         JSON.stringify({
           versions,
-          meta: diskContent,
+          meta: currentJson,
           hash: first(versions)?.hash,
         }),
       );
 
-      return fileMap;
+      return { id, fileMap, currentJson };
     }),
   );
-
-  // console.log(metas);
-
-  // fs.writeFileSync(
-  //   `${PUBLIC_META_DIR}/index.json`,
-  //   JSON.stringify(
-  //     extensions.map(({ id, name, synopsis, tags }) => ({
-  //       id,
-  //       name,
-  //       synopsis,
-  //       tags,
-  //     })),
-  //   ),
-  // );
 }

@@ -1,4 +1,5 @@
 export interface Meta {
+  version: string;
   id: string; // 唯一id，取文件名
   name: string;
   tags: string[];
