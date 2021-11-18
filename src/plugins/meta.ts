@@ -1,4 +1,16 @@
 import { IApi, utils } from 'umi';
+import fs from 'fs';
+import shelljs from 'shelljs';
+import simpleGit, { SimpleGit } from 'simple-git';
+import { MetaVersion } from '@/types';
+import first from 'lodash/first';
+
+let gitInstance: SimpleGit;
+
+const metaConfig = {
+  dir: 'meta',
+  public: 'config/public/meta',
+};
 
 export default (api: IApi) => {
   api.describe({
@@ -6,85 +18,93 @@ export default (api: IApi) => {
     config: {},
   });
 
-  api.onGenerateFiles((files) => {
-    console.log('files', files);
+  api.onStart(() => {
+    if (!shelljs.which('git')) {
+      throw Error('需要 git');
+    }
+
+    gitInstance = simpleGit({
+      baseDir: process.cwd(),
+      binary: 'git',
+    });
   });
 
-  api.addTmpGenerateWatcherPaths(() => ['./meta/']);
+  api.addTmpGenerateWatcherPaths(() => [metaConfig.dir]);
+
+  api.onGenerateFiles(({ files }) => {
+    if (files.length) {
+      console.log('generate ', files);
+    } else {
+      console.log('全量生成');
+    }
+  });
 };
 
-// const fs = require('fs');
-// const shelljs = require('shelljs');
-// const simpleGit = require('simple-git');
+async function generatePublicMeta() {
+  const metas = await Promise.all(
+    fs.readdirSync(metaConfig.dir).map(async (fileName) => {
+      const fileMap = new Map<string, string>();
+      const id = fileName.replace(/\.json$/, '');
+      const filePath = `${metaConfig.dir}/${id}.json`;
 
-// if (!shelljs.which('git')) {
-//   shelljs.echo('需要 git');
-//   shelljs.exit(1);
-// }
+      const versions: MetaVersion[] = (
+        await gitInstance.log({
+          file: filePath,
+        })
+      ).all
+        .filter(({ message }) => !message.startsWith('skip:'))
+        .map(({ refs, body, diff, ...rest }) => ({ ...rest, version: '' }));
 
-// const git = simpleGit({
-//   baseDir: process.cwd(),
-//   binary: 'git',
-// });
+      for (const version of versions) {
+        const content = await gitInstance.show(`${version.hash}:${filePath}`);
+        version.version = JSON.parse(content).version;
+        fileMap.set(`${version.hash}.json`, content);
+      }
 
-// const META_DIR = 'meta';
-// const PUBLIC_META_DIR = 'config/public/meta';
+      const diskContent = fs.readFileSync(filePath, { encoding: 'utf-8' });
 
-// const generate = () => {
-//   const extensions = fs.readdirSync(META_DIR).map(fileName => ({
-//     ...JSON.parse(
-//       fs.readFileSync(`${META_DIR}/${fileName}`, { encoding: 'utf-8' }),
-//     ),
-//     id: fileName.replace(/\.json$/, ''),
-//   }));
+      if (
+        versions.length === 0 ||
+        fileMap.get(`${first(versions)?.hash}.json`)?.trim() ===
+          diskContent.trim()
+      ) {
+        versions.unshift({
+          hash: 'WIP',
+          date: Date.now().toString(),
+          message: 'commit message 将在这里展示',
+          author_name:
+            (await gitInstance.getConfig('user.name')).value || 'UNKNOWN',
+          author_email:
+            (await gitInstance.getConfig('user.email')).value || 'UNKNOWN',
+          version: JSON.parse(diskContent).version,
+        });
+        fileMap.set('wip.json', diskContent);
+      }
 
-//   if (fs.existsSync(PUBLIC_META_DIR)) {
-//     shelljs.rm('-rf', PUBLIC_META_DIR);
-//   }
-//   shelljs.mkdir(PUBLIC_META_DIR);
+      fileMap.set(
+        'index.json',
+        JSON.stringify({
+          versions,
+          meta: diskContent,
+          hash: first(versions)?.hash,
+        }),
+      );
 
-//   fs.writeFileSync(
-//     `${PUBLIC_META_DIR}/index.json`,
-//     JSON.stringify(
-//       extensions.map(({ id, name, synopsis, tags }) => ({
-//         id,
-//         name,
-//         synopsis,
-//         tags,
-//       })),
-//     ),
-//   );
+      return fileMap;
+    }),
+  );
 
-//   extensions.forEach(async ext => {
-//     const metaFile = `${META_DIR}/${ext.id}.json`;
-//     const dir = `${PUBLIC_META_DIR}/${ext.id}`;
-//     shelljs.mkdir(dir);
-//     const commits = (
-//       await git.log({
-//         file: metaFile,
-//       })
-//     ).all
-//       .filter(({ message }) => !message.startsWith('skip:'))
-//       .map(({ refs, body, ...rest }) => rest);
-//     for (const commit of commits) {
-//       const content = await git.show(`${commit.hash}:${metaFile}`);
-//       commit.version = JSON.parse(content).version;
-//       fs.writeFileSync(`${dir}/${commit.hash}.json`, content);
-//     }
+  // console.log(metas);
 
-//     fs.writeFileSync(
-//       `${dir}/index.json`,
-//       JSON.stringify({
-//         versions: commits,
-//         meta: ext,
-//         hash: commits[0].hash,
-//       }),
-//     );
-//   });
-// };
-
-// if (process.argv[2] === 'build') {
-//   generate();
-// }
-
-// module.exports.generate = generate;
+  // fs.writeFileSync(
+  //   `${PUBLIC_META_DIR}/index.json`,
+  //   JSON.stringify(
+  //     extensions.map(({ id, name, synopsis, tags }) => ({
+  //       id,
+  //       name,
+  //       synopsis,
+  //       tags,
+  //     })),
+  //   ),
+  // );
+}

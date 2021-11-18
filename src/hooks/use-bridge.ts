@@ -2,24 +2,11 @@ import { useCreation, usePersistFn } from 'ahooks';
 import constate from 'constate';
 import { useState } from 'react';
 import { fromByteArray } from 'base64-js';
-import iconv from 'iconv-lite';
 import { chunk, padStart } from 'lodash-es';
 
 type BridgeEnv = 'via' | 'alook' | undefined;
 
-const toBase64 = (str: string) =>
-  fromByteArray(
-    Buffer.from(
-      chunk(
-        Array.from(iconv.encode(str, 'UTF-16BE').values()).map((v) =>
-          padStart(v.toString(16), 2, 'e'),
-        ),
-        2,
-      )
-        .map(([a, b]) => `\\\\u${a}${b}`)
-        .join(''),
-    ),
-  );
+const toBase64 = (str: string) => str;
 
 export const [BridgeProvider, useBridge] = constate(() => {
   const bridgeEnv = useCreation<BridgeEnv>(() => {
