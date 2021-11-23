@@ -6,6 +6,7 @@ import { MetaVersion, Meta } from '@/types';
 import first from 'lodash/first';
 import pick from 'lodash/pick';
 import path from 'path';
+import dayjs from 'dayjs';
 
 let gitInstance: SimpleGit;
 const metaConfig = {
@@ -62,13 +63,14 @@ async function generatePublicMeta() {
       const filePath = `${metaConfig.dir}/${id}.json`;
 
       const versions: MetaVersion[] = (
-        await gitInstance.log({
-          file: filePath,
-        })
+        await gitInstance.log(['-p', '--', filePath])
       ).all
         .filter(({ message }) => !message.startsWith('skip:'))
-        .map(({ refs, body, diff, ...rest }) => ({ ...rest, version: '' }));
-
+        .map(({ refs, body, diff, ...rest }) => ({
+          ...rest,
+          version: '',
+          date: dayjs(rest.date).unix(),
+        }));
       for (const version of versions) {
         const content = await gitInstance.show(`${version.hash}:${filePath}`);
         version.version = JSON.parse(content).version;
@@ -85,7 +87,7 @@ async function generatePublicMeta() {
       ) {
         versions.unshift({
           hash: 'WIP',
-          date: Date.now().toString(),
+          date: dayjs().unix(),
           message: 'commit message 将在这里展示',
           author_name:
             (await gitInstance.getConfig('user.name')).value || 'UNKNOWN',

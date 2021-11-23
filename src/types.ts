@@ -4,15 +4,15 @@ export interface Meta {
   name: string;
   tags: string[];
   synopsis: string; // 简介
-  readme: string; // 详情
+  detail: string; // 详情
   type: 'ext'; // 类型
-  source: Record<string, string>; // 源文件
+  source: string; // 源代码
   build: string; // 产物
 }
 
 export interface MetaVersion {
   hash: string;
-  date: string;
+  date: number;
   message: string;
   author_name: string;
   author_email: string;

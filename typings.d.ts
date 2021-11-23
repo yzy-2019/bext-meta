@@ -9,12 +9,4 @@ declare module '*.svg' {
   export default url;
 }
 
-declare interface Window {
-  via?: {
-    getInstalledAddonID: () => string;
-    addon: (ext: string) => void;
-  };
-  alook?: {
-    addon: (ext: string) => void;
-  };
-}
+declare module '*.js';

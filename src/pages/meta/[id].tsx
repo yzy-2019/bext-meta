@@ -11,8 +11,8 @@ import {
 } from '@fluentui/react';
 import { MetaIndex, MetaVersion } from '@/types';
 import { MetaContent } from '@/components/meta-content';
-import { useBridge } from '@/hooks/use-bridge';
 import { useParams } from 'umi';
+import dayjs from 'dayjs';
 
 const DROPDOWN_ITEM_STYLE = { height: 'auto' };
 
@@ -38,7 +38,6 @@ const ExtDetailPage: FC = () => {
       manual: true,
     },
   );
-  const { installAddon } = useBridge();
 
   if (loading) {
     return <Spinner size={SpinnerSize.large} className="w-full h-full" />;
@@ -56,15 +55,7 @@ const ExtDetailPage: FC = () => {
 
   const onInstall = () => {
     if (meta) {
-      installAddon({
-        id: meta.id,
-        name: meta.name,
-        author: metaIndex.versions
-          .map(({ author_email }) => author_email)
-          .join(','),
-        url: '*',
-        code: '',
-      });
+      console.log(meta);
     }
   };
 
@@ -116,18 +107,17 @@ export default ExtDetailPage;
 
 const VersionOption: FC<{ version: MetaVersion }> = ({ version }) => {
   const date = useMemo(
-    () => new Date(version.date).toLocaleString(),
+    () => dayjs(version.date).format('YY/MM/DD HH:mm'),
     [version.date],
   );
   return (
     <div className="py-3">
       <div className="font-semibold text-base">
-        {version.version || version.hash.slice(0, 7)}{' '}
-        <span className="font-normal"> by </span>
+        {version.version} <span className="font-normal"> by </span>
         {version.author_name}
       </div>
       <div className="text-xs text-gray-400">
-        {version.author_email} <br /> {date}
+        {version.author_email} <br /> 发布于 {date}
       </div>
       <div>{version.message}</div>
     </div>
