@@ -1,2 +1,2 @@
-const AboutPage = () => null;
+const AboutPage = () => <>// TODO</>;
 export default AboutPage;

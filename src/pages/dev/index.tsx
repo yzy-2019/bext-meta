@@ -1,2 +1,2 @@
-const DevPage = () => <div />;
+const DevPage = () => <>// TODO</>;
 export default DevPage;

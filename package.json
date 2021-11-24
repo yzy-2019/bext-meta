@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "start": "umi dev",
+    "start": "cross-env TAILWIND_MODE=watch umi dev",
     "build": "umi build",
     "analyze": "ANALYZE=1 umi build",
     "postinstall": "umi generate tmp",
@@ -36,6 +36,7 @@
     "@types/react-dom": "^17.0.0",
     "@types/shelljs": "^0.8.9",
     "@umijs/test": "^3.5.20",
+    "cross-env": "^7.0.3",
     "lint-staged": "^10.0.7",
     "prettier": "^2.2.0",
     "shelljs": "^0.8.4",

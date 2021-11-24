@@ -107,7 +107,7 @@ export default ExtDetailPage;
 
 const VersionOption: FC<{ version: MetaVersion }> = ({ version }) => {
   const date = useMemo(
-    () => dayjs(version.date).format('YY/MM/DD HH:mm'),
+    () => dayjs.unix(version.date).format('YY/MM/DD HH:mm'),
     [version.date],
   );
   return (
