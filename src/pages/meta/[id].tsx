@@ -1,4 +1,5 @@
 import { MetaContent } from '@/components/meta-content';
+import { install } from '@/lib/browser.js';
 import { MetaIndex, MetaVersion } from '@/types';
 import {
   Dropdown,
@@ -55,7 +56,7 @@ const ExtDetailPage: FC = () => {
 
   const onInstall = () => {
     if (meta) {
-      console.log(meta);
+      install(meta);
     }
   };
 
@@ -116,9 +117,7 @@ const VersionOption: FC<{ version: MetaVersion }> = ({ version }) => {
         {version.version} <span className="font-normal"> by </span>
         {version.author_name}
       </div>
-      <div className="text-xs text-gray-400">
-         发布于 {date}
-      </div>
+      <div className="text-xs text-gray-400">发布于 {date}</div>
       <div>{version.message}</div>
     </div>
   );
