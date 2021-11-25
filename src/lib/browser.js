@@ -1,25 +1,29 @@
 const browsers = {};
 
 function detectBrowser() {
-  return (window.via && (window.via.cmd || window.via.openSettings)) ? 'via' :
-    (window.mbrowser && window.mbrowser.getBrowsreInfo) ? 'x' :
-    (window.bz && window.bz.addScript) ? 'bz' :
-    (window.sharkbrowser && window.sharkbrowser.installAddon) ? 'shark' :
-    (window.alook && window.alook.addon) ? 'alook' ;
-    // TODO: 其它兼容 Via 接口的浏览器是要一一列出，
-    //       还是检测到 window.via.addon 就开放安装呢？
+  return window.via && (window.via.cmd || window.via.openSettings)
+    ? 'via'
+    : window.mbrowser && window.mbrowser.getBrowsreInfo
+    ? 'x'
+    : window.bz && window.bz.addScript
+    ? 'bz'
+    : window.sharkbrowser && window.sharkbrowser.installAddon
+    ? 'shark'
+    : window.alook && window.alook.addon
+    ? 'alook'
+    : undefined;
 }
 
 ('@browser:via');
 {
   const methods = (browsers['via'] = {});
-  ('@method:addon');
+  ('@method:install');
   {
-    methods.addon = () => {};
+    methods.install = () => {};
   }
 }
 
-('@method:addon');
-export function addon(...params) {
-  return browsers[detectBrowser()]?.addon?.(...params);
+('@method:install');
+export function install(meta) {
+  return browsers[detectBrowser()]?.install?.(meta);
 }

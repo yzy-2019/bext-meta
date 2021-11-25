@@ -1,7 +1,7 @@
-import { useMeta } from '@/hooks/use-meta';
-import { FC } from 'react';
-import { Icon } from '@fluentui/react';
 import { SectionTitle } from './section-title';
+import { useMeta } from '@/hooks/use-meta';
+import { Icon } from '@fluentui/react';
+import { FC } from 'react';
 
 export const TagList: FC = () => {
   const { tagList, metaTag } = useMeta();
@@ -11,7 +11,10 @@ export const TagList: FC = () => {
       <SectionTitle>分类</SectionTitle>
       <div className="grid grid-cols-2 gap-2">
         {tagList.map((tag) => (
-          <div className="border rounded h-14 flex items-center cursor-pointer">
+          <div
+            key={tag}
+            className="border rounded h-14 flex items-center cursor-pointer"
+          >
             <Icon
               iconName={metaTag[tag]?.icon || 'TestBeaker'}
               className="text-xl pl-3 pr-1"

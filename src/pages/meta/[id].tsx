@@ -1,18 +1,18 @@
-import { FC, useMemo } from 'react';
-import { usePersistFn, useRequest } from 'ahooks';
+import { MetaContent } from '@/components/meta-content';
+import { MetaIndex, MetaVersion } from '@/types';
 import {
+  Dropdown,
+  PrimaryButton,
+  ProgressIndicator,
+  ResponsiveMode,
   Separator,
   Spinner,
   SpinnerSize,
-  Dropdown,
-  PrimaryButton,
-  ResponsiveMode,
-  ProgressIndicator,
 } from '@fluentui/react';
-import { MetaIndex, MetaVersion } from '@/types';
-import { MetaContent } from '@/components/meta-content';
-import { useParams } from 'umi';
+import { usePersistFn, useRequest } from 'ahooks';
 import dayjs from 'dayjs';
+import { FC, useMemo } from 'react';
+import { useParams } from 'umi';
 
 const DROPDOWN_ITEM_STYLE = { height: 'auto' };
 
@@ -117,7 +117,7 @@ const VersionOption: FC<{ version: MetaVersion }> = ({ version }) => {
         {version.author_name}
       </div>
       <div className="text-xs text-gray-400">
-        {version.author_email} <br /> 发布于 {date}
+         发布于 {date}
       </div>
       <div>{version.message}</div>
     </div>

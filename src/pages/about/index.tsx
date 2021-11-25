@@ -1,6 +1,5 @@
-import { SectionTitle } from '@/components/section-title';
-
 import { contributors } from '../../../package.json';
+import { SectionTitle } from '@/components/section-title';
 
 const AboutPage = () => {
   return (
@@ -14,7 +13,7 @@ const AboutPage = () => {
       <SectionTitle>开发者们</SectionTitle>
       <div className="flex flex-wrap">
         {contributors.map(({ name, url }) => (
-          <a href={url} className="underline mr-3">
+          <a href={url} className="underline mr-3" key={name}>
             @{name}
           </a>
         ))}

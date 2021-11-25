@@ -1,19 +1,18 @@
+import { usePreference } from '@/hooks/use-preference';
 import {
+  Coachmark,
+  DefaultButton,
+  Dialog,
+  DialogFooter,
+  DialogType,
+  DirectionalHint,
   Pivot,
   PivotItem,
-  Dialog,
-  DialogType,
-  DialogFooter,
   PrimaryButton,
-  DefaultButton,
-  Coachmark,
-  DirectionalHint,
 } from '@fluentui/react';
-import { useCallback, useEffect, useRef, useState, FC } from 'react';
-
-import { useHistory, useLocation } from 'umi';
 import { useBoolean, useResponsive } from 'ahooks';
-import { usePreference } from '@/hooks/use-preference';
+import { FC, useCallback, useEffect, useRef, useState } from 'react';
+import { useHistory, useLocation } from 'umi';
 
 export const Header: FC = () => {
   const location = useLocation();

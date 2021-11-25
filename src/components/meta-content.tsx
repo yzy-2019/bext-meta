@@ -1,5 +1,5 @@
-import { FC } from 'react';
 import { Meta } from '@/types';
+import { FC } from 'react';
 
 export const MetaContent: FC<{ meta: Meta }> = ({ meta }) => (
   <>

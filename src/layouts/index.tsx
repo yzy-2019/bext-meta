@@ -1,11 +1,11 @@
+import './index.less';
+import { Header } from '@/components/header';
+import { CommonProvider } from '@/hooks';
+import { ThemeProvider, initializeIcons } from '@fluentui/react';
+import dayjs from 'dayjs';
+import zhCn from 'dayjs/locale/zh-cn';
 import 'tailwindcss/tailwind.css';
 import { IRouteComponentProps } from 'umi';
-import { ThemeProvider, initializeIcons } from '@fluentui/react';
-import { CommonProvider } from '@/hooks';
-import { Header } from '@/components/header';
-import zhCn from 'dayjs/locale/zh-cn';
-import dayjs from 'dayjs';
-import './index.less';
 
 initializeIcons(
   'https://static2.sharepointonline.com/files/fabric/assets/icons/',

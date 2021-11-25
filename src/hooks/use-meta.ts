@@ -1,9 +1,9 @@
-import constate from 'constate';
+import META_TAG from '../../meta-tag.json';
 import METAS from '../../public/meta/_index.json';
 import { Meta } from '@/types';
-import { useMemo } from 'react';
+import constate from 'constate';
 import { uniq } from 'lodash-es';
-import META_TAG from '../../meta-tag.json';
+import { useMemo } from 'react';
 
 // TODO: request
 export const [MetaProvider, useMeta] = constate(() => {

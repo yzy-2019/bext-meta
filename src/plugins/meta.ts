@@ -1,12 +1,12 @@
-import { IApi } from 'umi';
+import { Meta, MetaVersion } from '@/types';
+import dayjs from 'dayjs';
 import fs from 'fs';
-import shelljs from 'shelljs';
-import simpleGit, { SimpleGit } from 'simple-git';
-import { MetaVersion, Meta } from '@/types';
 import first from 'lodash/first';
 import pick from 'lodash/pick';
 import path from 'path';
-import dayjs from 'dayjs';
+import shelljs from 'shelljs';
+import simpleGit, { SimpleGit } from 'simple-git';
+import { IApi } from 'umi';
 
 let gitInstance: SimpleGit;
 const metaConfig = {

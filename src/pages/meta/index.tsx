@@ -1,7 +1,7 @@
+import { useMeta } from '@/hooks/use-meta';
 import { List } from '@fluentui/react';
 import { FC } from 'react';
 import { Link } from 'umi';
-import { useMeta } from '@/hooks/use-meta';
 
 export const MetaPage: FC = () => {
   const { metaList } = useMeta();

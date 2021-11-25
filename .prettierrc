@@ -2,10 +2,15 @@
   "singleQuote": true,
   "trailingComma": "all",
   "printWidth": 80,
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true,
+  "semi": true,
   "overrides": [
     {
       "files": ".prettierrc",
-      "options": { "parser": "json" }
+      "options": {
+        "parser": "json"
+      }
     }
   ]
 }

@@ -1,6 +1,6 @@
+import { useLocalStorageState } from 'ahooks';
 import constate from 'constate';
 import { useCallback, useRef } from 'react';
-import { useLocalStorageState } from 'ahooks';
 
 interface Preference {
   neverShowDevDialog?: boolean;

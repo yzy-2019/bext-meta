@@ -1,5 +1,5 @@
-import { FC } from 'react';
 import { SectionTitle } from './section-title';
+import { FC } from 'react';
 
 export const CurrentUpdate: FC = () => {
   return (
