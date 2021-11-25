@@ -1,9 +1,19 @@
 {
-  "private": true,
+  "name": "bext",
+  "contributors": [
+    {
+      "name": "ikkz",
+      "url": "https://github.com/ikkz"
+    },
+    {
+      "name": "lemon399",
+      "url": "https://github.com/lemon399"
+    }
+  ],
   "scripts": {
     "start": "cross-env TAILWIND_MODE=watch umi dev",
     "build": "umi build",
-    "analyze": "ANALYZE=1 umi build",
+    "analyze": "cross-env ANALYZE=1 umi build",
     "postinstall": "umi generate tmp",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "test": "umi-test",

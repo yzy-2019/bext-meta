@@ -1,4 +1,4 @@
-import { IApi, utils } from 'umi';
+import { IApi } from 'umi';
 import fs from 'fs';
 import shelljs from 'shelljs';
 import simpleGit, { SimpleGit } from 'simple-git';
@@ -44,7 +44,7 @@ export default (api: IApi) => {
       );
     }
     fs.writeFileSync(
-      path.join(metaConfig.public, 'index.json'),
+      path.join(metaConfig.public, '_index.json'),
       JSON.stringify(
         metas.map(({ currentJson, id }) => ({
           id,
@@ -99,7 +99,7 @@ async function generatePublicMeta() {
       }
 
       fileMap.set(
-        'index.json',
+        '_index.json',
         JSON.stringify({
           versions,
           meta: currentJson,

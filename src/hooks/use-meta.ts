@@ -1,5 +1,5 @@
 import constate from 'constate';
-import METAS from '../../public/meta/index.json';
+import METAS from '../../public/meta/_index.json';
 import { Meta } from '@/types';
 import { useMemo } from 'react';
 import { uniq } from 'lodash-es';

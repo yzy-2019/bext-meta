@@ -23,7 +23,7 @@ const ExtDetailPage: FC = () => {
     error,
     data: metaIndex,
     mutate,
-  } = useRequest<MetaIndex>(`/meta/${params.id}/index.json`, {
+  } = useRequest<MetaIndex>(`/meta/${params.id}/_index.json`, {
     refreshDeps: [params.id],
   });
   const persistMutate = usePersistFn(mutate);
