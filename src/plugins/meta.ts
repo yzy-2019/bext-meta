@@ -3,6 +3,9 @@ import dayjs from 'dayjs';
 import fs from 'fs';
 import first from 'lodash/first';
 import pick from 'lodash/pick';
+import shuffle from 'lodash/shuffle';
+import sortBy from 'lodash/sortBy';
+import takeRight from 'lodash/takeRight';
 import path from 'path';
 import shelljs from 'shelljs';
 import simpleGit, { SimpleGit } from 'simple-git';
@@ -34,7 +37,7 @@ export default (api: IApi) => {
   api.addTmpGenerateWatcherPaths(() => metaConfig.dir);
 
   api.onGenerateFiles(async () => {
-    const metas = await generatePublicMeta();
+    const { metas, latestUpdate } = await generatePublicMeta();
     for (const { fileMap, id } of metas) {
       const dir = path.join(metaConfig.public, id);
       shelljs.rm('-rf', dir);
@@ -45,18 +48,20 @@ export default (api: IApi) => {
     }
     fs.writeFileSync(
       path.join(metaConfig.public, '_index.json'),
-      JSON.stringify(
-        metas.map(({ currentJson, id }) => ({
+      JSON.stringify({
+        metas: metas.map(({ currentJson, id }) => ({
           id,
           ...pick(currentJson, ['name', 'version', 'tags', 'type', 'synopsis']),
         })),
-      ),
+        latestUpdate,
+      }),
     );
   });
 };
 
 async function generatePublicMeta() {
-  return await Promise.all(
+  const latestUpdate: { id: string; date: number }[] = [];
+  const metas = await Promise.all(
     fs.readdirSync(metaConfig.dir).map(async (fileName) => {
       const fileMap = new Map<string, string>();
       const id = fileName.replace(/\.json$/, '');
@@ -107,7 +112,15 @@ async function generatePublicMeta() {
         }),
       );
 
+      latestUpdate.push({ id, date: first(versions)?.date || 0 });
       return { id, fileMap, currentJson };
     }),
   );
+
+  return {
+    metas: shuffle(metas),
+    latestUpdate: takeRight(sortBy(latestUpdate, 'date'), 6)
+      .map(({ id }) => id)
+      .reverse(),
+  };
 }

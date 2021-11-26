@@ -50,7 +50,7 @@ export const MetaPage: FC = () => {
           )}
         />
       </div>
-      <MetaList list={list} />
+      <MetaList list={list} withPaddingX />
     </>
   );
 };

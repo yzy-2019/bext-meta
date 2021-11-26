@@ -9,7 +9,7 @@ export const TagList: FC = () => {
 
   return (
     <>
-      <SectionTitle>分类</SectionTitle>
+      <SectionTitle>全部分类</SectionTitle>
       <div className="grid grid-cols-2 gap-2">
         {tagList.map((tag) => (
           <Link to={`/meta?tag=${encodeURIComponent(tag)}`} key={tag}>
