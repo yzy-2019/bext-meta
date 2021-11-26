@@ -2,5 +2,9 @@
   "SHOWCASE": {
     "icon": "TestBeaker",
     "description": "这真的真的真的是一个测试分类"
+  },
+  "测试": {
+    "icon": "TestBeaker",
+    "description": "这也是一个测试分类这也是一个测试分类这也是一个测试分类这也是一个测试分类"
   }
 }
