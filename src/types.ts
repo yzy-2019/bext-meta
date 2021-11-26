@@ -1,3 +1,5 @@
+type Broswer = 'via' | 'alook' | 'x' | 'bz' | 'shark' | 'lit';
+
 export interface Meta {
   version: string;
   id: string; // 唯一id，取文件名
@@ -5,9 +7,14 @@ export interface Meta {
   tags: string[];
   synopsis: string; // 简介
   detail: string; // 详情
-  type: 'ext'; // 类型
+  type: 'javascript'; // 类型
   source: string; // 源代码
   build: string; // 产物
+  options?: {
+    // 编译选项
+    browsers: Broswer[];
+  };
+  match?: string[]; // 匹配网址
 }
 
 export interface MetaVersion {
