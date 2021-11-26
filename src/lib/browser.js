@@ -29,7 +29,7 @@ function base64(str) {
         id: meta.id,
         name: meta.name,
         author: meta.author_name,
-        url: meta.match.split(','),
+        url: meta.match.join(','),
         code: base64(meta.build)
       })));
       return {
@@ -62,7 +62,7 @@ function base64(str) {
         id: meta.id,
         name: meta.name,
         author: meta.author_name,
-        url: meta.match.split('@@'),
+        url: meta.match.join('@@'),
         code: base64(meta.build)
       }))));
       return {
@@ -131,25 +131,12 @@ function base64(str) {
     methods.install = meta => {
       let ret = window.bz.addScript(JSON.stringify({
         title: meta.name,
-        hostListStr: meta.match.split(','),
+        hostListStr: meta.match.join(','),
         code: meta.build
       }));
       return {
         code: -1,
         result: ret
-      };
-    };
-  }
-  ('@method:installed');
-  {
-    methods.installed = meta => {
-      let ret = false, arr = JSON.parse(window.via.getInstalledAddonID());
-      for (let {title:title} of arr) {
-        ret = (title==meta.synopsis) || ret;
-      }
-      return {
-        code: (ret) ? 0 : 1,
-        result: arr
       };
     };
   }
@@ -198,7 +185,7 @@ function base64(str) {
         id: meta.id,
         name: meta.name,
         author: meta.author_name,
-        url: meta.match.split(','),
+        url: meta.match.join(','),
         code: base64(meta.build)
       })));
       return {
