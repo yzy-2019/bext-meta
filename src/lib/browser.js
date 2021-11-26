@@ -24,29 +24,62 @@ function base64(str) {
   const methods = (browsers['via'] = {});
   ('@method:install');
   {
-    methods.install = meta => {
-      let ret = window.via.addon(base64(JSON.stringify({
-        id: meta.id,
-        name: meta.name,
-        author: meta.author_name,
-        url: meta.match.join(','),
-        code: base64(meta.build)
-      })));
-      return {
-        code: -1,
-        result: ret
+    methods.install = (meta) => {
+      try {
+        let ret = window.via.addon(
+          base64(
+            JSON.stringify({
+              id: meta.id,
+              name: meta.name,
+              author: meta.author_name,
+              url: meta.match.join(','),
+              code: base64(meta.build),
+            }),
+          ),
+        );
+        return {
+          code: 0,
+          result: ret,
+        };
+      } catch (e) {
+        if (e instanceof TypeError || e instanceof ReferenceError) {
+          return {
+            code: -1, // ､
+            result: undefined,
+          };
+        } else {
+          // 接口不兼容，新版浏览器接口参数改变 等等
+          return {
+            code: 1,
+            result: undefined,
+          };
+        }
       }
     };
   }
   ('@method:installed');
   {
-    methods.installed = meta => {
-      let ret = JSON.parse(
-        window.via.getInstalledAddonID()
-      );
-      return {
-        code: (ret.includes(meta.id)) ? 0 : 1,
-        result: ret // 已安装的所有脚本 ID 数组 [Number, Number]
+    methods.installed = (meta) => {
+      try {
+        let ret = JSON.parse(window.via.getInstalledAddonID()).includes(
+          meta.id,
+        );
+        return {
+          code: 0,
+          result: ret,
+        };
+      } catch (e) {
+        if (e instanceof TypeError || e instanceof ReferenceError) {
+          return {
+            code: -1,
+            result: undefined,
+          };
+        } else {
+          return {
+            code: 1,
+            result: undefined,
+          };
+        }
       }
     };
   }
@@ -57,27 +90,47 @@ function base64(str) {
   const methods = (browsers['alook'] = {});
   ('@method:install');
   {
-    methods.install = meta => {
-      let ret = window.alook.addon(base64(encodeURIComponent(JSON.stringify({
-        id: meta.id,
-        name: meta.name,
-        author: meta.author_name,
-        url: meta.match.join('@@'),
-        code: base64(meta.build)
-      }))));
-      return {
-        code: -1,
-        result: ret
+    methods.install = (meta) => {
+      try {
+        let ret = window.alook.addon(
+          base64(
+            encodeURIComponent(
+              JSON.stringify({
+                id: meta.id,
+                name: meta.name,
+                author: meta.author_name,
+                url: meta.match.join('@@'),
+                code: base64(meta.build),
+              }),
+            ),
+          ),
+        );
+        return {
+          code: 0,
+          result: ret,
+        };
+      } catch (e) {
+        if (e instanceof TypeError || e instanceof ReferenceError) {
+          return {
+            code: -1,
+            result: undefined,
+          };
+        } else {
+          return {
+            code: 1,
+            result: undefined,
+          };
+        }
       }
     };
   }
   ('@method:installed');
   {
-    methods.installed = meta => {
+    methods.installed = (meta) => {
       return {
         code: -1,
-        result: undefined
-      }
+        result: undefined,
+      };
     };
   }
 }
@@ -87,37 +140,81 @@ function base64(str) {
   const methods = (browsers['x'] = {});
   ('@method:install');
   {
-    methods.install = meta => {
-      let ret = window.mbrowser.addNewScript(JSON.stringify({
-        resource_id: meta.id, // TODO 格式不一样
-        title: meta.name,
-        description: meta.synopsis,
-        nick_name: meta.author_name,
-        content: meta.build
-      }));
-      return {
-        code: -1,
-        result: ret
+    methods.install = (meta) => {
+      try {
+        let ret = window.mbrowser.addNewScript(
+          JSON.stringify({
+            resource_id: meta.id, // TODO 格式不一样
+            title: meta.name,
+            description: meta.synopsis,
+            nick_name: meta.author_name,
+            content: meta.build,
+          }),
+        );
+        return {
+          code: 0,
+          result: ret,
+        };
+      } catch (e) {
+        if (e instanceof TypeError || e instanceof ReferenceError) {
+          return {
+            code: -1,
+            result: undefined,
+          };
+        } else {
+          return {
+            code: 1,
+            result: undefined,
+          };
+        }
       }
     };
   }
   ('@method:installed');
   {
-    methods.installed = meta => {
-      let ret = window.mbrowser.scriptInstalled(meta.id);
-      return {
-        code: (!!ret) ? 0 : 1,
-        result: ret
+    methods.installed = (meta) => {
+      try {
+        let ret = window.mbrowser.scriptInstalled(meta.id);
+        return {
+          code: 0,
+          result: ret,
+        };
+      } catch (e) {
+        if (e instanceof TypeError || e instanceof ReferenceError) {
+          return {
+            code: -1,
+            result: undefined,
+          };
+        } else {
+          return {
+            code: 1,
+            result: undefined,
+          };
+        }
       }
     };
   }
   ('@method:uninstall');
   {
-    methods.uninstall = meta => {
-      let ret = window.mbrowser.uninstallScript(meta.id);
-      return {
-        code: -1,
-        result: ret
+    methods.uninstall = (meta) => {
+      try {
+        let ret = window.mbrowser.uninstallScript(meta.id);
+        return {
+          code: 0,
+          result: ret,
+        };
+      } catch (e) {
+        if (e instanceof TypeError || e instanceof ReferenceError) {
+          return {
+            code: -1,
+            result: undefined,
+          };
+        } else {
+          return {
+            code: 1,
+            result: undefined,
+          };
+        }
       }
     };
   }
@@ -128,16 +225,32 @@ function base64(str) {
   const methods = (browsers['bz'] = {});
   ('@method:install');
   {
-    methods.install = meta => {
-      let ret = window.bz.addScript(JSON.stringify({
-        title: meta.name,
-        hostListStr: meta.match.join(','),
-        code: meta.build
-      }));
-      return {
-        code: -1,
-        result: ret
-      };
+    methods.install = (meta) => {
+      try {
+        let ret = window.bz.addScript(
+          JSON.stringify({
+            title: meta.name,
+            hostListStr: meta.match.join(','),
+            code: meta.build,
+          }),
+        );
+        return {
+          code: 0,
+          result: ret,
+        };
+      } catch (e) {
+        if (e instanceof TypeError || e instanceof ReferenceError) {
+          return {
+            code: -1,
+            result: undefined,
+          };
+        } else {
+          return {
+            code: 1,
+            result: undefined,
+          };
+        }
+      }
     };
   }
 }
@@ -147,62 +260,125 @@ function base64(str) {
   const methods = (browsers['shark'] = {});
   ('@method:install');
   {
-    methods.install = meta => {
-      let ret = window.sharkbrowser.installAddon(base64(JSON.stringify({
-        id: meta.id,
-        name: meta.name,
-        author: meta.author_name,
-        code: base64(meta.build)
-      })));
-      return {
-        code: -1,
-        result: ret
+    methods.install = (meta) => {
+      try {
+        let ret = window.sharkbrowser.installAddon(
+          base64(
+            JSON.stringify({
+              id: meta.id,
+              name: meta.name,
+              author: meta.author_name,
+              code: base64(meta.build),
+            }),
+          ),
+        );
+        return {
+          code: 0,
+          result: ret,
+        };
+      } catch (e) {
+        if (e instanceof TypeError || e instanceof ReferenceError) {
+          return {
+            code: -1,
+            result: undefined,
+          };
+        } else {
+          return {
+            code: 1,
+            result: undefined,
+          };
+        }
       }
     };
   }
   ('@method:installed');
   {
-    methods.installed = meta => {
-      let ret = JSON.parse(
-        window.sharkbrowser.getInstalledAddonID()
-      );
-      return {
-        code: (ret.includes(meta.id)) ? 0 : 1,
-        result: ret
+    methods.installed = (meta) => {
+      try {
+        let ret = JSON.parse(
+          window.sharkbrowser.getInstalledAddonID(),
+        ).includes(meta.id);
+        return {
+          code: 0,
+          result: ret,
+        };
+      } catch (e) {
+        if (e instanceof TypeError || e instanceof ReferenceError) {
+          return {
+            code: -1,
+            result: undefined,
+          };
+        } else {
+          return {
+            code: 1,
+            result: undefined,
+          };
+        }
       }
     };
   }
 }
-
 
 ('@browser:lit');
 {
   const methods = (browsers['lit'] = {});
   ('@method:install');
   {
-    methods.install = meta => {
-      let ret = window.lit.addon(base64(JSON.stringify({
-        id: meta.id,
-        name: meta.name,
-        author: meta.author_name,
-        url: meta.match.join(','),
-        code: base64(meta.build)
-      })));
-      return {
-        code: -1,
-        result: ret
+    methods.install = (meta) => {
+      try {
+        let ret = window.lit.addon(
+          base64(
+            JSON.stringify({
+              id: meta.id,
+              name: meta.name,
+              author: meta.author_name,
+              url: meta.match.join(','),
+              code: base64(meta.build),
+            }),
+          ),
+        );
+        return {
+          code: 0,
+          result: ret,
+        };
+      } catch (e) {
+        if (e instanceof TypeError || e instanceof ReferenceError) {
+          return {
+            code: -1,
+            result: undefined,
+          };
+        } else {
+          return {
+            code: 1,
+            result: undefined,
+          };
+        }
       }
     };
   }
   ('@method:installed');
   {
-    methods.installed = meta => {
-      let ret = JSON.parse(
-        window.lit.getInstalledAddonID()
-      );
-      return {
-        code: (ret.includes(meta.id)) ? 0 : 1,
-        result: ret
+    methods.installed = (meta) => {
+      try {
+        let ret = JSON.parse(window.lit.getInstalledAddonID()).includes(
+          meta.id,
+        );
+        return {
+          code: 0,
+          result: ret,
+        };
+      } catch (e) {
+        if (e instanceof TypeError || e instanceof ReferenceError) {
+          return {
+            code: -1,
+            result: undefined,
+          };
+        } else {
+          return {
+            code: 1,
+            result: undefined,
+          };
+        }
       }
     };
   }
