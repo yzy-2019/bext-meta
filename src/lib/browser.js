@@ -75,8 +75,8 @@ function base64(str) {
   {
     methods.installed = meta => {
       return {
-        code: -1;
-        result: undefined;
+        code: -1,
+        result: undefined
       }
     };
   }
