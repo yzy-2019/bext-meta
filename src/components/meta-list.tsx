@@ -18,7 +18,10 @@ export const MetaList: FC<{ list: Meta[]; withPaddingX?: boolean }> = ({
             withPaddingX ? 'px-6' : undefined,
           )}
         >
-          <div className="font-medium mb-1">{item?.name}</div>
+          <div className="font-medium mb-1 flex justify-between">
+            <span>{item?.name}</span>
+            <span className="font-light">#{item?.id}</span>
+          </div>
           <div>{item?.synopsis}</div>
         </div>
       </Link>

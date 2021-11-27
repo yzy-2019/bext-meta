@@ -10,3 +10,6 @@ declare module '*.svg' {
 }
 
 declare module '*.js';
+
+declare var BUILD_TIMESTAMP: number;
+declare var BUILD_HASH: number;

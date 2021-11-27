@@ -1,7 +1,7 @@
 import { MetaList } from '@/components/meta-list';
 import { useMeta } from '@/hooks/use-meta';
 import useUrlState from '@ahooksjs/use-url-state';
-import { Dropdown } from '@fluentui/react';
+import { Dropdown, ResponsiveMode } from '@fluentui/react';
 import { FC, useMemo } from 'react';
 
 const FILTER_ALL = 'filterAll';
@@ -39,6 +39,7 @@ export const MetaPage: FC = () => {
           options={options}
           selectedKey={filter.tag || FILTER_ALL}
           onChange={(_, option) => onChange(option?.key)}
+          responsiveMode={ResponsiveMode.small}
           onRenderOption={(option) => (
             <span
               className={

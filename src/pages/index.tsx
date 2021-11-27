@@ -12,22 +12,21 @@ const HomePage: FC = () => {
   const throttledText = useThrottle(searchText, { wait: 500 });
   const searchResult = useMemo(
     () =>
-      metaList.filter(
-        ({ name, synopsis }) =>
-          name
-            ?.toLocaleLowerCase()
-            ?.includes(throttledText.toLocaleLowerCase()) ||
-          synopsis
-            ?.toLocaleLowerCase()
-            ?.includes(throttledText.toLocaleLowerCase()),
-      ),
+      metaList.filter(({ name, synopsis, id }) => {
+        const text = throttledText.toLowerCase();
+        return (
+          id?.toLowerCase()?.includes(text) ||
+          name?.toLowerCase()?.includes(text) ||
+          synopsis?.toLowerCase()?.includes(text)
+        );
+      }),
     [throttledText, metaList],
   );
 
   return (
     <div className="pt-4 px-6">
       <SearchBox
-        placeholder="搜索扩展（匹配名称与简介）"
+        placeholder="搜索扩展（匹配ID、名称与简介）"
         underlined
         value={searchText}
         onChange={(e) => setSearchText(e?.target.value || '')}
