@@ -32,12 +32,12 @@
     ]
   },
   "dependencies": {
-    "@ahooksjs/use-url-state": "^3.0.0-alpha.4",
     "@fluentui/react": "^8.42.0",
     "ahooks": "^2.10.12",
     "constate": "^3.3.0",
     "dayjs": "^1.10.7",
     "lodash-es": "^4.17.21",
+    "query-string": "^7.0.1",
     "react": "17.x",
     "react-dom": "17.x",
     "umi": "^3.5.20"

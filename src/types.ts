@@ -6,6 +6,7 @@ export interface Meta {
   name: string;
   tags: string[];
   synopsis: string; // 简介
+  match?: string[]; // 匹配网址
   detail: string; // 详情
   type: 'javascript'; // 类型
   source: string; // 源代码
@@ -14,7 +15,6 @@ export interface Meta {
     // 编译选项
     browsers: Broswer[];
   };
-  match?: string[]; // 匹配网址
 }
 
 export interface MetaVersion {

@@ -10,14 +10,6 @@
     lodash.debounce "^4.0.8"
     lodash.throttle "^4.1.1"
 
-"@ahooksjs/use-url-state@^3.0.0-alpha.4":
-  version "3.0.0-alpha.4"
-  resolved "https://registry.npmmirror.com/@ahooksjs/use-url-state/download/@ahooksjs/use-url-state-3.0.0-alpha.4.tgz#f9dcdd8e391e0f8ee2f6aa469887c1c89f65abcb"
-  integrity sha512-boriqPRVpklxslA8GtCzVHYWUFnTiujaYB6fqJBoIHe0LJ4b1RIkB5521OSrSWSRerMfHZfDn5kj9oN1Lik4Qg==
-  dependencies:
-    ahooks "^3.0.0-alpha.4"
-    query-string "^6.9.0"
-
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.10.4", "@babel/code-frame@^7.12.13", "@babel/code-frame@^7.16.0":
   version "7.16.0"
   resolved "https://registry.npmmirror.com/@babel/code-frame/download/@babel/code-frame-7.16.0.tgz?cache=0&sync_timestamp=1635560657003&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40babel%2Fcode-frame%2Fdownload%2F%40babel%2Fcode-frame-7.16.0.tgz#0dfc80309beec8411e65e706461c408b0bb9b431"
@@ -1677,18 +1669,6 @@ ahooks@^2.10.12:
     lodash.debounce "^4.0.8"
     lodash.isequal "^4.5.0"
     lodash.throttle "^4.1.1"
-    resize-observer-polyfill "^1.5.1"
-    screenfull "^5.0.0"
-
-ahooks@^3.0.0-alpha.4:
-  version "3.0.0-alpha.14"
-  resolved "https://registry.npmmirror.com/ahooks/download/ahooks-3.0.0-alpha.14.tgz#760bbc9d69e5dcdb55406919c27e667b32e62108"
-  integrity sha512-BhhU2oDxcUKT2RysPFJ+lX9Rxow1SkpvvxA4tmK8gHC4CpF+7Eg8dsQPczBiw0ixrhAjqDNk7hLKH3lMLW0KeA==
-  dependencies:
-    dayjs "^1.9.1"
-    intersection-observer "^0.7.0"
-    js-cookie "^3.0.0"
-    lodash "^4.17.21"
     resize-observer-polyfill "^1.5.1"
     screenfull "^5.0.0"
 
@@ -5216,11 +5196,6 @@ js-cookie@^2.2.1:
   resolved "https://registry.nlark.com/js-cookie/download/js-cookie-2.2.1.tgz#69e106dc5d5806894562902aa5baec3744e9b2b8"
   integrity sha1-aeEG3F1YBolFYpAqpbrsN0Tpsrg=
 
-js-cookie@^3.0.0:
-  version "3.0.1"
-  resolved "https://registry.nlark.com/js-cookie/download/js-cookie-3.0.1.tgz#9e39b4c6c2f56563708d7d31f6f5f21873a92414"
-  integrity sha1-njm0xsL1ZWNwjX0x9vXyGHOpJBQ=
-
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
   resolved "https://registry.nlark.com/js-tokens/download/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
@@ -6768,10 +6743,20 @@ query-string@^4.1.0:
     object-assign "^4.1.0"
     strict-uri-encode "^1.0.0"
 
-query-string@^6.11.0, query-string@^6.9.0:
+query-string@^6.11.0:
   version "6.14.1"
   resolved "https://registry.nlark.com/query-string/download/query-string-6.14.1.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fquery-string%2Fdownload%2Fquery-string-6.14.1.tgz#7ac2dca46da7f309449ba0f86b1fd28255b0c86a"
   integrity sha1-esLcpG2n8wlEm6D4ax/SglWwyGo=
+  dependencies:
+    decode-uri-component "^0.2.0"
+    filter-obj "^1.1.0"
+    split-on-first "^1.0.0"
+    strict-uri-encode "^2.0.0"
+
+query-string@^7.0.1:
+  version "7.0.1"
+  resolved "https://registry.nlark.com/query-string/download/query-string-7.0.1.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fquery-string%2Fdownload%2Fquery-string-7.0.1.tgz#45bd149cf586aaa582dffc7ec7a8ad97dd02f75d"
+  integrity sha1-Rb0UnPWGqqWC3/x+x6itl90C910=
   dependencies:
     decode-uri-component "^0.2.0"
     filter-obj "^1.1.0"
