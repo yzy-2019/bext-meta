@@ -16,7 +16,7 @@ export const MetaPage: FC = () => {
     [tagList],
   );
   const [filter, setFilter] = useUrlState(
-    { tag: undefined },
+    { tag: undefined, from: undefined },
     { navigateMode: 'replace' },
   );
   const list = useMemo(
@@ -34,7 +34,10 @@ export const MetaPage: FC = () => {
 
   return (
     <>
-      <div className="flex justify-end px-6 py-2">
+      <div className="flex items-center justify-between px-6 py-2">
+        <div className="font-medium text-base">
+          {filter.from === 'dev' ? '请选择需要修改的插件' : null}
+        </div>
         <Dropdown
           options={options}
           selectedKey={filter.tag || FILTER_ALL}

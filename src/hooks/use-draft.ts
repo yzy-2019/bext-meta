@@ -3,7 +3,7 @@ import { Meta } from '@/types';
 import { useLocalStorageState, usePersistFn, useThrottleEffect } from 'ahooks';
 import constate from 'constate';
 import { useCallback, useEffect, useState } from 'react';
-import { useHistory, useLocation } from 'umi';
+import { useHistory } from 'umi';
 
 const BEXT_DRAFT_KEY = 'BEXT.DRAFT';
 type Draft = Partial<Meta> | null;
@@ -14,7 +14,7 @@ export const [DraftProvider, useDraft] = constate(() => {
     null,
   );
 
-  const [draft, setDraftObject] = useState<Draft>(cacheDraft); //FIXME
+  const [draft, setDraftObject] = useState<Draft>(null);
 
   const setDraft = useCallback(
     (state: Draft) =>
@@ -34,7 +34,7 @@ export const [DraftProvider, useDraft] = constate(() => {
       }
     },
     [draft],
-    { wait: 5000 },
+    { wait: 3000 },
   );
 
   return {

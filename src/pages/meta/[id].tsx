@@ -35,7 +35,8 @@ const ExtDetailPage: FC = () => {
   } = useRequest(
     (version: MetaVersion) => `/meta/${params.id}/${version.hash}.json`,
     {
-      onSuccess: (meta) => persistMutate((data) => ({ ...data, meta })),
+      onSuccess: (meta, [{ hash }]) =>
+        persistMutate((data) => ({ ...data, meta: { ...meta, hash } })),
       manual: true,
     },
   );
@@ -56,7 +57,9 @@ const ExtDetailPage: FC = () => {
 
   const onInstall = () => {
     if (meta) {
-      install(meta);
+      console.log(
+        install({ ...meta, id: params.id, author: `bext/${params.id}` }),
+      );
     }
   };
 
@@ -97,7 +100,7 @@ const ExtDetailPage: FC = () => {
         </div>
       )}
       {meta ? (
-        <MetaContent meta={meta} />
+        <MetaContent meta={meta} key={(meta as any)?.hash || 'index'} />
       ) : (
         <Spinner size={SpinnerSize.large} className="pt-20 w-full" />
       )}

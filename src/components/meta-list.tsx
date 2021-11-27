@@ -1,8 +1,10 @@
-import { Meta } from '@/types';
+import { useDraft } from '@/hooks/use-draft';
+import { useUrlState } from '@/hooks/use-url-state';
+import { Meta, MetaIndex } from '@/types';
 import { classnames } from '@/util/classnames';
 import { List } from '@fluentui/react';
-import { FC } from 'react';
-import { Link } from 'umi';
+import { FC, useCallback } from 'react';
+import { useHistory } from 'umi';
 
 export const MetaList: FC<{ list: Meta[]; withPaddingX?: boolean }> = ({
   list,
@@ -11,20 +13,48 @@ export const MetaList: FC<{ list: Meta[]; withPaddingX?: boolean }> = ({
   <List
     items={list}
     onRenderCell={(item) => (
-      <Link key={item?.id} to={`/meta/${item?.id ?? ''}`}>
-        <div
-          className={classnames(
-            'py-3 border-b border-opacity-40 border-gray-300 hover:bg-gray-50 cursor-pointer',
-            withPaddingX ? 'px-6' : undefined,
-          )}
-        >
-          <div className="font-medium mb-1 flex justify-between">
-            <span>{item?.name}</span>
-            <span className="font-light">#{item?.id}</span>
-          </div>
-          <div>{item?.synopsis}</div>
-        </div>
-      </Link>
+      <MetaItem meta={item!} withPaddingX={withPaddingX} key={item?.id} />
     )}
   />
 );
+
+const MetaItem: FC<{ meta: Meta; withPaddingX?: boolean }> = ({
+  meta,
+  withPaddingX,
+}) => {
+  const [query] = useUrlState({ from: undefined });
+  const { setDraftObject } = useDraft();
+  const history = useHistory();
+
+  const onClick = useCallback(() => {
+    if (query.from === 'dev') {
+      fetch(`/meta/${meta.id}/_index.json`)
+        .then((response) => response.json())
+        .then((metaIndex: MetaIndex) =>
+          setDraftObject(
+            metaIndex.meta ? { ...metaIndex.meta, id: meta.id } : null,
+          ),
+        )
+        .catch(console.error);
+    } else {
+      history.push(`/meta/${meta?.id ?? ''}`);
+    }
+  }, [history, query.from, setDraftObject, meta]);
+
+  return (
+    <div
+      className={classnames(
+        'py-3 border-b border-opacity-40 border-gray-300 hover:bg-gray-50 cursor-pointer',
+        withPaddingX ? 'px-6' : undefined,
+      )}
+      key={meta?.id}
+      onClick={onClick}
+    >
+      <div className="font-medium mb-1 flex justify-between">
+        <span>{meta?.name}</span>
+        <span className="font-light">#{meta?.id}</span>
+      </div>
+      <div>{meta?.synopsis}</div>
+    </div>
+  );
+};

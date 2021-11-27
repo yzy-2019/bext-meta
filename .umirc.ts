@@ -9,14 +9,24 @@ export default defineConfig({
   },
   extraPostCSSPlugins: [require('tailwindcss')],
   plugins: ['./src/plugins/meta'],
-  links: font.map((href) => ({
-    rel: 'preload',
-    as: 'font',
-    crossorigin: 'anonymous',
-    href,
-  })),
+  links: [
+    ...font.map((href) => ({
+      rel: 'preload',
+      as: 'font',
+      crossorigin: 'anonymous',
+      href,
+    })),
+    {
+      rel: 'stylesheet',
+      href: 'https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css',
+    },
+  ],
   define: {
     BUILD_TIMESTAMP: dayjs().unix(),
     BUILD_HASH: shelljs.exec('git rev-parse --short HEAD').toString(),
   },
+  externals: {
+    quill: 'window.Quill',
+  },
+  headScripts: ['https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js'],
 });

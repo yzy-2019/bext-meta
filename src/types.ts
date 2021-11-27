@@ -11,8 +11,8 @@ export interface Meta {
   type: 'javascript'; // 类型
   source: string; // 源代码
   build: string; // 产物
+  // 编译选项
   options?: {
-    // 编译选项
     browsers: Broswer[];
   };
 }

@@ -1,11 +1,16 @@
 import { Editor } from '@/components/editor';
+import { useDraft } from '@/hooks/use-draft';
 import { FC, useState } from 'react';
 
 const ScriptDev: FC = () => {
-  const [code, setCode] = useState(
-    'console.log("happy coding"); // 编辑器测试',
+  const { draft, setDraft } = useDraft();
+  return (
+    <Editor
+      value={draft?.source}
+      onChange={(source) => setDraft({ source: source })}
+      className="h-full"
+    />
   );
-  return <Editor value={code} onChange={setCode} className="h-full" />;
 };
 
 export default ScriptDev;

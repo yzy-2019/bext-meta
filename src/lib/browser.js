@@ -31,7 +31,7 @@ function base64(str) {
             JSON.stringify({
               id: meta.id,
               name: meta.name,
-              author: meta.author_name,
+              author: meta.author,
               url: meta.match.join(','),
               code: base64(meta.build),
             }),
@@ -98,7 +98,7 @@ function base64(str) {
               JSON.stringify({
                 id: meta.id,
                 name: meta.name,
-                author: meta.author_name,
+                author: meta.author,
                 url: meta.match.join('@@'),
                 code: base64(meta.build),
               }),
@@ -147,7 +147,7 @@ function base64(str) {
             resource_id: meta.id, // TODO 格式不一样
             title: meta.name,
             description: meta.synopsis,
-            nick_name: meta.author_name,
+            nick_name: meta.author,
             content: meta.build,
           }),
         );
@@ -267,7 +267,7 @@ function base64(str) {
             JSON.stringify({
               id: meta.id,
               name: meta.name,
-              author: meta.author_name,
+              author: meta.author,
               code: base64(meta.build),
             }),
           ),
@@ -331,7 +331,7 @@ function base64(str) {
             JSON.stringify({
               id: meta.id,
               name: meta.name,
-              author: meta.author_name,
+              author: meta.author,
               url: meta.match.join(','),
               code: base64(meta.build),
             }),

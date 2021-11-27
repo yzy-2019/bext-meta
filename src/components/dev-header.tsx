@@ -12,7 +12,7 @@ import { useHistory } from 'umi';
 
 export const DevHeader: FC = () => {
   const history = useHistory();
-  const { setDraftObject, saveDraft } = useDraft();
+  const { draft, setDraftObject, saveDraft } = useDraft();
   const [visible, { setTrue: showPanel, setFalse: hidePanel }] =
     useBoolean(false);
   const inDev = useInDev();
@@ -36,7 +36,9 @@ export const DevHeader: FC = () => {
       />
       <div>
         <DefaultButton onClick={showPanel}>编辑详情</DefaultButton>
-        <PrimaryButton className="ml-3">准备发布</PrimaryButton>
+        <PrimaryButton className="ml-3" onClick={() => console.table(draft)}>
+          准备发布
+        </PrimaryButton>
         <EditDetail visible={visible} hide={hidePanel} />
       </div>
     </header>

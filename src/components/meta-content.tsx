@@ -1,3 +1,4 @@
+import { RichEditor } from './rich-editor';
 import { Meta } from '@/types';
 import { FC } from 'react';
 
@@ -16,6 +17,8 @@ export const MetaContent: FC<{ meta: Meta }> = ({ meta }) => (
     </div>
     <div className="mt-2">{meta.synopsis}</div>
     <div className="text-base font-semibold mt-4">详情</div>
-    <div className="mt-2">{meta.detail}</div>
+    <div className="mt-2">
+      <RichEditor defaultHtml={meta.detail} defaultReadOnly />
+    </div>
   </>
 );
