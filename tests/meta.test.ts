@@ -7,6 +7,7 @@ const ajv = new Ajv();
 
 const program = getProgramFromFiles(['./src/types.ts'], {
   strictNullChecks: true,
+  esModuleInterop: true,
 });
 const validate = ajv.compile(
   generateSchema(program, 'Meta', { required: true }),
