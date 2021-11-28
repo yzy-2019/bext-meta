@@ -1142,6 +1142,11 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
+"@types/file-saver@^2.0.4":
+  version "2.0.4"
+  resolved "https://registry.npmmirror.com/@types/file-saver/download/@types/file-saver-2.0.4.tgz#aaf9b96296150d737b2fefa535ced05ed8013d84"
+  integrity sha512-sPZYQEIF/SOnLAvaz9lTuydniP+afBMtElRTdYkeV1QtEgvtJ7qolCPjly6O32QI8CbEmP5O/fztMXEDWfEcrg==
+
 "@types/glob@*":
   version "7.2.0"
   resolved "https://registry.npmmirror.com/@types/glob/download/@types/glob-7.2.0.tgz#bc1b5bf3aa92f25bd5dd39f35c57361bdce5b2eb"
@@ -3368,6 +3373,11 @@ fb-watchman@^2.0.0:
   dependencies:
     bser "2.1.1"
 
+file-saver@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.npm.taobao.org/file-saver/download/file-saver-2.0.5.tgz#d61cfe2ce059f414d899e9dd6d4107ee25670c38"
+  integrity sha1-1hz+LOBZ9BTYmendbUEH7iVnDDg=
+
 file-uri-to-path@1.0.0:
   version "1.0.0"
   resolved "https://registry.nlark.com/file-uri-to-path/download/file-uri-to-path-1.0.0.tgz#553a7b8446ff6f684359c445f1e37a05dacc33dd"
@@ -5506,6 +5516,15 @@ loader-utils@^1.1.0:
     emojis-list "^3.0.0"
     json5 "^1.0.1"
 
+loader-utils@^2.0.0:
+  version "2.0.2"
+  resolved "https://registry.npmmirror.com/loader-utils/download/loader-utils-2.0.2.tgz?cache=0&sync_timestamp=1636687889409&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Floader-utils%2Fdownload%2Floader-utils-2.0.2.tgz#d6e3b4fb81870721ae4e0868ab11dd638368c129"
+  integrity sha1-1uO0+4GHByGuTghoqxHdY4NowSk=
+  dependencies:
+    big.js "^5.2.2"
+    emojis-list "^3.0.0"
+    json5 "^2.1.2"
+
 locate-path@^3.0.0:
   version "3.0.0"
   resolved "https://registry.nlark.com/locate-path/download/locate-path-3.0.0.tgz#dbec3b3ab759758071b58fe59fc41871af21400e"
@@ -6898,6 +6917,14 @@ randomfill@^1.0.3:
   dependencies:
     randombytes "^2.0.5"
     safe-buffer "^5.1.0"
+
+raw-loader@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.npm.taobao.org/raw-loader/download/raw-loader-4.0.2.tgz#1aac6b7d1ad1501e66efdac1522c73e59a584eb6"
+  integrity sha1-GqxrfRrRUB5m79rBUixz5ZpYTrY=
+  dependencies:
+    loader-utils "^2.0.0"
+    schema-utils "^3.0.0"
 
 re-resizable@^6.9.1:
   version "6.9.1"

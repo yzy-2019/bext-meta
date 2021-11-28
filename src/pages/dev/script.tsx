@@ -1,8 +1,8 @@
+import { ReactComponent as DragHandle } from '@/assets/drag-handle.svg';
 import { BuildPreview } from '@/components/build-preview';
 import { CompileOptions } from '@/components/compile-options';
 import { Editor } from '@/components/editor';
 import { useDraft } from '@/hooks/use-draft';
-import { Icon } from '@fluentui/react';
 import { Resizable } from 're-resizable';
 import { FC } from 'react';
 
@@ -19,10 +19,20 @@ const ScriptDev: FC = () => {
         minWidth="450px"
         handleComponent={{
           right: (
-            <div className="flex items-center h-full">
-              <Icon iconName="WavingHand" className="font-medium z-10" />
+            <div className="flex items-center h-full bg-gray-200">
+              <DragHandle />
             </div>
           ),
+        }}
+        enable={{
+          top: false,
+          right: true,
+          bottom: false,
+          left: false,
+          topRight: false,
+          bottomRight: false,
+          bottomLeft: false,
+          topLeft: false,
         }}
       >
         <Editor

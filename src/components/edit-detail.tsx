@@ -1,4 +1,5 @@
 import { RichEditor } from './rich-editor';
+import { ID_RULE } from '@/constants';
 import { useDraft } from '@/hooks/use-draft';
 import { useMeta } from '@/hooks/use-meta';
 import { Dropdown, Label, Panel, PanelType, TextField } from '@fluentui/react';
@@ -35,6 +36,11 @@ const Content: FC = () => {
           label="插件ID"
           value={draft?.id || ''}
           onChange={(_, id = '') => setDraft({ id })}
+          errorMessage={
+            ID_RULE.test(draft?.id || '')
+              ? undefined
+              : '字母、数字、中/下划线组合'
+          }
         />
         <TextField
           label="插件名称"

@@ -1,13 +1,12 @@
 {
-  "name": "示例扩展",
-  "version": "3",
+  "name": "示例插件",
+  "version": "4",
   "tags": [
     "SHOWCASE"
   ],
-  "synopsis": "这里是示例扩展的简介，这里是示例扩展的简介，这里是示例扩展的简介。更新个v2",
-  "detail": "更新个v3。这里是示例扩展的详情，这里是示例扩展的详情，这里是示例扩展的详情。这里是示例扩展的详情，这里是示例扩展的详情，这里是示例扩展的详情。",
+  "synopsis": "这里显示示例插件的简介，限制在 70 字以内。",
+  "detail": "<h1>这里是示例插件的详情</h1><h2>二级标题</h2><p class=\"ql-align-center\">中间对齐</p><p><strong>粗体 </strong><em>斜体 </em><u>下划线</u><s> 删除线 </s></p><blockquote>引用</blockquote><pre class=\"ql-syntax\" spellcheck=\"false\">console.log('hello world');\n</pre><ol><li>列表1</li><li>列表2</li><li>列表3</li><li>列表4</li></ol><p><br></p><p><br></p><p><span style=\"color: rgb(136, 136, 136);\">小灰</span><span style=\"color: rgb(0, 102, 204);\"> 小蓝 </span></p><p><br></p>",
   "type": "javascript",
-  "source": "alert('test');",
-  "build": "alert('test');",
-  "match": []
+  "source": "import { name, id, version } from '@bext/context';\nimport { runOnce } from '@bext/util';\n\nrunOnce(() => {\n    console.log('这里保证仅执行一次');\n    console.log(`取到插件名称：${name}，ID：${id}，版本：${version}`)\n});\n",
+  "build": "(function () {\n    'use strict';\n\n    const id=decodeURIComponent(\"example\");const name=decodeURIComponent(\"%E7%A4%BA%E4%BE%8B%E6%8F%92%E4%BB%B6\");const version=decodeURIComponent(\"3\");\n\n    function runOnce(n){const o=\"BEXT_UNIQ_ID_\"+id;window[o]||(window[o]=!0,n&&n());}\n\n    runOnce(() => {\n        console.log('这里保证仅执行一次');\n        console.log(`取到插件名称：${name}，ID：${id}，版本：${version}`);\n    });\n\n})();\n"
 }

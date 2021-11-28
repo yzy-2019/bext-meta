@@ -13,7 +13,7 @@ export interface Meta {
   build: string; // 产物
   // 编译选项
   options?: {
-    browsers: Broswer[];
+    browsers?: Broswer[];
   };
 }
 

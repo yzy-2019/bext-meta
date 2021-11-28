@@ -9,7 +9,19 @@ declare module '*.svg' {
   export default url;
 }
 
-declare module '*.js';
-
 declare var BUILD_TIMESTAMP: number;
 declare var BUILD_HASH: number;
+
+declare module '*.worker.js' {
+  class WebpackWorker extends Worker {
+    constructor();
+  }
+  export = WebpackWorker;
+}
+
+declare module '@/lib/*';
+
+declare module '!!raw-loader!*' {
+  const content: string;
+  export default content;
+}

@@ -29,4 +29,15 @@ export default defineConfig({
     quill: 'window.Quill',
   },
   headScripts: ['https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js'],
+  workerLoader: {},
+  chainWebpack: (config) => {
+    config.module
+      .rule('lib')
+      .test(/nevermatch/)
+      .use('raw')
+      .loader('raw-loader');
+  },
+  alias: {
+    '@bext': '',
+  },
 });

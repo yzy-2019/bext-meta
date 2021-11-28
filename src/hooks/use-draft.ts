@@ -30,7 +30,6 @@ export const [DraftProvider, useDraft] = constate(() => {
     () => {
       if (draft) {
         saveDraft();
-        console.info('[draft] 自动保存');
       }
     },
     [draft],
