@@ -4,7 +4,7 @@ import { usePersistFn } from 'ahooks';
 import { noop } from 'lodash-es';
 import type {
   IDisposable,
-  editor,
+  editor as IEditor,
 } from 'monaco-editor/esm/vs/editor/editor.api';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 
@@ -12,20 +12,23 @@ interface Props {
   className?: string;
   value?: string;
   onChange?: (code: string) => void;
+  options?: IEditor.IStandaloneEditorConstructionOptions;
 }
 
 interface EditorState {
   subscription: IDisposable | null;
-  editor: editor.IStandaloneCodeEditor | null;
+  editor: IEditor.IStandaloneCodeEditor | null;
 }
 
 export const Editor: FC<Props> = ({
   className,
   value = '',
   onChange = noop,
+  options,
 }) => {
   const persistOnChange = usePersistFn(onChange);
   const getLatestValue = usePersistFn(() => value);
+  const getLatestOptions = usePersistFn(() => options);
 
   const [editorState, setEditorState] = useState<EditorState>({
     subscription: null,
@@ -34,9 +37,11 @@ export const Editor: FC<Props> = ({
   const ref = useRef<HTMLIFrameElement>(null);
 
   const onFrameLoad = useCallback(() => {
-    const editor = (ref.current?.contentWindow as any)
-      ?.editorInstance as EditorState['editor'];
-
+    const { monaco, container } = ref.current?.contentWindow as any;
+    const editor = monaco.editor.create(container, {
+      ...getLatestOptions(),
+      automaticLayout: true,
+    });
     if (editor) {
       setEditorState({
         editor,

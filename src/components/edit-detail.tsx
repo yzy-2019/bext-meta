@@ -3,7 +3,7 @@ import { useDraft } from '@/hooks/use-draft';
 import { useMeta } from '@/hooks/use-meta';
 import { Dropdown, Label, Panel, PanelType, TextField } from '@fluentui/react';
 import { uniq } from 'lodash-es';
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 
 const Content: FC = () => {
   const { draft, setDraft } = useDraft();
@@ -16,6 +16,17 @@ const Content: FC = () => {
       })),
     [tagList, draft?.tags],
   );
+
+  const [matchInput, setMatchInput] = useState(
+    () => draft?.match?.join('@@') || '',
+  );
+  useEffect(() => {
+    setDraft({
+      match: matchInput
+        ? matchInput.split('@@').filter((rule) => rule)
+        : undefined,
+    });
+  }, [matchInput, setDraft]);
 
   return (
     <>
@@ -54,7 +65,17 @@ const Content: FC = () => {
           setDraft({ synopsis: text?.slice(0, 70) });
         }}
       />
-      <TextField label="匹配规则" placeholder="// TODO" />
+      <TextField
+        label="匹配规则（使用 @@ 分隔，匹配所有请留空）"
+        value={matchInput}
+        onChange={(_, text) => setMatchInput(text || '')}
+      />
+      <div>
+        当前将会匹配
+        {typeof draft?.match === 'undefined'
+          ? '所有网站'
+          : `以下网站：${draft.match.join(', ')}`}
+      </div>
       <Label>详情（支持内联图片，请直接粘贴）</Label>
       <RichEditor
         defaultHtml={draft?.detail}

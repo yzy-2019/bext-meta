@@ -62,7 +62,7 @@ export const useDraftNavigate = () => {
       }
     }
     if (!draft && inDev) {
-      history.replace('/');
+      history.replace('/dev');
     }
   }, [draft, inDev, history]);
 };
