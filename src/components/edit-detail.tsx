@@ -31,7 +31,7 @@ const Content: FC = () => {
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-3 gap-4">
         <TextField
           label="插件ID"
           value={draft?.id || ''}
@@ -46,6 +46,11 @@ const Content: FC = () => {
           label="插件名称"
           value={draft?.name || ''}
           onChange={(_, name = '') => setDraft({ name })}
+        />
+        <TextField
+          label="版本"
+          value={draft?.version || ''}
+          onChange={(_, version = '') => setDraft({ version })}
         />
       </div>
       <Dropdown
