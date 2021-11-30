@@ -1,33 +1,27 @@
 import { DevHeader } from './dev-header';
-import { useDraftNavigate } from '@/hooks/use-draft';
-import { useInDev } from '@/hooks/use-in-dev';
-import { usePreference } from '@/hooks/use-preference';
+import { useDraftNavigate } from '@/contexts/use-draft';
+import { useInDev } from '@/contexts/use-in-dev';
+import { usePreference } from '@/contexts/use-preference';
 import { Coachmark, DirectionalHint, Pivot, PivotItem } from '@fluentui/react';
-import { useResponsive } from 'ahooks';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { useHistory, useLocation } from 'umi';
 
 const NormalHeader = () => {
   const location = useLocation();
   const history = useHistory();
-  const responsive = useResponsive();
   const route = `/${location.pathname.split('/')[1]}`;
-  const {
-    preference: { neverShowDevDialog },
-    setPreference,
-    getPreference,
-  } = usePreference();
+  const { setPreference, getPreference } = usePreference();
 
   const onLinkClick = useCallback(
     (key: string) => {
       history.replace(key);
     },
-    [neverShowDevDialog, responsive, history],
+    [history],
   );
 
   useEffect(() => {
     switch (route) {
-      case '/about':
+      case '/more':
         setCoachmarkVisible(false);
         setPreference({ neverShowCoachmark: true });
         break;
@@ -36,7 +30,7 @@ const NormalHeader = () => {
     }
   }, [route]);
 
-  const aboutRef = useRef(null);
+  const moreRef = useRef(null);
   const [coachmarkVisible, setCoachmarkVisible] = useState(false);
 
   useEffect(() => {
@@ -59,15 +53,15 @@ const NormalHeader = () => {
           <PivotItem headerText="插件" itemKey="/meta" />
           <PivotItem headerText="开发" itemKey="/dev" />
           <PivotItem
-            headerText="关于"
-            itemKey="/about"
-            headerButtonProps={{ elementRef: aboutRef }}
+            headerText="更多"
+            itemKey="/more"
+            headerButtonProps={{ elementRef: moreRef }}
           />
         </Pivot>
       </header>
       {coachmarkVisible ? (
         <Coachmark
-          target={aboutRef.current}
+          target={moreRef.current}
           positioningContainerProps={{
             directionalHint: DirectionalHint.bottomCenter,
           }}

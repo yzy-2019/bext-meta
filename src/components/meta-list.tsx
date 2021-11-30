@@ -1,8 +1,8 @@
-import { useDraft } from '@/hooks/use-draft';
-import { useUrlState } from '@/hooks/use-url-state';
+import { useDraft } from '@/contexts/use-draft';
+import { useUrlState } from '@/contexts/use-url-state';
 import { Meta, MetaIndex } from '@/types';
 import { classnames } from '@/util/classnames';
-import { List } from '@fluentui/react';
+import { List, useTheme } from '@fluentui/react';
 import { FC, useCallback } from 'react';
 import { useHistory } from 'umi';
 
@@ -22,6 +22,7 @@ const MetaItem: FC<{ meta: Meta; withPaddingX?: boolean }> = ({
   meta,
   withPaddingX,
 }) => {
+  const theme = useTheme();
   const [query] = useUrlState({ from: undefined });
   const { setDraftObject } = useDraft();
   const history = useHistory();
@@ -44,9 +45,12 @@ const MetaItem: FC<{ meta: Meta; withPaddingX?: boolean }> = ({
   return (
     <div
       className={classnames(
-        'py-3 border-b border-opacity-40 border-gray-300 hover:bg-gray-50 cursor-pointer',
+        'py-3 cursor-pointer',
         withPaddingX ? 'px-6' : undefined,
       )}
+      style={{
+        borderBottom: `1px solid ${theme.palette.neutralLight}`,
+      }}
       key={meta?.id}
       onClick={onClick}
     >

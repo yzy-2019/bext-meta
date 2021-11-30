@@ -1,7 +1,7 @@
 import { repository } from '../../package.json';
 import { EditDetail } from './edit-detail';
-import { useDraft } from '@/hooks/use-draft';
-import { useInDev } from '@/hooks/use-in-dev';
+import { useDraft } from '@/contexts/use-draft';
+import { useInDev } from '@/contexts/use-in-dev';
 import { excuteCompile } from '@/util/compile';
 import {
   CommandBarButton,

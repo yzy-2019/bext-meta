@@ -2,7 +2,7 @@ import { ReactComponent as DragHandle } from '@/assets/drag-handle.svg';
 import { BuildPreview } from '@/components/build-preview';
 import { CompileOptions } from '@/components/compile-options';
 import { Editor } from '@/components/editor';
-import { useDraft } from '@/hooks/use-draft';
+import { useDraft } from '@/contexts/use-draft';
 import { Resizable } from 're-resizable';
 import { FC } from 'react';
 

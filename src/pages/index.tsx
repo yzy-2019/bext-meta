@@ -1,7 +1,7 @@
 import { CurrentUpdate } from '@/components/current-update';
 import { MetaList } from '@/components/meta-list';
 import { TagList } from '@/components/tag-list';
-import { useMeta } from '@/hooks/use-meta';
+import { useMeta } from '@/contexts/use-meta';
 import { SearchBox } from '@fluentui/react';
 import { useThrottle } from 'ahooks';
 import { FC, useMemo, useState } from 'react';

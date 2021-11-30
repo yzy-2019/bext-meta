@@ -1,13 +1,13 @@
 import { MetaList } from './meta-list';
-import { SectionTitle } from './section-title';
-import { useMeta } from '@/hooks/use-meta';
+import { Title } from './title';
+import { useMeta } from '@/contexts/use-meta';
 import { FC } from 'react';
 
 export const CurrentUpdate: FC = () => {
   const { latestUpdateList } = useMeta();
   return (
     <>
-      <SectionTitle>最近更新</SectionTitle>
+      <Title>最近更新</Title>
       <MetaList list={latestUpdateList} />
     </>
   );

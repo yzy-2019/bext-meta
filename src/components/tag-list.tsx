@@ -1,19 +1,24 @@
-import { SectionTitle } from './section-title';
-import { useMeta } from '@/hooks/use-meta';
-import { Icon } from '@fluentui/react';
+import { Title } from './title';
+import { useMeta } from '@/contexts/use-meta';
+import { Icon, useTheme } from '@fluentui/react';
 import { FC } from 'react';
 import { Link } from 'umi';
 
 export const TagList: FC = () => {
   const { tagList, metaTag } = useMeta();
-
+  const theme = useTheme();
   return (
     <>
-      <SectionTitle>全部分类</SectionTitle>
-      <div className="grid grid-cols-2 gap-2">
+      <Title>全部分类</Title>
+      <div className="grid grid-cols-2 gap-4">
         {tagList.map((tag) => (
           <Link to={`/meta?tag=${encodeURIComponent(tag)}`} key={tag}>
-            <div className="border rounded h-[70px] flex items-center cursor-pointer">
+            <div
+              className="h-[70px] flex items-center cursor-pointer"
+              style={{
+                boxShadow: theme.effects.elevation4,
+              }}
+            >
               <Icon
                 iconName={metaTag[tag]?.icon || 'TestBeaker'}
                 className="text-2xl pl-3 pr-1"

@@ -2,9 +2,9 @@ import { useLocalStorageState } from 'ahooks';
 import constate from 'constate';
 import { useCallback, useRef } from 'react';
 
-interface Preference {
-  neverShowDevDialog?: boolean;
+export interface Preference {
   neverShowCoachmark?: boolean;
+  darkMode?: 'light' | 'dark';
 }
 
 export const [PreferenceProvider, usePreference] = constate(() => {

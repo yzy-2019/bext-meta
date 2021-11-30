@@ -1,6 +1,6 @@
 import { MetaList } from '@/components/meta-list';
-import { useMeta } from '@/hooks/use-meta';
-import { useUrlState } from '@/hooks/use-url-state';
+import { useMeta } from '@/contexts/use-meta';
+import { useUrlState } from '@/contexts/use-url-state';
 import { Dropdown, ResponsiveMode } from '@fluentui/react';
 import { FC, useMemo } from 'react';
 

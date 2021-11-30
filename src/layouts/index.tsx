@@ -1,7 +1,7 @@
 import './index.less';
 import { Header } from '@/components/header';
-import { CommonProvider } from '@/hooks';
-import { ThemeProvider, initializeIcons } from '@fluentui/react';
+import { CommonProvider } from '@/contexts';
+import { initializeIcons } from '@fluentui/react';
 import dayjs from 'dayjs';
 import zhCn from 'dayjs/locale/zh-cn';
 import 'tailwindcss/tailwind.css';
@@ -21,13 +21,11 @@ export default function Layout({
   match,
 }: IRouteComponentProps) {
   return (
-    <ThemeProvider>
-      <CommonProvider>
-        <div className="flex flex-col h-screen">
-          <Header />
-          <div className="flex-1 overflow-auto">{children}</div>
-        </div>
-      </CommonProvider>
-    </ThemeProvider>
+    <CommonProvider>
+      <div className="flex flex-col h-screen">
+        <Header />
+        <div className="flex-1 overflow-auto">{children}</div>
+      </div>
+    </CommonProvider>
   );
 }
