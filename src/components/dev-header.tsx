@@ -2,7 +2,7 @@ import { repository } from '../../package.json';
 import { EditDetail } from './edit-detail';
 import { useDraft } from '@/hooks/use-draft';
 import { useInDev } from '@/hooks/use-in-dev';
-import { excuteCompile, workerReady } from '@/util/compile';
+import { excuteCompile } from '@/util/compile';
 import {
   CommandBarButton,
   DefaultButton,
@@ -68,8 +68,7 @@ export const DevHeader: FC = () => {
 const ExportDialog: FC = () => {
   const { draft } = useDraft();
   const onDownload = async () => {
-    await workerReady;
-    const { id, name, version, source } = draft!;
+    const { id, name, version, source, options } = draft!;
     if (id && name && version) {
       try {
         const build = await excuteCompile({
@@ -78,7 +77,7 @@ const ExportDialog: FC = () => {
             name,
             version,
             source: source || '',
-            options: {},
+            options: options,
           },
         });
         const content = omit(cloneDeep(draft), 'id');

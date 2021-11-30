@@ -38,11 +38,11 @@ const ScriptDev: FC = () => {
         <Editor
           value={draft?.source}
           onChange={(source) => setDraft({ source })}
-          className="h-full"
+          className="h-full pr-[5px]"
           options={{ language: 'javascript' }}
         />
       </Resizable>
-      <div className="flex flex-col w-full pl-2 min-w-[280px]">
+      <div className="flex flex-col w-full pl-4 min-w-[280px]">
         <CompileOptions />
         <BuildPreview />
       </div>

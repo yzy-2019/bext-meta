@@ -29,7 +29,6 @@ export default defineConfig({
     quill: 'window.Quill',
   },
   headScripts: ['https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js'],
-  workerLoader: {},
   chainWebpack: (config) => {
     config.module
       .rule('lib')
@@ -38,6 +37,6 @@ export default defineConfig({
       .loader('raw-loader');
   },
   alias: {
-    '@bext': '',
+    '@bext': 'src/lib',
   },
 });

@@ -31,7 +31,7 @@ const Content: FC = () => {
 
   return (
     <>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-3 gap-3">
         <TextField
           label="插件ID"
           value={draft?.id || ''}
