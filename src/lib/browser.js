@@ -1,390 +1,128 @@
-const browsers = {};
+import { base64, detectBrowser } from '@bext/util';
 
-function detectBrowser() {
-  return window.via && (window.via.cmd || window.via.openSettings)
-    ? 'via'
-    : window.alook && window.alook.addon
-    ? 'alook'
-    : window.mbrowser && window.mbrowser.getBrowsreInfo
-    ? 'x'
-    : window.bz && window.bz.addScript
-    ? 'bz'
-    : window.sharkbrowser && window.sharkbrowser.installAddon
-    ? 'shark'
-    : window.lit && window.lit.addon
-    ? 'lit'
-    : undefined;
-}
-function base64(str) {
-  return window.btoa(unescape(encodeURIComponent(str)));
-}
-
-('@browser:via');
-{
-  const methods = (browsers['via'] = {});
-  ('@method:install');
-  {
-    methods.install = (meta) => {
-      try {
-        let ret = window.via.addon(
-          base64(
-            JSON.stringify({
-              id: meta.id,
-              name: meta.name,
-              author: meta.author,
-              url: meta.match.join(','),
-              code: base64(meta.build),
-            }),
-          ),
-        );
-        return {
-          code: 0,
-          result: ret,
-        };
-      } catch (e) {
-        if (e instanceof TypeError || e instanceof ReferenceError) {
-          return {
-            code: -1, // ､
-            result: undefined,
-          };
-        } else {
-          // 接口不兼容，新版浏览器接口参数改变 等等
-          return {
-            code: 1,
-            result: undefined,
-          };
-        }
-      }
-    };
-  }
-  ('@method:installed');
-  {
-    methods.installed = (meta) => {
-      try {
-        let ret = JSON.parse(window.via.getInstalledAddonID()).includes(
-          meta.id,
-        );
-        return {
-          code: 0,
-          result: ret,
-        };
-      } catch (e) {
-        if (e instanceof TypeError || e instanceof ReferenceError) {
-          return {
-            code: -1,
-            result: undefined,
-          };
-        } else {
-          return {
-            code: 1,
-            result: undefined,
-          };
-        }
-      }
-    };
-  }
-}
-
-('@browser:alook');
-{
-  const methods = (browsers['alook'] = {});
-  ('@method:install');
-  {
-    methods.install = (meta) => {
-      try {
-        let ret = window.alook.addon(
-          base64(
-            encodeURIComponent(
-              JSON.stringify({
-                id: meta.id,
-                name: meta.name,
-                author: meta.author,
-                url: meta.match.join('@@'),
-                code: base64(meta.build),
-              }),
-            ),
-          ),
-        );
-        return {
-          code: 0,
-          result: ret,
-        };
-      } catch (e) {
-        if (e instanceof TypeError || e instanceof ReferenceError) {
-          return {
-            code: -1,
-            result: undefined,
-          };
-        } else {
-          return {
-            code: 1,
-            result: undefined,
-          };
-        }
-      }
-    };
-  }
-  ('@method:installed');
-  {
-    methods.installed = (meta) => {
+const errorCatch = (fn) => {
+  return (...args) => {
+    try {
       return {
-        code: -1,
-        result: undefined,
+        code: 0,
+        result: fn?.(...args),
       };
-    };
-  }
-}
+    } catch (error) {
+      return { code: error.bextCode ?? -1 };
+    }
+  };
+};
 
-('@browser:x');
-{
-  const methods = (browsers['x'] = {});
-  ('@method:install');
-  {
-    methods.install = (meta) => {
-      try {
-        let ret = window.mbrowser.addNewScript(
-          JSON.stringify({
-            resource_id: meta.id, // TODO 格式不一样
-            title: meta.name,
-            description: meta.synopsis,
-            nick_name: meta.author,
-            content: meta.build,
-          }),
-        );
-        return {
-          code: 0,
-          result: ret,
-        };
-      } catch (e) {
-        if (e instanceof TypeError || e instanceof ReferenceError) {
-          return {
-            code: -1,
-            result: undefined,
-          };
-        } else {
-          return {
-            code: 1,
-            result: undefined,
-          };
-        }
-      }
-    };
+const buildMatch = (match, sep, all) => {
+  if (match && match.length) {
+    return match.join(sep);
   }
-  ('@method:installed');
-  {
-    methods.installed = (meta) => {
-      try {
-        let ret = window.mbrowser.scriptInstalled(meta.id);
-        return {
-          code: 0,
-          result: ret,
-        };
-      } catch (e) {
-        if (e instanceof TypeError || e instanceof ReferenceError) {
-          return {
-            code: -1,
-            result: undefined,
-          };
-        } else {
-          return {
-            code: 1,
-            result: undefined,
-          };
-        }
-      }
-    };
-  }
-  ('@method:uninstall');
-  {
-    methods.uninstall = (meta) => {
-      try {
-        let ret = window.mbrowser.uninstallScript(meta.id);
-        return {
-          code: 0,
-          result: ret,
-        };
-      } catch (e) {
-        if (e instanceof TypeError || e instanceof ReferenceError) {
-          return {
-            code: -1,
-            result: undefined,
-          };
-        } else {
-          return {
-            code: 1,
-            result: undefined,
-          };
-        }
-      }
-    };
-  }
-}
+  return all;
+};
 
-('@browser:bz');
-{
-  const methods = (browsers['bz'] = {});
-  ('@method:install');
-  {
-    methods.install = (meta) => {
-      try {
-        let ret = window.bz.addScript(
-          JSON.stringify({
-            title: meta.name,
-            hostListStr: meta.match.join(','),
-            code: meta.build,
-          }),
-        );
-        return {
-          code: 0,
-          result: ret,
-        };
-      } catch (e) {
-        if (e instanceof TypeError || e instanceof ReferenceError) {
-          return {
-            code: -1,
-            result: undefined,
-          };
-        } else {
-          return {
-            code: 1,
-            result: undefined,
-          };
-        }
-      }
-    };
-  }
-}
+export const via_install = errorCatch((meta) =>
+  window.via.addon(
+    base64(
+      JSON.stringify({
+        id: meta.id,
+        name: meta.name,
+        author: meta.author,
+        url: buildMatch(meta.match, ',', '*'),
+        code: base64(meta.build),
+      }),
+    ),
+  ),
+);
 
-('@browser:shark');
-{
-  const methods = (browsers['shark'] = {});
-  ('@method:install');
-  {
-    methods.install = (meta) => {
-      try {
-        let ret = window.sharkbrowser.installAddon(
-          base64(
-            JSON.stringify({
-              id: meta.id,
-              name: meta.name,
-              author: meta.author,
-              code: base64(meta.build),
-            }),
-          ),
-        );
-        return {
-          code: 0,
-          result: ret,
-        };
-      } catch (e) {
-        if (e instanceof TypeError || e instanceof ReferenceError) {
-          return {
-            code: -1,
-            result: undefined,
-          };
-        } else {
-          return {
-            code: 1,
-            result: undefined,
-          };
-        }
-      }
-    };
-  }
-  ('@method:installed');
-  {
-    methods.installed = (meta) => {
-      try {
-        let ret = JSON.parse(
-          window.sharkbrowser.getInstalledAddonID(),
-        ).includes(meta.id);
-        return {
-          code: 0,
-          result: ret,
-        };
-      } catch (e) {
-        if (e instanceof TypeError || e instanceof ReferenceError) {
-          return {
-            code: -1,
-            result: undefined,
-          };
-        } else {
-          return {
-            code: 1,
-            result: undefined,
-          };
-        }
-      }
-    };
-  }
-}
+export const via_installed = errorCatch((meta) =>
+  JSON.parse(window.via.getInstalledAddonID()).includes(meta.id),
+);
 
-('@browser:lit');
-{
-  const methods = (browsers['lit'] = {});
-  ('@method:install');
-  {
-    methods.install = (meta) => {
-      try {
-        let ret = window.lit.addon(
-          base64(
-            JSON.stringify({
-              id: meta.id,
-              name: meta.name,
-              author: meta.author,
-              url: meta.match.join(','),
-              code: base64(meta.build),
-            }),
-          ),
-        );
-        return {
-          code: 0,
-          result: ret,
-        };
-      } catch (e) {
-        if (e instanceof TypeError || e instanceof ReferenceError) {
-          return {
-            code: -1,
-            result: undefined,
-          };
-        } else {
-          return {
-            code: 1,
-            result: undefined,
-          };
-        }
-      }
-    };
-  }
-  ('@method:installed');
-  {
-    methods.installed = (meta) => {
-      try {
-        let ret = JSON.parse(window.lit.getInstalledAddonID()).includes(
-          meta.id,
-        );
-        return {
-          code: 0,
-          result: ret,
-        };
-      } catch (e) {
-        if (e instanceof TypeError || e instanceof ReferenceError) {
-          return {
-            code: -1,
-            result: undefined,
-          };
-        } else {
-          return {
-            code: 1,
-            result: undefined,
-          };
-        }
-      }
-    };
-  }
-}
+export const alook_install = errorCatch((meta) =>
+  window.alook.addon(
+    base64(
+      encodeURIComponent(
+        JSON.stringify({
+          id: meta.id,
+          name: meta.name,
+          author: meta.author,
+          url: buildMatch(meta.match, '@@', '*'),
+          code: base64(meta.build),
+        }),
+      ),
+    ),
+  ),
+);
 
-('@method:install');
-export function install(meta) {
-  return browsers[detectBrowser()]?.install?.(meta);
-}
+export const x_install = errorCatch((meta) =>
+  window.mbrowser.addNewScript(
+    JSON.stringify({
+      resource_id: meta.id, // TODO 格式不一样
+      title: meta.name,
+      description: meta.synopsis,
+      nick_name: meta.author,
+      content: meta.build,
+    }),
+  ),
+);
+
+export const x_installed = errorCatch((meta) =>
+  window.mbrowser.scriptInstalled(meta.id),
+);
+
+export const x_uninstall = errorCatch((meta) =>
+  window.mbrowser.uninstallScript(meta.id),
+);
+
+export const bz_install = errorCatch((meta) =>
+  window.bz.addScript(
+    JSON.stringify({
+      title: meta.name,
+      hostListStr: buildMatch(meta.match, ',', '*'),
+      code: meta.build,
+    }),
+  ),
+);
+
+export const shark_install = errorCatch((meta) =>
+  window.sharkbrowser.installAddon(
+    base64(
+      JSON.stringify({
+        id: meta.id,
+        name: meta.name,
+        author: meta.author,
+        code: base64(meta.build),
+      }),
+    ),
+  ),
+);
+
+export const shark_installed = errorCatch((meta) =>
+  JSON.parse(window.sharkbrowser.getInstalledAddonID()).includes(meta.id),
+);
+
+export const lit_install = errorCatch((meta) =>
+  window.lit.addon(
+    base64(
+      JSON.stringify({
+        id: meta.id,
+        name: meta.name,
+        author: meta.author,
+        url: meta.match.join(','),
+        code: base64(meta.build),
+      }),
+    ),
+  ),
+);
+
+export const lit_installed = errorCatch((meta) =>
+  JSON.parse(window.lit.getInstalledAddonID()).includes(meta.id),
+);
+
+export const buildMethods = (impls) => {
+  const browser = detectBrowser();
+  return (method, ...args) => {
+    const fn = impls[`${browser}_${method}`];
+    return fn ? fn(...args) : { code: -1 };
+  };
+};

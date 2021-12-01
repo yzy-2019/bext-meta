@@ -1,5 +1,6 @@
 import font from './src/assets/font';
 import dayjs from 'dayjs';
+import path from 'path';
 import shelljs from 'shelljs';
 import { defineConfig } from 'umi';
 
@@ -37,6 +38,6 @@ export default defineConfig({
       .loader('raw-loader');
   },
   alias: {
-    '@bext': 'src/lib',
+    '@bext': path.resolve(__dirname, 'src/lib'),
   },
 });

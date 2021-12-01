@@ -12,7 +12,8 @@
     "strict": true,
     "paths": {
       "@/*": ["src/*"],
-      "@@/*": ["src/.umi/*"]
+      "@@/*": ["src/.umi/*"],
+      "@bext/*": ["src/lib/*"]
     },
     "allowSyntheticDefaultImports": true
   },

@@ -1,5 +1,5 @@
 import { MetaContent } from '@/components/meta-content';
-import { install } from '@/lib/browser.js';
+import { browser } from '@/lib';
 import { MetaIndex, MetaVersion } from '@/types';
 import {
   Dropdown,
@@ -58,7 +58,11 @@ const ExtDetailPage: FC = () => {
   const onInstall = () => {
     if (meta) {
       console.log(
-        install({ ...meta, id: params.id, author: `bext/${params.id}` }),
+        browser('install', {
+          ...meta,
+          id: params.id,
+          author: `bext/${params.id}`,
+        }),
       );
     }
   };

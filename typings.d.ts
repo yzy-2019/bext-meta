@@ -19,7 +19,7 @@ declare module '*.worker.js' {
   export = WebpackWorker;
 }
 
-declare module '@/lib/*';
+declare module '@bext/*';
 
 declare module '!!raw-loader!*' {
   const content: string;
