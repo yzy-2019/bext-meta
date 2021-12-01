@@ -4,15 +4,15 @@ importScripts(
 );
 
 const BUILTIN_PREFIX = '@bext/';
-const bext = ({ builtins, meta }) => {
-  const context = ['id', 'name', 'version']
+const bext = ({ builtins, meta, env }) => {
+  const context = ['id', 'name', 'version', 'bextHome']
     .map(
       (prop) =>
         `export const ${prop} = decodeURIComponent('${encodeURIComponent(
-          meta[prop],
+          meta[prop] || env[prop],
         )}');`,
     )
-    .join('');
+    .join('\n');
   Object.assign(builtins, {
     context,
     entry: meta.source,
@@ -32,22 +32,6 @@ const bext = ({ builtins, meta }) => {
       if (id.startsWith(BUILTIN_PREFIX)) {
         const index = id.replace(BUILTIN_PREFIX, '');
         return builtins[index];
-      }
-      return null;
-    },
-    transform(code, id) {
-      if (meta.options?.preact && id === '@bext/entry') {
-        return Babel.transform(code, {
-          plugins: [
-            [
-              'transform-react-jsx',
-              {
-                pragma: 'h',
-                pragmaFrag: 'Fragment',
-              },
-            ],
-          ],
-        }).code;
       }
       return null;
     },

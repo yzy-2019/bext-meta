@@ -34,22 +34,18 @@ export const BuildPreview: FC = () => {
         }
       }
     },
-    [
-      draft?.id,
-      draft?.name,
-      draft?.version,
-      draft?.source,
-      !draft?.options,
-      draft?.options?.preact,
-    ],
+    [draft?.id, draft?.name, draft?.version, draft?.source, !draft?.options],
     {
       wait: 1000,
     },
   );
 
   return (
-    <div className="flex-1 flex flex-col pt-3">
-      <Label className="text-base">预览（错误警告在开发者工具查看）</Label>
+    <div className="flex-1 flex flex-col pt-2 h-full">
+      <Label className="text-base">脚本预览</Label>
+      <div className="text-sm pb-2">
+        错误警告在请按 F12 打开浏览器开发者工具查看
+      </div>
       <Editor
         value={build}
         options={{ readOnly: true, language: 'javascript' }}

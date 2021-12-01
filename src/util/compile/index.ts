@@ -1,3 +1,4 @@
+import BEXT_HOME from '!!raw-loader!../../../BEXT_HOME';
 import COMPILE_WORKER from '!!raw-loader!./worker.js';
 import LIB_BROWSER from '!!raw-loader!@/lib/browser.js';
 import LIB_UTIL from '!!raw-loader!@/lib/util.js';
@@ -13,6 +14,9 @@ export function excuteCompile(context: {
   if (context.meta?.options) {
     return compileWorker.compile({
       ...context,
+      env: {
+        bextHome: BEXT_HOME,
+      },
       builtins: {
         browser: LIB_BROWSER,
         util: LIB_UTIL,

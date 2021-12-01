@@ -12,9 +12,7 @@ export interface Meta {
   source: string; // 源代码
   build: string; // 产物
   // 编译选项
-  options?: {
-    preact?: boolean;
-  };
+  options?: {};
 }
 
 export interface MetaVersion {

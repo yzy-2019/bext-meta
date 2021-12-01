@@ -1,6 +1,5 @@
 import { ReactComponent as DragHandle } from '@/assets/drag-handle.svg';
 import { BuildPreview } from '@/components/build-preview';
-import { CompileOptions } from '@/components/compile-options';
 import { Editor } from '@/components/editor';
 import { useDraft } from '@/contexts/use-draft';
 import { Resizable } from 're-resizable';
@@ -42,8 +41,7 @@ const ScriptDev: FC = () => {
           options={{ language: 'javascript' }}
         />
       </Resizable>
-      <div className="flex flex-col w-full pl-4 min-w-[280px]">
-        <CompileOptions />
+      <div className="w-full pl-4 min-w-[280px]">
         <BuildPreview />
       </div>
     </div>
