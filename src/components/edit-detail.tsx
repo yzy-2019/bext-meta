@@ -11,10 +11,12 @@ const Content: FC = () => {
   const { tagList } = useMeta();
   const tagOptions = useMemo(
     () =>
-      uniq([...tagList, ...(draft?.tags || [])]).map((tag) => ({
-        key: tag,
-        text: tag,
-      })),
+      uniq([...tagList.map(({ name }) => name), ...(draft?.tags || [])]).map(
+        (tag) => ({
+          key: tag,
+          text: tag,
+        }),
+      ),
     [tagList, draft?.tags],
   );
 

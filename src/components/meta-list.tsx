@@ -9,14 +9,17 @@ import { useHistory } from 'umi';
 export const MetaList: FC<{ list: Meta[]; withPaddingX?: boolean }> = ({
   list,
   withPaddingX,
-}) => (
-  <List
-    items={list}
-    onRenderCell={(item) => (
-      <MetaItem meta={item!} withPaddingX={withPaddingX} key={item?.id} />
-    )}
-  />
-);
+}) =>
+  list.length ? (
+    <List
+      items={list}
+      onRenderCell={(item) => (
+        <MetaItem meta={item!} withPaddingX={withPaddingX} key={item?.id} />
+      )}
+    />
+  ) : (
+    <div className="text-center pt-7">哦豁，暂无脚本哦</div>
+  );
 
 const MetaItem: FC<{ meta: Meta; withPaddingX?: boolean }> = ({
   meta,

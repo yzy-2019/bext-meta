@@ -11,7 +11,7 @@ export const MetaPage: FC = () => {
   const options = useMemo(
     () => [
       { key: FILTER_ALL, text: '全部分类' },
-      ...tagList.map((tag) => ({ key: tag, text: tag })),
+      ...tagList.map((tag) => ({ key: tag.name, text: tag.name })),
     ],
     [tagList],
   );

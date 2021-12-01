@@ -10,10 +10,6 @@ const { metas, latestUpdate } = META_INDEX;
 // TODO: request
 export const [MetaProvider, useMeta] = constate(() => {
   const metaList = metas as Meta[];
-  const tagList = useMemo(
-    () => uniq(metaList.map(({ tags }) => tags).flat()),
-    [metaList],
-  );
   const metaMap = useMemo(
     () => Object.fromEntries(metaList.map((meta) => [meta.id, meta])),
     [metaList],
@@ -22,11 +18,22 @@ export const [MetaProvider, useMeta] = constate(() => {
     () => latestUpdate.map((id) => metaMap[id]),
     [metaMap, latestUpdate],
   );
+  const tagList = META_TAG as {
+    name: string;
+    icon: string;
+    html: string;
+    description: string;
+  }[];
+
+  const tagMap = useMemo(
+    () => Object.fromEntries(tagList.map((tag) => [tag.name, tag])),
+    [tagList],
+  );
 
   return {
     metaList,
-    tagList,
     latestUpdateList,
-    metaTag: META_TAG as Record<string, { icon: string; description: string }>,
+    tagList,
+    tagMap,
   };
 });
