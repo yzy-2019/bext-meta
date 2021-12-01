@@ -31,9 +31,7 @@ export function runOnce(fn) {
 
 export function addElement({ tag, attrs = {}, to = document.body }) {
   const el = document.createElement(tag);
-  for (const [attrName, attrValue] of Object.entries(attrs)) {
-    el[attrName] = attrValue;
-  }
+  Object.assign(el, attrs);
   to.appendChild(el);
   return el;
 }
