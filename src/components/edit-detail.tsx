@@ -33,7 +33,7 @@ const Content: FC = () => {
     <>
       <div className="grid grid-cols-3 gap-3">
         <TextField
-          label="插件ID"
+          label="脚本ID"
           value={draft?.id || ''}
           onChange={(_, id = '') => setDraft({ id })}
           errorMessage={
@@ -43,7 +43,7 @@ const Content: FC = () => {
           }
         />
         <TextField
-          label="插件名称"
+          label="脚本名称"
           value={draft?.name || ''}
           onChange={(_, name = '') => setDraft({ name })}
         />

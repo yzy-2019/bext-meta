@@ -26,7 +26,7 @@ const HomePage: FC = () => {
   return (
     <div className="pt-4 px-6">
       <SearchBox
-        placeholder="搜索扩展（匹配ID、名称与简介）"
+        placeholder="搜索脚本（匹配ID、名称与简介）"
         underlined
         value={searchText}
         onChange={(e) => setSearchText(e?.target.value || '')}

@@ -24,14 +24,14 @@ const DevPage = () => {
         secondaryText="将会覆盖现存的草稿，请谨慎操作"
         onClick={() => setDraftObject({ type: 'javascript' })}
       >
-        创建新插件
+        创建新脚本
       </CompoundButton>
       <CompoundButton
         className="w-52 mt-6 mb-40"
         secondaryText="将会覆盖现存的草稿，请谨慎操作"
         onClick={() => history.push('/meta?from=dev')}
       >
-        修改现有插件
+        修改现有脚本
       </CompoundButton>
     </div>
   );

@@ -50,7 +50,7 @@ const NormalHeader = () => {
           onLinkClick={(item) => onLinkClick(item?.props.itemKey || '/')}
         >
           <PivotItem headerText="首页" itemKey="/" />
-          <PivotItem headerText="插件" itemKey="/meta" />
+          <PivotItem headerText="脚本" itemKey="/meta" />
           <PivotItem headerText="开发" itemKey="/dev" />
           <PivotItem
             headerText="更多"

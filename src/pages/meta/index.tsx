@@ -36,7 +36,7 @@ export const MetaPage: FC = () => {
     <>
       <div className="flex items-center justify-between px-6 py-2">
         <div className="font-medium text-base">
-          {filter.from === 'dev' ? '请选择需要修改的插件' : null}
+          {filter.from === 'dev' ? '请选择需要修改的脚本' : null}
         </div>
         <Dropdown
           options={options}
