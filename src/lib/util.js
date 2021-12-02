@@ -1,4 +1,4 @@
-import { bextHome, id, version } from '@bext/context';
+import { id, version } from '@bext/context';
 
 export function detectBrowser() {
   return window.via && (window.via.cmd || window.via.openSettings)
@@ -60,6 +60,13 @@ export function addStyle(css) {
   });
 }
 
+export async function getBextHome() {
+  const response = await fetch(
+    `https://cdn.jsdelivr.net/gh/ikkz/bext@master/BEXT_HOME`,
+  );
+  return await response.text();
+}
+
 const LAST_CHECK_KEY = `BEXT_LAST_CHECK_KEY_${id}`;
 export async function checkUpdate(day = 7) {
   const lastCheck = Number(localStorage.getItem(LAST_CHECK_KEY));
@@ -77,7 +84,7 @@ export async function checkUpdate(day = 7) {
     );
     const meta = await response.json();
     if (meta.version != version) {
-      return `${bextHome}/meta/${id}`;
+      return `${await getBextHome()}/meta/${id}`;
     }
   } catch (error) {}
 }

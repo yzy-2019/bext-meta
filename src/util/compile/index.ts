@@ -15,7 +15,7 @@ export function excuteCompile(context: {
     return compileWorker.compile({
       ...context,
       env: {
-        bextHome: BEXT_HOME,
+        // bextHome: BEXT_HOME,
       },
       builtins: {
         browser: LIB_BROWSER,

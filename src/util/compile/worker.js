@@ -5,7 +5,7 @@ importScripts(
 
 const BUILTIN_PREFIX = '@bext/';
 const bext = ({ builtins, meta, env }) => {
-  const context = ['id', 'name', 'version', 'bextHome']
+  const context = ['id', 'name', 'version', ...Object.keys(env || {})]
     .map(
       (prop) =>
         `export const ${prop} = decodeURIComponent('${encodeURIComponent(
@@ -35,19 +35,16 @@ const bext = ({ builtins, meta, env }) => {
       }
       return null;
     },
-    transform(code, id) {
-      if (id.startsWith(BUILTIN_PREFIX)) {
-        const comments = [];
-        this.parse(code, {
-          onComment: comments,
-        });
-        const sortedComments = comments.sort((a, b) => b.start - a.start);
-        for (const { start, end } of sortedComments) {
-          code = code.slice(0, start) + code.slice(end);
-        }
-        return code;
+    renderChunk(code) {
+      const comments = [];
+      this.parse(code, {
+        onComment: comments,
+      });
+      const sortedComments = comments.sort((a, b) => b.start - a.start);
+      for (const { start, end } of sortedComments) {
+        code = code.slice(0, start) + code.slice(end);
       }
-      return null;
+      return code;
     },
   };
 };
