@@ -74,7 +74,7 @@ export async function checkUpdate(day = 7) {
 
   if (
     !Number.isNaN(lastCheck) &&
-    (Date.now() - lastCheck) / (24 * 60 * 60) <= Math.min(3, day)
+    (Date.now() - lastCheck) / (24 * 60 * 60) <= Math.max(3, day)
   ) {
     return;
   }

@@ -61,7 +61,18 @@ export const x_install = errorCatch((meta) =>
       title: meta.name,
       description: meta.synopsis,
       nick_name: meta.author,
-      content: meta.build,
+      content: `
+// ==UserScript==
+// @name         ${meta.name}
+// @namespace    ${meta.id}
+// @version      ${meta.version}
+// @description  ${meta.synopsis}
+// @author       ${meta.author}${
+        meta.match?.map((match) => '\n@match ' + match).join('') || ''
+      }
+// ==/UserScript==
+${meta.build}
+`,
     }),
   ),
 );
