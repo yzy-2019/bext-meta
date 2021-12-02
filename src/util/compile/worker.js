@@ -35,6 +35,20 @@ const bext = ({ builtins, meta, env }) => {
       }
       return null;
     },
+    transform(code, id) {
+      if (id.startsWith(BUILTIN_PREFIX)) {
+        const comments = [];
+        this.parse(code, {
+          onComment: comments,
+        });
+        const sortedComments = comments.sort((a, b) => b.start - a.start);
+        for (const { start, end } of sortedComments) {
+          code = code.slice(0, start) + code.slice(end);
+        }
+        return code;
+      }
+      return null;
+    },
   };
 };
 
