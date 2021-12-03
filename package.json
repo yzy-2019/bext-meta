@@ -18,7 +18,7 @@
     "start": "cross-env TAILWIND_MODE=watch umi dev",
     "build": "umi build",
     "analyze": "cross-env ANALYZE=1 yarn build",
-    "prebuild": "node scripts/fix-vercel.js",
+    "prebuild": "git fetch --unshallow",
     "postinstall": "umi generate tmp",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "test": "umi-test",
