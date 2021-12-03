@@ -20,9 +20,9 @@ export const [MetaProvider, useMeta] = constate(() => {
   );
   const tagList = META_TAG as {
     name: string;
-    icon: string;
-    html: string;
-    description: string;
+    icon?: string;
+    html?: string;
+    description?: string;
   }[];
 
   const tagMap = useMemo(

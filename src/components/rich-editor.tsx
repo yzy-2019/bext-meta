@@ -39,6 +39,7 @@ export const RichEditor: FC<{
                 ],
                 [{ indent: '-1' }, { indent: '+1' }],
                 [{ color: [] }, { background: [] }],
+                ['link', 'image'],
                 ['clean'],
               ],
         },

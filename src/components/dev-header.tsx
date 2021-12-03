@@ -12,6 +12,7 @@ import {
   PrimaryButton,
 } from '@fluentui/react';
 import { useBoolean } from 'ahooks';
+import DOMPurify from 'dompurify';
 import FileSaver from 'file-saver';
 import { cloneDeep, omit } from 'lodash-es';
 import { FC, useEffect } from 'react';
@@ -66,7 +67,7 @@ export const DevHeader: FC = () => {
 };
 
 const ExportDialog: FC = () => {
-  const { draft } = useDraft();
+  const { draft, setDraft } = useDraft();
   const onDownload = async () => {
     const { id, name, version, source, options } = draft!;
     if (id && name && version) {
@@ -82,6 +83,8 @@ const ExportDialog: FC = () => {
         });
         const content = omit(cloneDeep(draft), 'id');
         content.build = build;
+        content.detail = DOMPurify.sanitize(content.detail || '');
+        setDraft({ detail: content.detail });
         FileSaver.saveAs(
           new Blob([JSON.stringify(content)]),
           `${draft?.id}.json`,

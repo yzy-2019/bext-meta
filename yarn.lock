@@ -1142,6 +1142,13 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
+"@types/dompurify@^2.3.1":
+  version "2.3.1"
+  resolved "https://registry.npmmirror.com/@types/dompurify/download/@types/dompurify-2.3.1.tgz#2934adcd31c4e6b02676f9c22f9756e5091c04dd"
+  integrity sha1-KTStzTHE5rAmdvnCL5dW5QkcBN0=
+  dependencies:
+    "@types/trusted-types" "*"
+
 "@types/file-saver@^2.0.4":
   version "2.0.4"
   resolved "https://registry.npmmirror.com/@types/file-saver/download/@types/file-saver-2.0.4.tgz#aaf9b96296150d737b2fefa535ced05ed8013d84"
@@ -1359,6 +1366,11 @@
   version "2.0.1"
   resolved "https://registry.nlark.com/@types/stack-utils/download/@types/stack-utils-2.0.1.tgz#20f18294f797f2209b5f65c8e3b5c8e8261d127c"
   integrity sha1-IPGClPeX8iCbX2XI47XI6CYdEnw=
+
+"@types/trusted-types@*":
+  version "2.0.2"
+  resolved "https://registry.npmmirror.com/@types/trusted-types/download/@types/trusted-types-2.0.2.tgz#fc25ad9943bcac11cceb8168db4f275e0e72e756"
+  integrity sha1-/CWtmUO8rBHM64Fo208nXg5y51Y=
 
 "@types/yargs-parser@*":
   version "20.2.1"
@@ -2969,6 +2981,11 @@ domexception@^2.0.1:
   integrity sha1-+0Su+6eT4VdLCvau0oAdBXUp8wQ=
   dependencies:
     webidl-conversions "^5.0.0"
+
+dompurify@^2.3.3:
+  version "2.3.3"
+  resolved "https://registry.nlark.com/dompurify/download/dompurify-2.3.3.tgz#c1af3eb88be47324432964d8abc75cf4b98d634c"
+  integrity sha1-wa8+uIvkcyRDKWTYq8dc9LmNY0w=
 
 ecc-jsbn@~0.1.1:
   version "0.1.2"

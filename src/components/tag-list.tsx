@@ -10,31 +10,16 @@ export const TagList: FC = () => {
   return (
     <>
       <Title>全部分类</Title>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-3 gap-3">
         {tagList.map((tag) => (
           <Link to={`/meta?tag=${encodeURIComponent(tag.name)}`} key={tag.name}>
             <div
-              className="h-[70px] flex items-center cursor-pointer"
+              className="h-12 flex items-center justify-center cursor-pointer"
               style={{
                 boxShadow: theme.effects.elevation4,
               }}
             >
-              <div
-                className="ml-3 w-6 h-10 flex justify-center items-center"
-                dangerouslySetInnerHTML={
-                  tag.html ? { __html: tag.html } : undefined
-                }
-              >
-                {tag.html ? null : (
-                  <Icon iconName={tag.icon} className=" text-2xl" />
-                )}
-              </div>
-              <div className="h-full flex-1 overflow-hidden p-2">
-                <div className="font-normal text-sm truncate">{tag.name}</div>
-                <div className="text-xs line-clamp-2">
-                  {tag?.description || '暂无描述'}
-                </div>
-              </div>
+              {tag.name}
             </div>
           </Link>
         ))}
