@@ -1,3 +1,4 @@
+import { useMetaPrefix } from '@/contexts/meta-prefix';
 import { useDraft } from '@/contexts/use-draft';
 import { useUrlState } from '@/contexts/use-url-state';
 import { Meta, MetaIndex } from '@/types';
@@ -29,10 +30,11 @@ const MetaItem: FC<{ meta: Meta; withPaddingX?: boolean }> = ({
   const [query] = useUrlState({ from: undefined });
   const { setDraftObject } = useDraft();
   const history = useHistory();
+  const { prefix } = useMetaPrefix();
 
   const onClick = useCallback(() => {
     if (query.from === 'dev') {
-      fetch(`/meta/${meta.id}/_index.json`)
+      fetch(`${prefix}/${meta.id}/_index.json`)
         .then((response) => response.json())
         .then((metaIndex: MetaIndex) =>
           setDraftObject(
@@ -43,7 +45,7 @@ const MetaItem: FC<{ meta: Meta; withPaddingX?: boolean }> = ({
     } else {
       history.push(`/meta/${meta?.id ?? ''}`);
     }
-  }, [history, query.from, setDraftObject, meta]);
+  }, [history, query.from, setDraftObject, meta, prefix]);
 
   return (
     <div

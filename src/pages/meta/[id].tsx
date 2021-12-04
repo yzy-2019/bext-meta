@@ -1,5 +1,6 @@
 import packageJson from '../../../package.json';
 import { MetaContent } from '@/components/meta-content';
+import { useMetaPrefix } from '@/contexts/meta-prefix';
 import { browser } from '@/lib';
 import { MetaIndex, MetaVersion } from '@/types';
 import {
@@ -22,13 +23,15 @@ const DROPDOWN_ITEM_STYLE = { height: 'auto' };
 
 const ExtDetailPage: FC = () => {
   const params = useParams<{ id: string }>();
+  const { prefix } = useMetaPrefix();
   const {
     loading,
     error,
     data: metaIndex,
     mutate,
-  } = useRequest<MetaIndex>(`/meta/${params.id}/_index.json`, {
-    refreshDeps: [params.id],
+  } = useRequest<MetaIndex>(`${prefix}/${params.id}/_index.json`, {
+    refreshDeps: [params.id, prefix],
+    ready: !!prefix,
   });
   const persistMutate = usePersistFn(mutate);
   const {
@@ -36,11 +39,13 @@ const ExtDetailPage: FC = () => {
     run: onVersionChange,
     error: metaError,
   } = useRequest(
-    (version: MetaVersion) => `/meta/${params.id}/${version.hash}.json`,
+    (version: MetaVersion) => `${prefix}/${params.id}/${version.hash}.json`,
     {
       onSuccess: (meta, [{ hash }]) =>
         persistMutate((data) => ({ ...data, meta: { ...meta, hash } })),
       manual: true,
+      refreshDeps: [prefix],
+      ready: !!prefix,
     },
   );
   const [review, setReview] = useState(false);

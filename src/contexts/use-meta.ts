@@ -2,7 +2,6 @@ import META_TAG from '../../meta-tag.json';
 import META_INDEX from '../../public/meta/_index.json';
 import { Meta } from '@/types';
 import constate from 'constate';
-import { uniq } from 'lodash-es';
 import { useMemo } from 'react';
 
 const { metas, latestUpdate } = META_INDEX;
