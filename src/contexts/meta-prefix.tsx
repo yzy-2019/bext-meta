@@ -5,9 +5,9 @@ import constate from 'constate';
 import { useMemo } from 'react';
 
 export const [MetaPrefixProvider, useMetaPrefix] = constate(() => {
-  const { loading, data, error } = useRequest(
-    `https://data.jsdelivr.com/v1/package/npm/${packageJson.name}`,
-  );
+  // const { loading, data, error } = useRequest(
+  //   `https://data.jsdelivr.com/v1/package/npm/${packageJson.name}`,
+  // );
 
   const isProduction = useMemo(
     () => window.location.origin.startsWith(BEXT_HOME),
@@ -23,10 +23,8 @@ export const [MetaPrefixProvider, useMetaPrefix] = constate(() => {
   }
 
   return {
-    loading,
-    prefix: data?.tags?.latest
-      ? `https://cdn.jsdelivr.net/npm/${packageJson.name}@${data?.tags?.latest}/public/meta`
-      : undefined,
-    error,
+    loading: false,
+    prefix: `https://cdn.jsdelivr.net/npm/${packageJson.name}@${packageJson.version}-${BUILD_HASH}/public/meta`,
+    error: undefined,
   };
 });

@@ -24,7 +24,7 @@ export default defineConfig({
   ],
   define: {
     BUILD_TIMESTAMP: dayjs().unix(),
-    BUILD_HASH: shelljs.exec('git rev-parse --short HEAD').toString(),
+    BUILD_HASH: shelljs.exec('git rev-parse HEAD').toString(),
   },
   externals: {
     quill: 'window.Quill',

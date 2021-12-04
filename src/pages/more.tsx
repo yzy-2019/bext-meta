@@ -37,7 +37,7 @@ const MorePage = () => {
       </div>
       <div className="text-center font-extralight mt-6">
         Build @{dayjs.unix(BUILD_TIMESTAMP).format('YY/MM/DD HH:mm')} #
-        {BUILD_HASH}
+        {BUILD_HASH.slice(0, 8)}
       </div>
     </div>
   );

@@ -10,7 +10,7 @@ declare module '*.svg' {
 }
 
 declare var BUILD_TIMESTAMP: number;
-declare var BUILD_HASH: number;
+declare var BUILD_HASH: string;
 
 declare module '*.worker.js' {
   class WebpackWorker extends Worker {
