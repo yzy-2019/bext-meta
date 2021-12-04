@@ -1,11 +1,11 @@
-name: Publish
+name: Deploy
 
 on:
   push:
     branches: [master]
 
 jobs:
-  publish:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -22,3 +22,5 @@ jobs:
       - run: yarn publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Trigger vercel
+        run: curl -X POST ${{ secrets.VERCEL_HOOK }}
