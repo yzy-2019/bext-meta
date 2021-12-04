@@ -1,8 +1,11 @@
+import packageJson from '../../../package.json';
 import { MetaContent } from '@/components/meta-content';
 import { browser } from '@/lib';
 import { MetaIndex, MetaVersion } from '@/types';
 import {
+  DefaultButton,
   Dropdown,
+  IContextualMenuItem,
   PrimaryButton,
   ProgressIndicator,
   ResponsiveMode,
@@ -12,7 +15,7 @@ import {
 } from '@fluentui/react';
 import { usePersistFn, useRequest } from 'ahooks';
 import dayjs from 'dayjs';
-import { FC, useMemo } from 'react';
+import { FC, useMemo, useState } from 'react';
 import { useParams } from 'umi';
 
 const DROPDOWN_ITEM_STYLE = { height: 'auto' };
@@ -40,6 +43,29 @@ const ExtDetailPage: FC = () => {
       manual: true,
     },
   );
+  const [review, setReview] = useState(false);
+
+  const onMenuClick = (item?: IContextualMenuItem) => {
+    switch (item?.key) {
+      case 'review':
+        setReview((value) => !value);
+        break;
+      case 'report':
+        const title = encodeURIComponent(
+          `[Report] Meta ${meta?.name}#${params?.id}`,
+        );
+        const body = encodeURIComponent(`
+请前往 ${packageJson.repository.url}/commits/master/meta/${params?.id}.json
+选择一位或者多位你认为能解决你问题的脚本作者，并在问题描述之后 at
+问题描述：`);
+        window.open(
+          `${packageJson.repository.url}/issues/new?title=${title}&body=${body}`,
+        );
+        break;
+      default:
+        break;
+    }
+  };
 
   if (loading) {
     return <Spinner size={SpinnerSize.large} className="w-full h-full" />;
@@ -71,7 +97,7 @@ const ExtDetailPage: FC = () => {
     <div className="px-6 pt-4">
       <div className="flex justify-between">
         <Dropdown
-          className="min-w-[40%]"
+          className="min-w-[30%]"
           styles={{
             dropdownItem: DROPDOWN_ITEM_STYLE,
             dropdownItemSelected: DROPDOWN_ITEM_STYLE,
@@ -89,12 +115,34 @@ const ExtDetailPage: FC = () => {
             onVersionChange(option?.data);
           }}
         />
-        <PrimaryButton
-          onClick={onInstall}
-          disabled={!!(metaLoading || !meta || metaError)}
-        >
-          安装此版本
-        </PrimaryButton>
+        <div>
+          <DefaultButton
+            menuProps={{
+              items: [
+                {
+                  key: 'review',
+                  text: review ? '隐藏代码' : '查看代码',
+                  iconProps: { iconName: 'RedEye' },
+                },
+                {
+                  key: 'report',
+                  text: '报告问题',
+                  iconProps: { iconName: 'Bug' },
+                },
+              ],
+              onItemClick: (_, item) => onMenuClick(item),
+            }}
+          >
+            更多
+          </DefaultButton>
+          <PrimaryButton
+            className="ml-2"
+            onClick={onInstall}
+            disabled={!!(metaLoading || !meta || metaError)}
+          >
+            安装此版本
+          </PrimaryButton>
+        </div>
       </div>
       {!metaLoading ? (
         <Separator />
@@ -104,7 +152,11 @@ const ExtDetailPage: FC = () => {
         </div>
       )}
       {meta ? (
-        <MetaContent meta={meta} key={(meta as any)?.hash || 'index'} />
+        <MetaContent
+          meta={meta}
+          key={(meta as any)?.hash || 'index'}
+          review={review}
+        />
       ) : (
         <Spinner size={SpinnerSize.large} className="pt-20 w-full" />
       )}
