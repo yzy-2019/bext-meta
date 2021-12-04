@@ -1,5 +1,5 @@
 {
-  "name": "bext",
+  "name": "ikkz-bext",
   "license": "MIT",
   "repository": {
     "url": "https://github.com/ikkz/bext"
@@ -78,5 +78,6 @@
     "typescript": "^4.1.2",
     "typescript-json-schema": "^0.52.0",
     "yorkie": "^2.0.0"
-  }
+  },
+  "version": "1.0.0"
 }
