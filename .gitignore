@@ -19,3 +19,5 @@
 /.env.local
 
 public/meta
+
+.vercel
