@@ -27,7 +27,7 @@ const DevPage = () => {
         className="w-52 mt-6"
         primary={!cacheDraft}
         secondaryText="将会覆盖现存的草稿，请谨慎操作"
-        onClick={() => setDraftObject({ type: 'javascript' })}
+        onClick={() => setDraftObject({ type: 'javascript', options: {} })}
       >
         创建新脚本
       </CompoundButton>

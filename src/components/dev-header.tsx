@@ -1,20 +1,15 @@
-import { repository } from '../../package.json';
 import { EditDetail } from './edit-detail';
+import { ExportDialog } from './export-dialog';
 import { useDraft } from '@/contexts/use-draft';
 import { useInDev } from '@/contexts/use-in-dev';
-import { excuteCompile } from '@/util/compile';
 import {
   CommandBarButton,
   DefaultButton,
   Dialog,
   DialogType,
-  Label,
   PrimaryButton,
 } from '@fluentui/react';
 import { useBoolean } from 'ahooks';
-import DOMPurify from 'dompurify';
-import FileSaver from 'file-saver';
-import { cloneDeep, omit } from 'lodash-es';
 import { FC, useEffect } from 'react';
 import { useHistory } from 'umi';
 
@@ -63,57 +58,5 @@ export const DevHeader: FC = () => {
         <ExportDialog />
       </Dialog>
     </>
-  );
-};
-
-const ExportDialog: FC = () => {
-  const { draft, setDraft } = useDraft();
-  const onDownload = async () => {
-    const { id, name, version, source, options } = draft!;
-    if (id && name && version) {
-      try {
-        const build = await excuteCompile({
-          meta: {
-            id,
-            name,
-            version,
-            source: source || '',
-            options: options,
-          },
-        });
-        const content = omit(cloneDeep(draft), 'id');
-        content.build = build;
-        content.detail = DOMPurify.sanitize(content.detail || '');
-        setDraft({ detail: content.detail });
-        FileSaver.saveAs(
-          new Blob([JSON.stringify(content)]),
-          `${draft?.id}.json`,
-        );
-      } catch (error) {
-        alert('编译失败，请查看控制台');
-      }
-    } else {
-      alert('请填写完整 ID，名称，版本号');
-    }
-  };
-
-  const onUpload = () => {
-    window.open(`${repository.url}/new/master?filename=meta/${draft?.id}.json`);
-  };
-
-  return (
-    <div>
-      <Label>第一步</Label>
-      下载 Json 文件（描述了脚本的相关信息，请勿手动修改内容）
-      <div className="text-right mt-2">
-        <DefaultButton onClick={onDownload}>下载</DefaultButton>
-      </div>
-      <Label>第二步</Label>
-      点击下方按钮跳转至 Github ，粘贴上面
-      Json文件的内容并提交，请勿修改生成的文件名
-      <div className="text-right mt-2">
-        <PrimaryButton onClick={onUpload}>上传</PrimaryButton>
-      </div>
-    </div>
   );
 };
