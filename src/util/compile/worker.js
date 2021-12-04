@@ -1,6 +1,6 @@
 importScripts(
   'https://cdn.jsdelivr.net/npm/rollup@2.60.1/dist/rollup.browser.js',
-  'https://cdn.jsdelivr.net/npm/@babel/standalone@7.16.4/babel.min.js',
+  'https://cdn.jsdelivr.net/npm/path-browser@2.2.1/path.min.js',
 );
 
 const BUILTIN_PREFIX = '@bext/';
@@ -49,10 +49,33 @@ const bext = ({ builtins, meta, env }) => {
   };
 };
 
+const URL = /^https?:/;
+
+const url = () => {
+  return {
+    resolveId(source, importer) {
+      if (URL.test(source)) {
+        return source;
+      }
+      if (URL.test(importer)) {
+        return path.resolve(importer, '..', source);
+      }
+      return null;
+    },
+    async load(id) {
+      console.log(id);
+      if (URL.test(id)) {
+        return (await fetch(id)).text();
+      }
+      return null;
+    },
+  };
+};
+
 export async function compile(payload) {
   const bundle = await rollup.rollup({
     input: '@bext/entry',
-    plugins: [bext(payload)],
+    plugins: [bext(payload), url()],
   });
   const { output } = await bundle.generate({ format: 'iife' });
   return output[0].code;
