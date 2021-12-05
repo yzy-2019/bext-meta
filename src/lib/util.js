@@ -88,3 +88,35 @@ export async function checkUpdate(day = 7) {
     }
   } catch (error) {}
 }
+
+export class EventEmitter {
+  listeners = {};
+
+  on(event, fn) {
+    if (!this.listeners[event]) {
+      this.listeners[event] = [];
+    }
+    this.listeners[event].push(fn);
+  }
+
+  off(event, fn) {
+    if (!event) {
+      this.listeners = {};
+      return;
+    }
+
+    if (!fn) {
+      this.listeners[event] = [];
+      return;
+    }
+
+    const index = this.listeners[event].findIndex((f) => f === fn);
+    if (index >= 0) {
+      this.listeners[event].splice(index, 1);
+    }
+  }
+
+  emit(event, ...args) {
+    this.listeners[event]?.forEach((fn) => fn?.(...args));
+  }
+}
