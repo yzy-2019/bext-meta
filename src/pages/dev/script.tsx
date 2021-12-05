@@ -41,7 +41,7 @@ const ScriptDev: FC = () => {
           options={{ language: 'javascript' }}
         />
       </Resizable>
-      <div className="w-full pl-4 min-w-[280px]">
+      <div className="w-full pl-4 min-w-[300px]">
         <BuildPreview />
       </div>
     </div>
