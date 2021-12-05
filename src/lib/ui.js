@@ -114,7 +114,7 @@ export function buttonBar(pos) { // true: bottom false: top
  *    onclose: Toast 消失后的回调函数
  * }
  */
-function toast(t,s,c) {
+export function toast(t,s,c) {
   let td = document.createElement('div'),
   tk = document.createElement('style'),
   tt = function(){
