@@ -24,7 +24,7 @@ export const [MetaPrefixProvider, useMetaPrefix] = constate(() => {
 
   return {
     loading: false,
-    prefix: `https://cdn.jsdelivr.net/npm/${packageJson.name}@${packageJson.version}-${BUILD_HASH}/public/meta`,
+    prefix: `https://cdn.jsdelivr.net/gh/ikkz/bext@${BUILD_HASH}/public/meta`,
     error: undefined,
   };
 });
