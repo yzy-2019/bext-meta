@@ -1,5 +1,6 @@
 import { repository } from '../../package.json';
 import { useDraft } from '@/contexts/use-draft';
+import { useMeta } from '@/contexts/use-meta';
 import { excuteCompile } from '@/util/compile';
 import { DefaultButton, Label, PrimaryButton } from '@fluentui/react';
 import { useUnmountedRef } from 'ahooks';
@@ -10,6 +11,7 @@ import { cloneDeep, omit } from 'lodash-es';
 import { FC, useState } from 'react';
 
 export const ExportDialog: FC = () => {
+  const { metaList } = useMeta();
   const { draft, setDraft } = useDraft();
   const [copied, setCopied] = useState(false);
   const unmounted = useUnmountedRef();
@@ -61,13 +63,19 @@ export const ExportDialog: FC = () => {
   };
 
   const onUpload = () => {
-    window.open(`${repository.url}/new/master?filename=meta/${draft?.id}.json`);
+    if (metaList.find(({ id }) => id === draft?.id)) {
+      window.open(`${repository.url}/edit/master/meta/${draft?.id}.json`);
+    } else {
+      window.open(
+        `${repository.url}/new/master?filename=meta/${draft?.id}.json`,
+      );
+    }
   };
 
   return (
     <div>
       <Label>第一步</Label>
-      下载或者复制 Json 文件（描述了脚本的相关信息，请勿手动修改内容）
+      下载或者复制 Json 文件内容（描述了脚本的相关信息，请勿手动修改内容）
       <div className="text-right mt-2">
         <DefaultButton onClick={onDownload}>下载</DefaultButton>
         <PrimaryButton onClick={onCopy} className="ml-2">
@@ -75,7 +83,7 @@ export const ExportDialog: FC = () => {
         </PrimaryButton>
       </div>
       <Label>第二步</Label>
-      点击下方按钮跳转至 Github ，粘贴上面
+      点击下方按钮跳转至 Github ，清除已有内容，粘贴上面
       Json文件的内容并提交，请勿修改生成的文件名
       <div className="text-right mt-2">
         <PrimaryButton onClick={onUpload}>上传</PrimaryButton>

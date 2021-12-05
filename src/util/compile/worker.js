@@ -63,7 +63,6 @@ const url = () => {
       return null;
     },
     async load(id) {
-      console.log(id);
       if (URL.test(id)) {
         return (await fetch(id)).text();
       }
