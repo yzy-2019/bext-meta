@@ -82,7 +82,13 @@ export function buttonBar(pos) { // true: bottom false: top
             if (textcolor) button.style.color = textcolor;
             if (backcolor) button.style.backgroundColor = backcolor;
             if (text) button.querySelector('span').innerText = text;
-            if (callback) button.onclick = callback;
+            button.onclick = function(e) {
+              if (e.target.classList.contains('delButton')) {
+                button.parentNode.removeChild(button);
+              } else {
+                if (callback) callback.call(this);
+              }
+            }
         },
         add: function(id,text = '按钮',callback = null,backcolor = 'whitesmoke',textcolor = '#333') {
             if (!this.bar.querySelector(`#scriptButton-${id}`)) {
@@ -95,7 +101,6 @@ export function buttonBar(pos) { // true: bottom false: top
             //  但下次脚本运行时还会加 ...
                 let close = document.createElement('span');
                 close.innerText = '✖'; close.className = 'delButton'
-                close.onclick = this.del(id);
                 button.appendChild(close);
                 this.bar.appendChild(button);
                 this.change(id,backcolor,textcolor,text,callback);
