@@ -1,10 +1,10 @@
-import DEBUG_CLIENT_SCRIPT from '!!raw-loader!@/lib/debug-client.js';
 import { Editor } from './editor';
 import { useDraft } from '@/contexts/use-draft';
 import { excuteCompile } from '@/util/compile';
 import {
   DefaultButton,
   Label,
+  Link,
   Modal,
   PrimaryButton,
   TextField,
@@ -75,9 +75,10 @@ export const BuildPreview: FC = () => {
         </div>
       </Label>
       <Modal isOpen={modalVisible} onDismiss={hideModal}>
-        <div className="w-[640px] h-[600px]">
+        <div className="w-[640px]">
           <div className="p-4">
-            请先通过油猴安装下方编辑器中的脚本，然后在文本框中输入需要调试的链接，点击打开。
+            请先点击<Link href="/lib/debug-client.user.js">此处</Link>
+            安装油猴脚本，然后在下方文本框中输入需要调试的链接，点击打开。
             回到开发页面后点击“推送脚本”即可让正在编写的代码在目标窗口中刷新执行。
             若推送之后没有反应，请检查目标页面油猴脚本是否生效，并重新执行打开操作。
           </div>
@@ -95,10 +96,6 @@ export const BuildPreview: FC = () => {
               打开
             </PrimaryButton>
           </div>
-          <Editor
-            value={DEBUG_CLIENT_SCRIPT}
-            options={{ readOnly: true, language: 'javascript' }}
-          />
         </div>
       </Modal>
       <div className="text-sm pb-2">

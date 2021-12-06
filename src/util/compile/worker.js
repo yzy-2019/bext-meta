@@ -49,21 +49,33 @@ const bext = ({ builtins, meta, env }) => {
   };
 };
 
-const URL = /^https?:/;
+const URL_REG = /^https?:/;
 
 const url = () => {
   return {
     resolveId(source, importer) {
-      if (URL.test(source)) {
+      if (URL_REG.test(source)) {
         return source;
       }
-      if (URL.test(importer)) {
-        return path.resolve(importer, '..', source);
+      if (URL_REG.test(importer)) {
+        const url = new URL(importer);
+        url.pathname = path.resolve(url.pathname, '..', source);
+        return url.toString();
       }
       return null;
     },
     async load(id) {
-      if (URL.test(id)) {
+      if (URL_REG.test(id)) {
+        const parsedUrl = new URL(id);
+        const fileName = parsedUrl.pathname.split('/').pop();
+        if (
+          parsedUrl.searchParams.has('min') &&
+          fileName.endsWith('.js') &&
+          !fileName.endsWith('min.js')
+        ) {
+          const minFileName = fileName.replace(/\.js$/, '.min.js');
+          id = path.resolve(id, '..', minFileName);
+        }
         return (await fetch(id)).text();
       }
       return null;
