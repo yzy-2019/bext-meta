@@ -1,4 +1,5 @@
 import { Editor } from './editor';
+import { useMetaPrefix } from '@/contexts/meta-prefix';
 import { useDraft } from '@/contexts/use-draft';
 import { excuteCompile } from '@/util/compile';
 import {
@@ -11,7 +12,7 @@ import {
 } from '@fluentui/react';
 import { useBoolean, useDebounceEffect } from 'ahooks';
 import dayjs from 'dayjs';
-import { FC, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 
 export const BuildPreview: FC = () => {
   const [build, setBuild] = useState<string>();
@@ -20,6 +21,11 @@ export const BuildPreview: FC = () => {
     useBoolean(false);
   const [url, setUrl] = useState('');
   const [debugWindow, setDebugWindow] = useState<Window | null>(null);
+
+  const { prefix } = useMetaPrefix();
+  const debugClientLink = useMemo(() => {
+    return prefix.replace(/meta$/, 'lib/debug-client.user.js');
+  }, [prefix]);
 
   const pushScript = () => {
     debugWindow?.postMessage(
@@ -77,7 +83,7 @@ export const BuildPreview: FC = () => {
       <Modal isOpen={modalVisible} onDismiss={hideModal}>
         <div className="w-[640px]">
           <div className="p-4">
-            请先点击<Link href="/lib/debug-client.user.js">此处</Link>
+            请先点击<Link href={debugClientLink}>此处</Link>
             安装油猴脚本，然后在下方文本框中输入需要调试的链接，点击打开。
             回到开发页面后点击“推送脚本”即可让正在编写的代码在目标窗口中刷新执行。
             若推送之后没有反应，请检查目标页面油猴脚本是否生效，并重新执行打开操作。
