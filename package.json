@@ -15,7 +15,7 @@
     }
   ],
   "scripts": {
-    "start": "cross-env TAILWIND_MODE=watch umi dev",
+    "start": "umi dev",
     "build": "umi build",
     "postbuild": "node scripts/clean-vercel-build.js",
     "analyze": "cross-env ANALYZE=1 yarn build",
@@ -54,7 +54,6 @@
     "workerize": "^0.1.8"
   },
   "devDependencies": {
-    "@tailwindcss/line-clamp": "^0.2.2",
     "@trivago/prettier-plugin-sort-imports": "^3.1.1",
     "@types/dompurify": "^2.3.1",
     "@types/file-saver": "^2.0.4",
@@ -74,9 +73,9 @@
     "raw-loader": "^4.0.2",
     "shelljs": "^0.8.4",
     "simple-git": "^2.47.0",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat",
     "typescript": "^4.1.2",
     "typescript-json-schema": "^0.52.0",
+    "windicss-webpack-plugin": "^1.5.9",
     "yorkie": "^2.0.0"
   },
   "version": "1.0.0"

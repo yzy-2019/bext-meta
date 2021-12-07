@@ -1,4 +1,4 @@
-import { contributors } from '../../package.json';
+import packageJson from '../../package.json';
 import { Title } from '@/components/title';
 import { Preference, usePreference } from '@/contexts/use-preference';
 import { ChoiceGroup, IChoiceGroupOption } from '@fluentui/react';
@@ -29,7 +29,7 @@ const MorePage = () => {
       </div>
       <Title>开发者们</Title>
       <div className="flex flex-wrap">
-        {contributors.map(({ name, url }) => (
+        {packageJson.contributors.map(({ name, url }) => (
           <a href={url} className="underline mr-3" key={name}>
             @{name}
           </a>

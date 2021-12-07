@@ -3,12 +3,12 @@ import dayjs from 'dayjs';
 import path from 'path';
 import shelljs from 'shelljs';
 import { defineConfig } from 'umi';
+import WindiCSSWebpackPlugin from 'windicss-webpack-plugin';
 
 export default defineConfig({
   nodeModulesTransform: {
     type: 'none',
   },
-  extraPostCSSPlugins: [require('tailwindcss')],
   plugins: ['./src/plugins/meta'],
   links: [
     ...font.map((href) => ({
@@ -36,8 +36,10 @@ export default defineConfig({
       .test(/nevermatch/)
       .use('raw')
       .loader('raw-loader');
+    config.plugin('windicss').use(WindiCSSWebpackPlugin);
   },
   alias: {
     '@bext': path.resolve(__dirname, 'src/lib'),
   },
+  mfsu: false,
 });

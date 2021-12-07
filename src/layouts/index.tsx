@@ -4,8 +4,8 @@ import { CommonProvider } from '@/contexts';
 import { initializeIcons } from '@fluentui/react';
 import dayjs from 'dayjs';
 import zhCn from 'dayjs/locale/zh-cn';
-import 'tailwindcss/tailwind.css';
 import { IRouteComponentProps } from 'umi';
+import 'windi.css';
 
 initializeIcons(
   'https://static2.sharepointonline.com/files/fabric/assets/icons/',

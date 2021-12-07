@@ -1,4 +1,4 @@
-import { repository } from '../../package.json';
+import packageJson from '../../package.json';
 import { useDraft } from '@/contexts/use-draft';
 import { useMeta } from '@/contexts/use-meta';
 import { excuteCompile } from '@/util/compile';
@@ -64,10 +64,12 @@ export const ExportDialog: FC = () => {
 
   const onUpload = () => {
     if (metaList.find(({ id }) => id === draft?.id)) {
-      window.open(`${repository.url}/edit/master/meta/${draft?.id}.json`);
+      window.open(
+        `${packageJson.repository.url}/edit/master/meta/${draft?.id}.json`,
+      );
     } else {
       window.open(
-        `${repository.url}/new/master?filename=meta/${draft?.id}.json`,
+        `${packageJson.repository.url}/new/master?filename=meta/${draft?.id}.json`,
       );
     }
   };
