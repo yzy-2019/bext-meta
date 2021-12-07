@@ -1,8 +1,11 @@
-import { usePreference } from './use-preference';
+import { Preference, usePreference } from './use-preference';
 import { DARK_THEME } from '@/constants';
 import { ThemeProvider } from '@fluentui/react';
-import { FC, useEffect, useMemo } from 'react';
+import { FC, createContext, useMemo } from 'react';
 import useMedia from 'use-media';
+
+export const BextThemeContext =
+  createContext<Preference['darkMode']>(undefined);
 
 export const CustomThemeProvider: FC = ({ children }) => {
   const { preference } = usePreference();
@@ -10,9 +13,9 @@ export const CustomThemeProvider: FC = ({ children }) => {
 
   const theme = useMemo(() => {
     if (typeof preference.darkMode === 'undefined') {
-      return systemDarkMode ? DARK_THEME : undefined;
+      return systemDarkMode ? 'dark' : 'light';
     }
-    return preference.darkMode === 'dark' ? DARK_THEME : undefined;
+    return preference.darkMode;
   }, [preference.darkMode, systemDarkMode]);
 
   // useEffect(() => {
@@ -34,7 +37,13 @@ export const CustomThemeProvider: FC = ({ children }) => {
   //   };
   // }, [preference.darkMode]);
 
-  return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
+  return (
+    <ThemeProvider theme={theme === 'dark' ? DARK_THEME : undefined}>
+      <BextThemeContext.Provider value={theme}>
+        {children}
+      </BextThemeContext.Provider>
+    </ThemeProvider>
+  );
 };
 
 // const browserHackSet = new Set([

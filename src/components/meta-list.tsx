@@ -54,7 +54,7 @@ const MetaItem: FC<{ meta: Meta; withPaddingX?: boolean }> = ({
         withPaddingX ? 'px-6' : undefined,
       )}
       style={{
-        borderBottom: `1px solid ${theme.palette.neutralLight}`,
+        borderBottom: `1px solid ${theme.semanticColors.bodyDivider}`,
       }}
       key={meta?.id}
       onClick={onClick}

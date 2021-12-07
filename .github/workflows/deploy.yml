@@ -27,7 +27,7 @@ jobs:
           echo `git rev-parse HEAD` > TRIGGER
           git add .
           git add -f public/meta
-          git commit -m "[Deploy] generate metas"
+          git commit -m "[Deploy] auto generate metas"
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:

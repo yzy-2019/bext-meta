@@ -8,6 +8,7 @@ import {
   Dialog,
   DialogType,
   PrimaryButton,
+  useTheme,
 } from '@fluentui/react';
 import { useBoolean } from 'ahooks';
 import { FC, useEffect } from 'react';
@@ -27,10 +28,16 @@ export const DevHeader: FC = () => {
 
   const [exportVisible, { setTrue: showExport, setFalse: hideExport }] =
     useBoolean(false);
+  const theme = useTheme();
 
   return (
     <>
-      <header className="px-6 flex items-center justify-between h-12 border-b">
+      <header
+        className="px-6 flex items-center justify-between h-12"
+        style={{
+          borderBottom: `1px solid ${theme.semanticColors.bodyDivider}`,
+        }}
+      >
         <CommandBarButton
           text="返回"
           iconProps={{ iconName: 'ChevronLeft' }}
