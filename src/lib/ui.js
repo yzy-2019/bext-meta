@@ -402,9 +402,10 @@ for (i = 0; i <= 15; i++) {
  * }
  */
 export function toast(t,s,c) {
+  let isObj = o => (typeof o =='object' && !(o instanceof Array || o instanceof Function));
   if (typeof t != 'string' || t == '') return 1;
   if (typeof s != 'number' || s < 1) return 2;
-  if (!(c instanceof Object) || !c.text && !c.color && !c.onclick && !c.onclose) return 3;
+  if (!isObj(c) || !c.text && !c.color && !c.onclick && !c.onclose) return 3;
   if (c.text && (typeof c.text != 'string' || c.text=='')) return 4;
   if (c.color && (typeof c.color != 'string' || c.color=='')) return 5;
   if (c.onclick && typeof c.onclick !== 'function') return 6;
