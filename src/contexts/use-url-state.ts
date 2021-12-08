@@ -1,6 +1,6 @@
 // https://github.com/alibaba/hooks/blob/master/packages/use-url-state/src/index.ts
 // 修改而来，消除警告
-import { usePersistFn, useUpdate } from 'ahooks';
+import { useMemoizedFn, useUpdate } from 'ahooks';
 import { parse, stringify } from 'query-string';
 import { useMemo, useRef } from 'react';
 import { useHistory } from 'umi';
@@ -54,5 +54,5 @@ export const useUrlState = <S extends UrlState = UrlState>(
     });
   };
 
-  return [targetQuery, usePersistFn(setState)] as const;
+  return [targetQuery, useMemoizedFn(setState)] as const;
 };

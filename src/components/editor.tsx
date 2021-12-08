@@ -1,7 +1,7 @@
 import { BextThemeContext } from '@/contexts/custom-theme-provider';
 import { classnames } from '@/util/classnames';
 import { Spinner, useTheme } from '@fluentui/react';
-import { useDebounce, usePersistFn } from 'ahooks';
+import { useDebounce, useMemoizedFn } from 'ahooks';
 import { noop } from 'lodash-es';
 import type {
   IDisposable,
@@ -37,10 +37,10 @@ export const Editor: FC<Props> = ({
   const theme = useContext(BextThemeContext);
   const fluentTheme = useTheme();
 
-  const persistOnChange = usePersistFn(onChange);
-  const getLatestValue = usePersistFn(() => value);
-  const getLatestOptions = usePersistFn(() => options);
-  const getLatestTheme = usePersistFn(() => theme);
+  const persistOnChange = useMemoizedFn(onChange);
+  const getLatestValue = useMemoizedFn(() => value);
+  const getLatestOptions = useMemoizedFn(() => options);
+  const getLatestTheme = useMemoizedFn(() => theme);
 
   const [editorState, setEditorState] = useState<EditorState>({
     subscription: null,

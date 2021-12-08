@@ -1,4 +1,4 @@
-import { usePersistFn } from 'ahooks';
+import { useMemoizedFn } from 'ahooks';
 import Quill from 'quill';
 import { FC, useEffect, useRef } from 'react';
 
@@ -8,7 +8,7 @@ export const RichEditor: FC<{
   onChange?: (html: string) => void;
 }> = (props) => {
   const ref = useRef<HTMLDivElement>(null);
-  const getProps = usePersistFn(() => props);
+  const getProps = useMemoizedFn(() => props);
 
   useEffect(() => {
     const { defaultHtml, defaultReadOnly } = getProps();

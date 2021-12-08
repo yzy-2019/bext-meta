@@ -1,6 +1,6 @@
 import { useInDev } from './use-in-dev';
 import { Meta } from '@/types';
-import { useLocalStorageState, usePersistFn, useThrottleEffect } from 'ahooks';
+import { useLocalStorageState, useMemoizedFn, useThrottleEffect } from 'ahooks';
 import constate from 'constate';
 import { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'umi';
@@ -11,7 +11,7 @@ type Draft = Partial<Meta> | null;
 export const [DraftProvider, useDraft] = constate(() => {
   const [cacheDraft, setCacheDraft] = useLocalStorageState<Draft>(
     BEXT_DRAFT_KEY,
-    null,
+    { defaultValue: null },
   );
 
   const [draft, setDraftObject] = useState<Draft>(null);
@@ -22,7 +22,7 @@ export const [DraftProvider, useDraft] = constate(() => {
     [],
   );
 
-  const saveDraft = usePersistFn(() => {
+  const saveDraft = useMemoizedFn(() => {
     setCacheDraft(draft);
   });
 
