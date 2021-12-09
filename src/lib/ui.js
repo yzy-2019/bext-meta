@@ -1,43 +1,82 @@
+/*
+ * 新建 / 获取 bextBar
+ * getBextBar()
+ * >> {
+ *      bar: { Element } ,        // bextBar DOM 元素
+ *      buttons: [ String ] ,     // 包含所有按钮 ID 的数组
+ *      add: ( id 'String', opt { // 添加一个按钮
+ *                                text: 'String',      // 按钮文字
+ *                                textcolor: 'String', // 按钮文字颜色
+ *                                backcolor: 'String', // 按钮背景颜色
+ *                                callback: Function(  // 点击回调
+ *                                            { bextBar },
+ *                                            { Element }, // 按钮 DOM 元素
+ *                                            { Event }    // 点击事件
+ *                                          )
+ *                              } )
+ *            >> 0   // 成功
+ *            >> 1-7 // 参数错误
+ *            >> 10  // 已存在重复 ID
+ *       change: ( id, opt ),       // 修改一个按钮，参数同 add(),
+ *            >> 0   // 成功
+ *            >> 1-6 // 参数错误
+ *       query: ( id ),             // 查询按钮样式
+ *         >> {
+ *              button: { Element }, // 按钮 DOM 元素
+ *              text: 'String',      // 按钮文字
+ *              textcolor: 'String', // 按钮文字颜色
+ *              backcolor: 'String', // 按钮背景颜色
+ *            }
+ *       del: ( id ),               // 删除一个按钮
+ *         >> 0 // 成功
+ *         >> 1 // 不存在指定 id 的按钮
+ *    }
+ */
 export function getBextBar() {
     if (!window.bextBar) {
         let bar = document.querySelector('#bextBar'), sty,
             buttons = [], drag = null, pos = [], downPos = 0,
             first, unlock = () => document.onmousemove = null,
             ghost, ghostbox = document.createElement('div'),
-            isObj = o => (typeof o =='object' && !(o instanceof Array || o instanceof Function));
+            isObj = o => (typeof o =='object' && !(o instanceof Array || o instanceof Function)),
+            optCheck = (opt,strict) => {
+              if (!isObj(opt) || (!opt.backcolor && !opt.textcolor && !opt.text && !opt.callback)) return 2;
+              if ((strict || opt.text) && (typeof opt.text !== 'string' || opt.text == '')) return 3;
+              if ((strict || opt.callback) && typeof opt.callback !== 'function') return 4;
+              if ((strict || opt.backcolor) && (typeof opt.backcolor !== 'string' || opt.backcolor == '')) return 5;
+              if ((strict || opt.textcolor) && (typeof opt.textcolor !== 'string' || opt.textcolor == '')) return 6;
+              return 0;
+            };
 
         bar = document.createElement('div');
         sty = document.createElement('style');
         first = document.createElement('div');
         first.id = 'bextBarExpand';
-        first.onclick = function (e) {
-            if ('ontouchend' in document || Math.abs(downPos - (e.clientX * e.clientY)) <= 25) {
-                bar.classList.toggle('small');
-                first.classList.toggle('close');
-            }
+        first.onclick = function(e) {
+            if ('ontouchend' in document || Math.abs(downPos - (e.clientX * e.clientY)) <= 50) bar.classList.toggle('close');
         }
         if ('ontouchend' in document) {
-            first.addEventListener('touchstart', e => {
-                bextBar.pos = [
+            first.addEventListener('touchstart', function(e) {
+                pos = [
                     (e.touches[0].clientX - bar.offsetLeft),
                     (e.touches[0].clientY - bar.offsetTop)
                 ];
             }, { passive: true });
-            first.addEventListener('touchmove', e => {
-                bar.style.left = (e.touches[0].clientX - bextBar.pos[0]) + 'px';
-                bar.style.top = (e.touches[0].clientY - bextBar.pos[1]) + 'px';
+            first.addEventListener('touchmove', function(e) {
+                bar.style.left = (e.touches[0].clientX - pos[0]) + 'px';
+                bar.style.top = (e.touches[0].clientY - pos[1]) + 'px';
             }, { passive: true });
         } else {
-            first.addEventListener('mousedown', e => {
-                bextBar.pos = [
+            first.addEventListener('mousedown', function(e) {
+                pos = [
                     (e.clientX - bar.offsetLeft),
                     (e.clientY - bar.offsetTop)
                 ];
                 downPos = e.clientX * e.clientY;
-                document.onmousemove = e => {
-                    if (Math.abs(downPos - (e.clientX * e.clientY)) > 25) {
-                        bar.style.left = (e.clientX - bextBar.pos[0]) + 'px';
-                        bar.style.top = (e.clientY - bextBar.pos[1]) + 'px';
+                document.onmousemove = function(e) {
+                    if (Math.abs(downPos - (e.clientX * e.clientY)) > 50) {
+                        bar.style.left = (e.clientX - pos[0]) + 'px';
+                        bar.style.top = (e.clientY - pos[1]) + 'px';
                     }
                 }
                 document.removeEventListener('mouseup', unlock);
@@ -49,36 +88,39 @@ export function getBextBar() {
         #bextBar {
             position: fixed;
             display: block;
-            max-width: 75%;
+            max-width: 80vw;
             height: max-content;
-            bottom: 110px;
+            top: calc(95vh - 110px);
             margin: 5px;
             padding: 2px;
             background: white;
             border-radius: 5px;
             z-index: 1000000;
             box-shadow: 0 2px 5px gray;
+            user-select: none;
         }
-        #bextBar.small {
-            width: 29px;
-            height: 29px;
+        #bextBar.close {
+            width: 23px;
+            height: 33px;
             overflow: clip;
         }
         #bextBarExpand {
             margin: 8px;
-            border-width: 5px 0 0 5px;
+            margin-right: 0;
+            border-width: 4px 0 0 4px;
             border-color: #333 transparent transparent #333;
             border-style: solid none none solid;
-            width: 8px;
-            height: 8px;
+            width: 13px;
+            height: 13px;
             transform: rotate(315deg);
             float: left;
         }
-        #bextBarExpand.close {
+        #bextBar.close #bextBarExpand {
             transform: rotate(135deg);
+            margin-left: 0px;
         }
         .bextButton {
-            margin: 3px .5em;
+            margin: 4px .5em;
             padding: 4px .75em;
             background: whitesmoke;
             border: none;
@@ -105,6 +147,7 @@ export function getBextBar() {
             left: -150%;
             top: -150%;
             background: transparent;
+            z-index: 1000001;
         }
         #bextGhost {
             position: absolute;
@@ -119,7 +162,7 @@ export function getBextBar() {
         document.body.appendChild(ghostbox);
 
         window.bextBar = {
-            bar, pos, buttons,
+            bar, buttons,
             del: function (id) {
                 if (!bextBar.buttons.includes(id)) return 1;
                 let button = this.bar.querySelector(`#bextButton-${id}`);
@@ -127,25 +170,26 @@ export function getBextBar() {
                 bextBar.buttons.splice(bextBar.buttons.indexOf(id), 1);
                 return 0;
             },
+            query: function (id) {
+              if (!bextBar.buttons.includes(id)) return 1;
+              let button = this.bar.querySelector(`#bextButton-${id}`);
+              return {
+                  button: button,
+                  text: button.querySelector('span').innerText,
+                  backcolor: button.style.backgroundColor,
+                  textcolor: button.style.color
+              }
+            },
             change: function (id, opt) {
                 if (!bextBar.buttons.includes(id)) return 1;
-                if (!isObj(opt) || (!opt.backcolor && !opt.textcolor && !opt.text && !opt.callback)) return 2;
-                if (opt.text && (typeof opt.text !== 'string' || opt.text == '')) return 3;
-                if (opt.callback && typeof opt.callback !== 'function') return 4;
-                if (opt.backcolor && (typeof opt.backcolor !== 'string' || opt.backcolor == '')) return 5;
-                if (opt.textcolor && (typeof opt.textcolor !== 'string' || opt.textcolor == '')) return 6;
+                let optret = optCheck(opt,false);
+                if (optret!==0) return optret;
                 let button = this.bar.querySelector(`#bextButton-${id}`);
                 if (button) {
                     if (opt.textcolor) button.style.color = opt.textcolor;
                     if (opt.backcolor) button.style.backgroundColor = opt.backcolor;
                     if (opt.text) button.querySelector('span').innerText = opt.text;
-                    button.onclick = function (e) {
-                        if (e.target.classList.contains('delButton')) {
-                            bextBar.del(id);
-                        } else {
-                            if (opt.callback) opt.callback.call();
-                        }
-                    }
+                    if (opt.callback) button.onclick = opt.callback.bind(window,this,button);
                     return 0;
                 }
             },
@@ -156,11 +200,9 @@ export function getBextBar() {
                     backcolor: 'whitesmoke',
                     textcolor: '#333'
                 }, opt);
-                if (typeof id !== 'string') return 2;
-                if (typeof opt.text !== 'string' || opt.text == '') return 3;
-                if (typeof opt.callback !== 'function') return 4;
-                if (typeof opt.backcolor !== 'string' || opt.backcolor == '') return 5;
-                if (typeof opt.textcolor !== 'string' || opt.textcolor == '') return 6;
+                if (typeof id !== 'string') return 7;
+                let optret = optCheck(opt,true);
+                if (optret!==0) return optret;
                 if (!this.bar.querySelector(`#bextButton-${id}`)) {
                     let button = document.createElement('button'),
                         btext = document.createElement('span'),
@@ -205,7 +247,6 @@ export function getBextBar() {
                     bextBar.buttons.push(id);
                     if ('ontouchend' in document) {
                         button.addEventListener('touchstart', e => {
-                            e.currentTarget.classList.add('ghost');
                             ghostbox.innerHTML = '';
                             ghost = document.importNode(e.currentTarget, true);
                             ghost.id = 'bextGhost';
@@ -214,6 +255,7 @@ export function getBextBar() {
                         button.addEventListener('touchmove', e => {
                             let ghostWidth = parseInt(getComputedStyle(e.currentTarget).width),
                                 ghostHeight = parseInt(getComputedStyle(e.currentTarget).height);
+                            e.currentTarget.classList.add('ghost');
                             ghost.style.opacity = 0.5;
                             ghostbox.style.left = (e.touches[0].clientX - ghostWidth / 2) + 'px';
                             ghostbox.style.top = (e.touches[0].clientY - ghostHeight - 10) + 'px';
@@ -221,14 +263,14 @@ export function getBextBar() {
                         });
                         button.addEventListener('touchend', e => {
                             let target = document.elementFromPoint(
-                                e.touches[0].clientX,
-                                e.touches[0].clientY
+                                e.changedTouches[0].clientX,
+                                e.changedTouches[0].clientY
                             );
                             if (target.tagName=='SPAN') target = target.parentNode;
                             if (drag && target.className.includes('bextButton') && drag != target) {
                                 shuffleBtn(drag, target);
                             }
-                            drag.classList.remove('ghost');
+                            bextBar.bar.querySelectorAll('.bextButton').forEach( btn => btn.classList.remove('ghost'));
                             ghostbox.style.top = ghostbox.style.bottom = '-150%';
                             drag = null;
                         });
@@ -265,131 +307,21 @@ export function getBextBar() {
                     //  但下次脚本运行时还会加 ...
                     let close = document.createElement('span');
                     close.innerText = '✖'; close.className = 'delButton';
+                    close.onclick = e => {
+                        e.stopPropagation();
+                        bextBar.del(id);
+                    }
                     button.appendChild(close);
                     this.bar.appendChild(button);
                     let change = this.change(id, opt);
-                    if (change!=0) {
-                        console.log(`${id} change return: ${change}`);
-                        this.del(id);
-                    }
+                    if (change!=0) this.del(id);
                     return change;
-                } // else { console.log('按钮已经存在')}
+                } else return 10;
             }
         }
     }
     return window.bextBar;
 }
-/*
-getBextBar();
-
-var va = [
-    [1,2,3],
-    NaN,
-    () => alert(bextBar.buttons.length),
-    undefined,
-    null,
-    'ok',
-    'white',
-    {},
-    {ok:'ok'},
-    /^.*$/g,
-    new ArrayBuffer([])
-];
-
-va.forEach( ta => {
-    if(bextBar.add(ta)==undefined) {
-        console.log(ta);
-    };
-})
-
-va.forEach( ta => {
-    va.forEach( tb => {
-        if(bextBar.add(ta,tb)==undefined) {
-            console.log([
-                typeof tb,
-                tb instanceof Object,
-                tb instanceof Array,
-                tb instanceof Function,
-                {id:ta,opt:tb}
-            ]);
-        };
-    })
-})
-
-for (i = 0; i <= 9999; i++) {
-    let a = parseInt(i % 10),
-    b = parseInt(i / 10 % 10),
-    c = parseInt(i / 100 % 10),
-    d = parseInt(i / 1000 % 10);
-    ta = `test-${i}`;
-    tb = {
-        text: va[a],
-        callback: va[b],
-        textcolor: va[c],
-        backcolor: va[d]
-    }
-    if(bextBar.add(ta,tb)==undefined) {
-        console.log({id:ta,opt:tb});
-    };
-}
-
-va.forEach( ta => {
-    if(bextBar.del(ta)==undefined) {
-        console.log(ta);
-    };
-})
-
-let db = bextBar.buttons.sort(function() {
-    return (0.5-Math.random());
-});
-console.log(db);
-db.forEach( (a,i) => {
-    setTimeout( function() {
-        console.log('del: '+a)
-        bextBar.del(a);
-        console.log(bextBar.buttons);
-    },i*10);
-})
-*/
-
-// db.forEach( a => {
-//     console.log('del: '+a)
-//     bextBar.del(a); // 只删了一半
-//     console.log(bextBar.buttons);
-// })
-/*
-bextBar.add('test0',{
-    callback: (a,b,c) => {
-        console.log(a,b,c);
-    }
-})
-bextBar.add('test1',{callback:va[2],backcolor:'red',textcolor:'white'});
-bextBar.add('test2',{callback:va[2],backcolor:'orange'});
-bextBar.add('test3',{callback:va[2],backcolor:'gold'});
-bextBar.add('test4',{callback:va[2],backcolor:'green',textcolor:'white'});
-bextBar.add('test5',{callback:va[2],backcolor:'cyan'});
-bextBar.add('test6',{callback:va[2],backcolor:'deepskyblue',textcolor:'white'});
-bextBar.add('test7',{callback:va[2],backcolor:'purple',textcolor:'white'});
-
-for (i = 0; i <= 15; i++) {
-    bin = parseInt(i.toString(2));
-    opt = [
-        parseInt(bin % 10),
-        parseInt(bin / 10 % 10),
-        parseInt(bin / 100 % 10),
-        parseInt(bin / 1000 % 10)
-    ];
-    for (k = 0; k <= 7; k++) {
-        copt = {};
-        if (opt[0]==1) copt.text = va[k+3];
-        if (opt[1]==1) copt.callback = va[k];
-        if (opt[2]==1) copt.textcolor = va[k+2];
-        if (opt[3]==1) copt.backcolor = va[k+1];
-        ret = bextBar.change(`test${k}`,copt);
-        if (ret==0) console.log(k,': ',copt)
-    }
-}
-*/
 
 /*
  * t: 文字
