@@ -6,8 +6,8 @@ const DevPage = () => {
   const history = useHistory();
   const { cacheDraft, setDraftObject } = useDraft();
   return (
-    <div className="h-full flex flex-col items-center justify-center">
-      <div className="w-72">
+    <div className="flex flex-col items-center justify-center">
+      <div className="max-w-[300px] pt-4">
         !!! 在开始开发之前，请点击下方“修改现有脚本”，选择 “示例脚本#example”
         查看内置能力。开发页面仅为桌面端、Chromium
         内核浏览器设计，移动端无法预览脚本。

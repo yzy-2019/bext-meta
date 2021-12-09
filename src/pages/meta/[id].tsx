@@ -27,7 +27,7 @@ const ExtDetailPage: FC = () => {
       const metaIndex: MetaIndex = await response.json();
 
       setVersions(metaIndex.versions);
-      setCurrentMeta(metaIndex.meta);
+      setCurrentMeta(Object.assign({}, metaIndex.meta, { id: params.id }));
       setCurrentVersion(metaIndex.versions[0].hash);
     },
     {
@@ -43,7 +43,7 @@ const ExtDetailPage: FC = () => {
     async (hash: string) => {
       setCurrentVersion(hash);
       const response = await fetch(`${prefix}/${params.id}/${hash}.json`);
-      setCurrentMeta(await response.json());
+      setCurrentMeta({ ...(await response.json()), id: params.id });
     },
     { manual: true, refreshDeps: [prefix, params.id] },
   );
@@ -71,9 +71,6 @@ const ExtDetailPage: FC = () => {
         currentMeta,
         allLoading,
         metaLoading,
-        review,
-        setReview,
-        id: params.id,
       }}
     >
       <div className="px-6 pt-4">
@@ -86,7 +83,7 @@ const ExtDetailPage: FC = () => {
           </div>
         )}
         {currentMeta ? (
-          <MetaContent meta={currentMeta} review={review} />
+          <MetaContent meta={currentMeta} />
         ) : (
           <Spinner size={SpinnerSize.large} className="pt-20 w-full" />
         )}

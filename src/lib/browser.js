@@ -24,7 +24,7 @@ export const via_install = errorCatch((meta) =>
   window.via.addon(
     base64(
       JSON.stringify({
-        id: meta.id,
+        id: +meta.id,
         name: meta.name,
         author: meta.author,
         url: buildMatch(meta.match, ',', '*'),
@@ -35,15 +35,17 @@ export const via_install = errorCatch((meta) =>
 );
 
 export const via_installed = errorCatch((meta) =>
-  JSON.parse(window.via.getInstalledAddonID()).includes(meta.id),
+  JSON.parse(window.via.getInstalledAddonID()).includes(+meta.id),
 );
+
+export const via_uninstall = via_install;
 
 export const alook_install = errorCatch((meta) =>
   window.alook.addon(
     base64(
       encodeURIComponent(
         JSON.stringify({
-          id: meta.id,
+          id: +meta.id,
           name: meta.name,
           author: meta.author,
           url: buildMatch(meta.match, '@@', '*'),
@@ -99,7 +101,7 @@ export const shark_install = errorCatch((meta) =>
   window.sharkbrowser.installAddon(
     base64(
       JSON.stringify({
-        id: meta.id,
+        id: +meta.id,
         name: meta.name,
         author: meta.author,
         code: base64(meta.build),
@@ -116,7 +118,7 @@ export const lit_install = errorCatch((meta) =>
   window.lit.addon(
     base64(
       JSON.stringify({
-        id: meta.id,
+        id: +meta.id,
         name: meta.name,
         author: meta.author,
         url: meta.match.join(','),
@@ -132,8 +134,14 @@ export const lit_installed = errorCatch((meta) =>
 
 export const buildMethods = (impls) => {
   const browser = detectBrowser();
-  return (method, ...args) => {
-    const fn = impls[`${browser}_${method}`];
-    return fn ? fn(...args) : { code: -1 };
+
+  return {
+    call: (method, ...args) => {
+      const fn = impls[`${browser}_${method}`];
+      return fn ? fn(...args) : { code: -1 };
+    },
+    support: (method) => {
+      return !!impls[`${browser}_${method}`];
+    },
   };
 };
