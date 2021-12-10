@@ -20,7 +20,7 @@ const metas = fs.readdirSync('./meta').map((fileName) => ({
 describe('Meta 格式校验', () => {
   metas.forEach((meta) => {
     test(meta.id, () => {
-      expect(ID_RULE.test(meta.id)).toBeTruthy();
+      expect(ID_RULE.test(meta.id) || meta.id === 'example').toBeTruthy();
 
       expect(() => {
         const result = validate(meta);

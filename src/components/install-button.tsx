@@ -11,7 +11,6 @@ export const InstallButton: FC = () => {
 
   const installedChecker = useMemoizedFn((): InstallStatus => {
     const box = browser.call('installed', currentMeta);
-    console.log(box);
     if (box.code === 0) {
       return box.result ? 'installed' : 'notinstalled';
     }
@@ -29,7 +28,12 @@ export const InstallButton: FC = () => {
 
   const onClick = () => {
     if (showUninstall) {
-      console.log(browser.call('uninstall', currentMeta));
+      console.log(
+        browser.call('uninstall', {
+          ...currentMeta,
+          author: `bext/${currentMeta?.id}`,
+        }),
+      );
     } else if (browser.support('install')) {
       console.log(
         browser.call('install', {

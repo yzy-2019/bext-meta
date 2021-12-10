@@ -6,6 +6,7 @@ import { defineConfig } from 'umi';
 import WindiCSSWebpackPlugin from 'windicss-webpack-plugin';
 
 export default defineConfig({
+  title: 'Bext',
   nodeModulesTransform: {
     type: 'none',
   },

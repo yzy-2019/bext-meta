@@ -1,9 +1,7 @@
 import { id, version } from '@bext/context';
 
 export function detectBrowser() {
-  return window.via && (window.via.cmd || window.via.openSettings)
-    ? 'via'
-    : window.alook && window.alook.addon
+  return window.alook && window.alook.addon
     ? 'alook'
     : window.mbrowser && window.mbrowser.getBrowsreInfo
     ? 'x'
@@ -13,6 +11,8 @@ export function detectBrowser() {
     ? 'shark'
     : window.lit && window.lit.addon
     ? 'lit'
+    : window.via
+    ? 'via'
     : undefined;
 }
 

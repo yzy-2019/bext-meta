@@ -39,9 +39,7 @@ const Content: FC = () => {
           value={draft?.id || ''}
           onChange={(_, id = '') => setDraft({ id })}
           errorMessage={
-            ID_RULE.test(draft?.id || '')
-              ? undefined
-              : '字母、数字、中/下划线组合'
+            ID_RULE.test(draft?.id || '') ? undefined : '只允许数字 ID'
           }
         />
         <TextField

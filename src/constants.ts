@@ -1,6 +1,6 @@
 import { createTheme } from '@fluentui/react';
 
-export const ID_RULE = /^[\w-]+$/;
+export const ID_RULE = /^[0-9]+$/;
 
 export const DARK_THEME = createTheme({
   palette: {

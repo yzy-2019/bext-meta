@@ -111,7 +111,9 @@ export const shark_install = errorCatch((meta) =>
 );
 
 export const shark_installed = errorCatch((meta) =>
-  JSON.parse(window.sharkbrowser.getInstalledAddonID()).includes(meta.id),
+  JSON.parse(window.sharkbrowser.getInstalledAddonID()).includes(
+    String(meta.id),
+  ),
 );
 
 export const lit_install = errorCatch((meta) =>
@@ -121,7 +123,7 @@ export const lit_install = errorCatch((meta) =>
         id: +meta.id,
         name: meta.name,
         author: meta.author,
-        url: meta.match.join(','),
+        url: buildMatch(meta.match, ',', '*'),
         code: base64(meta.build),
       }),
     ),
@@ -129,7 +131,7 @@ export const lit_install = errorCatch((meta) =>
 );
 
 export const lit_installed = errorCatch((meta) =>
-  JSON.parse(window.lit.getInstalledAddonID()).includes(meta.id),
+  JSON.parse(window.lit.getInstalledAddonID()).includes(+meta.id),
 );
 
 export const buildMethods = (impls) => {
