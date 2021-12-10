@@ -96,6 +96,7 @@ export const BuildPreview: FC = () => {
             />
             <PrimaryButton
               onClick={() => {
+                hideModal();
                 setDebugWindow(window.open(url));
               }}
             >

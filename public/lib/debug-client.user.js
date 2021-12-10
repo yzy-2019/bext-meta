@@ -30,8 +30,8 @@
     });
     const script = localStorage.getItem(key);
     if (script) {
-      eval(script);
       localStorage.removeItem(key);
+      eval(script);
     }
   });
 })();
