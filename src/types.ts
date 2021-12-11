@@ -13,6 +13,9 @@ export interface Meta {
   build: string; // 产物
   // 编译选项
   options?: {};
+  extra?: {
+    xMetaComment?: string; // x 浏览器元信息注释，https://www.xbext.com/docs/tutorials/write-user-script-for-xbrowser-part2/
+  };
 }
 
 export interface MetaVersion {

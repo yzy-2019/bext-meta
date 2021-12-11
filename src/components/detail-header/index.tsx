@@ -17,7 +17,7 @@ import {
   ResponsiveMode,
   useTheme,
 } from '@fluentui/react';
-import { useBoolean } from 'ahooks';
+import { useBoolean, useLocalStorageState } from 'ahooks';
 import dayjs from 'dayjs';
 import { FC, useContext, useMemo, useState } from 'react';
 
@@ -31,7 +31,9 @@ export const DetailHeader: FC = () => {
   const [reviewVisible, { setFalse: hideReview, setTrue: showReview }] =
     useBoolean(false);
   const [reviewKey, setReviewKey] = useState('source');
-  const [monaco, setMonaco] = useState(false);
+  const [monaco, setMonaco] = useLocalStorageState('BEXT.DETAIL_MONACO', {
+    defaultValue: false,
+  });
 
   const onMenuClick = (item?: IContextualMenuItem) => {
     switch (item?.key) {

@@ -71,7 +71,7 @@ export const x_install = errorCatch((meta) =>
 // @description  ${meta.synopsis}
 // @author       ${meta.author}${
         meta.match?.map((match) => '\n// @match ' + match).join('') || ''
-      }
+      }${meta.extra?.xMetaComment ? `\n${meta.extra?.xMetaComment}` : ''}
 // ==/UserScript==
 ${meta.build}
 `,

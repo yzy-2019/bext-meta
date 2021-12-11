@@ -3,7 +3,7 @@ import { ID_RULE } from '@/constants';
 import { useDraft } from '@/contexts/use-draft';
 import { useMeta } from '@/contexts/use-meta';
 import { Dropdown, Label, Panel, PanelType, TextField } from '@fluentui/react';
-import { uniq } from 'lodash-es';
+import { cloneDeep, set, uniq } from 'lodash-es';
 import { FC, useEffect, useMemo, useState } from 'react';
 
 const Content: FC = () => {
@@ -80,17 +80,28 @@ const Content: FC = () => {
         label="匹配规则（使用 @@ 分隔，匹配所有请留空）"
         value={matchInput}
         onChange={(_, text) => setMatchInput(text || '')}
+        description={`当前将会匹配
+        ${
+          typeof draft?.match === 'undefined'
+            ? '所有网站'
+            : `以下网站：${draft.match.join(', ')}`
+        }`}
       />
-      <div>
-        当前将会匹配
-        {typeof draft?.match === 'undefined'
-          ? '所有网站'
-          : `以下网站：${draft.match.join(', ')}`}
-      </div>
       <Label>详情（支持内联图片，请直接粘贴）</Label>
       <RichEditor
         defaultHtml={draft?.detail}
         onChange={(html) => setDraft({ detail: html })}
+      />
+      <TextField
+        label="X 浏览器元信息"
+        multiline
+        value={draft?.extra?.xMetaComment || ''}
+        onChange={(_, text) => {
+          setDraft({
+            extra: set(cloneDeep(draft?.extra ?? {}), 'xMetaComment', text),
+          });
+        }}
+        description="专用于 X 浏览器的元信息，填写示例：'// @run-at document-start'（需要注释符号），已自动生成无需在这里填写的：name、namespace、version、description、author、match"
       />
     </>
   );
