@@ -59,7 +59,7 @@ export const alook_install = errorCatch((meta) =>
 export const x_install = errorCatch((meta) =>
   window.mbrowser.addNewScript(
     JSON.stringify({
-      resource_id: meta.id, // TODO 格式不一样
+      resource_id: meta.id,
       title: meta.name,
       description: meta.synopsis,
       nick_name: meta.author,
@@ -111,10 +111,10 @@ export const shark_install = errorCatch((meta) =>
 );
 
 export const shark_installed = errorCatch((meta) =>
-  JSON.parse(window.sharkbrowser.getInstalledAddonID()).includes(
-    String(meta.id),
-  ),
+  JSON.parse(window.sharkbrowser.getInstalledAddonID()).includes(meta.id),
 );
+
+export const shark_uninstall = shark_install;
 
 export const lit_install = errorCatch((meta) =>
   window.lit.addon(
@@ -133,6 +133,8 @@ export const lit_install = errorCatch((meta) =>
 export const lit_installed = errorCatch((meta) =>
   JSON.parse(window.lit.getInstalledAddonID()).includes(+meta.id),
 );
+
+export const lit_uninstall = lit_install;
 
 export const buildMethods = (impls) => {
   const browser = detectBrowser();
