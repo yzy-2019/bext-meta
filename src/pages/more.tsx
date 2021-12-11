@@ -35,6 +35,17 @@ const MorePage = () => {
           </a>
         ))}
       </div>
+      <Title>联系我们</Title>
+      <a href="https://github.com/ikkz/bext/issues" className="underline">
+        Github issue
+      </a>
+      <a
+        href="https://jq.qq.com/?_wv=1027&k=cD7xSpnh"
+        className="underline ml-3"
+      >
+        交流群
+      </a>
+
       <div className="text-center font-extralight mt-6">
         Build @{dayjs.unix(BUILD_TIMESTAMP).format('YY/MM/DD HH:mm')} #
         {BUILD_HASH.slice(0, 8)}
