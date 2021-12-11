@@ -86,7 +86,8 @@ export const ExportDialog: FC = () => {
       </div>
       <Label>第二步</Label>
       点击下方按钮跳转至 Github ，清除已有内容，粘贴上面
-      Json文件的内容并提交，请勿修改生成的文件名
+      Json文件的内容并提交，请勿修改生成的文件名，另外请覆盖填写提交按钮上方默认的“Create
+      xxx.json”输入框，这里的内容将会成为脚本的更新信息
       <div className="text-right mt-2">
         <PrimaryButton onClick={onUpload}>上传</PrimaryButton>
       </div>

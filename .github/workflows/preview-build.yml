@@ -18,6 +18,7 @@ jobs:
         run: |
           yarn
           NODE_OPTIONS='--max-old-space-size=4096' yarn run build
+          cp dist/index.html dist/200.html
       - name: upload dist artifact
         uses: actions/upload-artifact@v2
         with:

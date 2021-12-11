@@ -70,7 +70,7 @@ export const x_install = errorCatch((meta) =>
 // @version      ${meta.version}
 // @description  ${meta.synopsis}
 // @author       ${meta.author}${
-        meta.match?.map((match) => '\n@match ' + match).join('') || ''
+        meta.match?.map((match) => '\n// @match ' + match).join('') || ''
       }
 // ==/UserScript==
 ${meta.build}
