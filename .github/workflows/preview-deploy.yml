@@ -2,7 +2,7 @@ name: Preview Deploy
 
 on:
   workflow_run:
-    workflows: ["Preview Build"]
+    workflows: ['Preview Build']
     types:
       - completed
 
@@ -39,7 +39,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           body: |
             🎊 PR Preview has been successfully built and deployed to https://ikkz-bext-preview-pr-${{ steps.pr.outputs.id }}.surge.sh
-            请访问此链接预览效果，没有问题在下方回复确认。（注意：本站不对脚本内容、版权进行审核）
+            请访问此链接预览效果，没有问题在下方回复确认。（回复确认即表示您已了解并同意：本站不对该内容及版权进行审核，该脚本造成的一切后果均与本站无关）
 
             <img width="300" src="https://user-images.githubusercontent.com/507615/90250366-88233900-de6e-11ea-95a5-84f0762ffd39.png">
             <!-- Sticky Pull Request Comment -->
