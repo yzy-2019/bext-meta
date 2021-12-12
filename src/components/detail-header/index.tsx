@@ -104,6 +104,7 @@ export const DetailHeader: FC = () => {
       <Panel
         isOpen={reviewVisible}
         onDismiss={hideReview}
+        isLightDismiss
         onRenderNavigationContent={(props, render) => (
           <div
             className="flex w-full pl-6 items-center"
