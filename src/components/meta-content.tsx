@@ -24,7 +24,7 @@ export const MetaContent: FC<{ meta: Meta }> = ({ meta }) => {
       <div className="mt-2">{meta.synopsis}</div>
       <div className="text-base font-semibold mt-4">详情</div>
       <div className="mt-2">
-        <RichEditor defaultHtml={cleanHtml} defaultReadOnly />
+        <RichEditor key={cleanHtml} defaultHtml={cleanHtml} defaultReadOnly />
       </div>
     </>
   );
