@@ -63,8 +63,7 @@ export const x_install = errorCatch((meta) =>
       title: meta.name,
       description: meta.synopsis,
       nick_name: meta.author,
-      content: `
-// ==UserScript==
+      content: `// ==UserScript==
 // @name         ${meta.name}
 // @namespace    ${meta.id}
 // @version      ${meta.version}
