@@ -77,9 +77,13 @@ async function generatePublicMeta() {
           date: dayjs(rest.date).unix(),
         }));
       for (const version of versions) {
-        const content = await gitInstance.show(`${version.hash}:${filePath}`);
-        version.version = JSON.parse(content).version;
-        fileMap.set(`${version.hash}.json`, content);
+        try {
+          const content = await gitInstance.show(`${version.hash}:${filePath}`);
+          version.version = JSON.parse(content).version;
+          fileMap.set(`${version.hash}.json`, content);
+        } catch (error) {
+          version.version = '删除记录';
+        }
       }
 
       const currentContent = fs.readFileSync(filePath, { encoding: 'utf-8' });
