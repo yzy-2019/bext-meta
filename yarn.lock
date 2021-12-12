@@ -1491,6 +1491,11 @@
     jest-worker "24.9.0"
     prettier "2.2.1"
 
+"@umijs/plugin-analytics@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.nlark.com/@umijs/plugin-analytics/download/@umijs/plugin-analytics-0.2.2.tgz#575fd231d4327ea13413217aa1b5fc6bdd89465e"
+  integrity sha1-V1/SMdQyfqE0EyF6obX8a92JRl4=
+
 "@umijs/preset-built-in@3.5.20":
   version "3.5.20"
   resolved "https://registry.npmmirror.com/@umijs/preset-built-in/download/@umijs/preset-built-in-3.5.20.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40umijs%2Fpreset-built-in%2Fdownload%2F%40umijs%2Fpreset-built-in-3.5.20.tgz#e1f2eeb50152e14a48b317e7fd5e5915d5c65d4c"

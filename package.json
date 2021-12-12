@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "@fluentui/react": "^8.42.0",
+    "@umijs/plugin-analytics": "^0.2.2",
     "ahooks": "^3.0.0",
     "constate": "^3.3.0",
     "copy-to-clipboard": "^3.3.1",

@@ -43,4 +43,7 @@ export default defineConfig({
     '@bext': path.resolve(__dirname, 'src/lib'),
   },
   mfsu: false,
+  analytics: {
+    baidu: process.env.BAIDU_TOKEN || false,
+  },
 });
