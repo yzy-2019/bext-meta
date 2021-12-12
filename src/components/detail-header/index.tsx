@@ -122,6 +122,7 @@ export const DetailHeader: FC = () => {
               <PivotItem headerText="Detail" itemKey="detail" />
             </Pivot>
             <Checkbox
+              key={String(monaco)}
               label="Monaco"
               checked={monaco}
               onChange={() => setMonaco(!monaco)}
