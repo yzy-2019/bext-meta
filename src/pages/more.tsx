@@ -22,7 +22,7 @@ const MorePage = () => {
         options={themeOptions}
       />
       <Title>声明</Title>
-      使用本站提供的任何功能，即表示我已了解并同意：本站仅作为脚本的托管站点，不对第三方发布的脚本内容进行审核，并且使用脚本后造成的任何情况均与本站无关。
+      使用本站提供的任何功能，即表示我已了解并同意：本站仅作为脚本的托管站点，不对第三方用户发布的脚本内容、版权进行审核，并且使用脚本后造成的任何情况均与本站无关。
       <Title>开放源代码</Title>
       <div>
         <a href="https://github.com/ikkz/bext" className="underline">

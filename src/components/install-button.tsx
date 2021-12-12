@@ -66,7 +66,7 @@ export const InstallButton: FC = () => {
         dialogContentProps={{
           title: '确认安装',
           subText:
-            '本站仅作为脚本的托管站点，不对脚本的内容进行审核，并且在安装后出现的任何情况均与本站无关',
+            '本站仅作为脚本的托管站点，不对脚本的内容、版权进行审核，并且在安装后出现的任何情况均与本站无关',
         }}
       >
         <DialogFooter>
