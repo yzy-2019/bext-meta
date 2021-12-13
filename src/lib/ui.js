@@ -47,8 +47,8 @@ export function getBextBar() {
                 if (!isObj(opt) || (!opt.backcolor && !opt.textcolor && !opt.text && !opt.callback)) return 2;
                 if ((strict || opt.text) && (typeof opt.text !== 'string' || opt.text == '')) return 3;
                 if ((strict || opt.callback) && typeof opt.callback !== 'function') return 4;
-                if ((strict || opt.backcolor) && (typeof opt.backcolor !== 'string' || opt.backcolor == '')) return 5;
-                if ((strict || opt.textcolor) && (typeof opt.textcolor !== 'string' || opt.textcolor == '')) return 6;
+                if (opt.backcolor && (typeof opt.backcolor !== 'string' || opt.backcolor == '')) return 5;
+                if (opt.textcolor && (typeof opt.textcolor !== 'string' || opt.textcolor == '')) return 6;
                 return 0;
             };
 
@@ -132,6 +132,7 @@ export function getBextBar() {
             margin: 5px .5em;
             padding: 4px .75em;
             background: whitesmoke;
+            color: #333;
             border: none;
             outline: none;
             border-radius: 1em;
@@ -164,7 +165,22 @@ export function getBextBar() {
             left: 0;
             width: max-content;
             opacity: 2;
-        }`;
+        }
+        @media (prefers-color-scheme: dark) {
+            #bextBar {
+                background: #283344;
+                box-shadow: 0 0 2px #3b81ff;
+            }
+            #bextBarExpand {
+                border-color: #3b81ff transparent transparent #3b81ff;
+            }
+            .bextButton {
+                background: #4c5161;
+                color: #ddf;
+                box-shadow: 0 0 5px #3b81ff;
+            }
+        }
+        `;
         document.head.appendChild(sty); bar.id = 'bextBar';
         document.body.appendChild(bar);
         if (enableFreeFeature) {
@@ -207,9 +223,7 @@ export function getBextBar() {
             add: function (id, opt) {
                 if (!id || !isObj(opt)) return 1;
                 opt = Object.assign({
-                    text: '按钮',
-                    backcolor: 'whitesmoke',
-                    textcolor: '#333'
+                    text: '按钮'
                 }, opt);
                 if (typeof id !== 'string') return 7;
                 let optret = optCheck(opt, true);
