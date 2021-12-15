@@ -1,8 +1,9 @@
-import { useMetaPrefix } from '@/contexts/meta-prefix';
 import { useDraft } from '@/contexts/use-draft';
 import { useUrlState } from '@/contexts/use-url-state';
 import { Meta, MetaIndex } from '@/types';
 import { classnames } from '@/util/classnames';
+import { config } from '@/util/config';
+import { Events, trackEvent } from '@/util/tracker';
 import { List, useTheme } from '@fluentui/react';
 import { FC, useCallback } from 'react';
 import { useHistory } from 'umi';
@@ -30,22 +31,26 @@ const MetaItem: FC<{ meta: Meta; withPaddingX?: boolean }> = ({
   const [query] = useUrlState({ from: undefined });
   const { setDraftObject } = useDraft();
   const history = useHistory();
-  const { prefix } = useMetaPrefix();
 
   const onClick = useCallback(() => {
     if (query.from === 'dev') {
-      fetch(`${prefix}/${meta.id}/_index.json`)
+      trackEvent(Events.devModify, meta.id);
+      fetch(`${config.metaPrefix}/${meta.id}/_index.json`)
         .then((response) => response.json())
-        .then((metaIndex: MetaIndex) =>
+        .then((metaIndex: MetaIndex) => {
           setDraftObject(
-            metaIndex.meta ? { ...metaIndex.meta, id: meta.id } : null,
-          ),
-        )
+            metaIndex.meta
+              ? { ...metaIndex.meta, id: meta.id }
+              : { type: 'javascript' },
+          );
+          history.push('/dev/script');
+        })
         .catch(console.error);
     } else {
+      trackEvent(Events.metaClick, meta.id);
       history.push(`/meta/${meta?.id ?? ''}`);
     }
-  }, [history, query.from, setDraftObject, meta, prefix]);
+  }, [history, query.from, setDraftObject, meta]);
 
   return (
     <div

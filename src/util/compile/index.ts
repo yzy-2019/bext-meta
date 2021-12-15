@@ -9,22 +9,18 @@ import workerize from 'workerize';
 const compileWorker = workerize(COMPILE_WORKER);
 
 export function excuteCompile(context: {
-  meta: Required<Pick<Meta, 'id' | 'name' | 'source' | 'version'>> &
-    Pick<Meta, 'options'>;
+  meta: Required<Pick<Meta, 'id' | 'name' | 'source' | 'version'>>;
 }): Promise<string> {
-  if (context.meta?.options) {
-    return compileWorker.compile({
-      ...context,
-      env: {
-        // bextHome: BEXT_HOME,
-      },
-      builtins: {
-        browser: LIB_BROWSER,
-        util: LIB_UTIL,
-        ui: LIB_UI,
-        preact: LIB_PREACT,
-      },
-    });
-  }
-  return Promise.resolve(context.meta.source);
+  return compileWorker.compile({
+    ...context,
+    env: {
+      // bextHome: BEXT_HOME,
+    },
+    builtins: {
+      browser: LIB_BROWSER,
+      util: LIB_UTIL,
+      ui: LIB_UI,
+      preact: LIB_PREACT,
+    },
+  });
 }

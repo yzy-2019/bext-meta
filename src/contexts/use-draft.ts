@@ -1,9 +1,8 @@
-import { useInDev } from './use-in-dev';
 import { Meta } from '@/types';
 import { useLocalStorageState, useMemoizedFn, useThrottleEffect } from 'ahooks';
+import { useGetState } from 'ahooks';
 import constate from 'constate';
-import { useCallback, useEffect, useState } from 'react';
-import { useHistory } from 'umi';
+import { useCallback } from 'react';
 
 const BEXT_DRAFT_KEY = 'BEXT.DRAFT';
 type Draft = Partial<Meta> | null;
@@ -14,7 +13,8 @@ export const [DraftProvider, useDraft] = constate(() => {
     { defaultValue: null },
   );
 
-  const [draft, setDraftObject] = useState<Draft>(null);
+  const [draft, setDraftObject, getDraftObject] =
+    useGetState<Draft>(cacheDraft);
 
   const setDraft = useCallback(
     (state: Draft) =>
@@ -40,28 +40,8 @@ export const [DraftProvider, useDraft] = constate(() => {
     draft,
     setDraft,
     setDraftObject,
+    getDraftObject,
     saveDraft,
     cacheDraft,
   };
 });
-
-export const useDraftNavigate = () => {
-  const { draft } = useDraft();
-  const history = useHistory();
-  const inDev = useInDev();
-
-  useEffect(() => {
-    if (draft && !inDev) {
-      switch (draft.type) {
-        case 'javascript':
-          history.replace('/dev/script');
-          break;
-        default:
-          break;
-      }
-    }
-    if (!draft && inDev) {
-      history.replace('/dev');
-    }
-  }, [draft, inDev, history]);
-};

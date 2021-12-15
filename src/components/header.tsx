@@ -1,5 +1,4 @@
 import { DevHeader } from './dev-header';
-import { useDraftNavigate } from '@/contexts/use-draft';
 import { useInDev } from '@/contexts/use-in-dev';
 import { usePreference } from '@/contexts/use-preference';
 import { Coachmark, DirectionalHint, Pivot, PivotItem } from '@fluentui/react';
@@ -72,7 +71,6 @@ const NormalHeader = () => {
 };
 
 export const Header: FC = () => {
-  useDraftNavigate();
   const inDev = useInDev();
   return inDev ? <DevHeader /> : <NormalHeader />;
 };

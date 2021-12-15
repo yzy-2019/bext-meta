@@ -16,7 +16,7 @@ import { useHistory } from 'umi';
 
 export const DevHeader: FC = () => {
   const history = useHistory();
-  const { draft, setDraftObject, saveDraft } = useDraft();
+  const { draft, saveDraft } = useDraft();
   const [detailVisible, { setTrue: showPanel, setFalse: hidePanel }] =
     useBoolean(false);
   const inDev = useInDev();
@@ -44,8 +44,7 @@ export const DevHeader: FC = () => {
           className="h-8"
           onClick={() => {
             saveDraft();
-            setDraftObject(null);
-            setTimeout(() => history.push('/dev'));
+            history.replace('/dev');
           }}
         />
         <div>

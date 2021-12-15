@@ -1,8 +1,9 @@
 import { MetaList } from '@/components/meta-list';
 import { useMeta } from '@/contexts/use-meta';
 import { useUrlState } from '@/contexts/use-url-state';
+import { Events, trackEvent } from '@/util/tracker';
 import { Dropdown, ResponsiveMode } from '@fluentui/react';
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useMemo } from 'react';
 
 const FILTER_ALL = 'filterAll';
 
@@ -31,6 +32,10 @@ export const MetaPage: FC = () => {
       setFilter({ tag: tag === FILTER_ALL ? undefined : tag });
     }
   };
+
+  useEffect(() => {
+    trackEvent(Events.tagView, filter.tag || '全部分类');
+  }, [filter.tag]);
 
   return (
     <>

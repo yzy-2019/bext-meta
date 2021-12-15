@@ -1,8 +1,8 @@
 import { DetailHeader } from '@/components/detail-header';
 import { MetaContent } from '@/components/meta-content';
 import { MetaDetailContext } from '@/contexts/meta-detail';
-import { useMetaPrefix } from '@/contexts/meta-prefix';
 import { Meta, MetaIndex, MetaVersion } from '@/types';
+import { config } from '@/util/config';
 import {
   ProgressIndicator,
   Separator,
@@ -15,7 +15,6 @@ import { useParams } from 'umi';
 
 const ExtDetailPage: FC = () => {
   const params = useParams<{ id: string }>();
-  const { prefix } = useMetaPrefix();
 
   const [versions, setVersions] = useState<MetaVersion[]>();
   const [currentMeta, setCurrentMeta] = useState<Meta>();
@@ -23,7 +22,9 @@ const ExtDetailPage: FC = () => {
 
   const { loading: allLoading, error: indexError } = useRequest(
     async () => {
-      const response = await fetch(`${prefix}/${params.id}/_index.json`);
+      const response = await fetch(
+        `${config.metaPrefix}/${params.id}/_index.json`,
+      );
       const metaIndex: MetaIndex = await response.json();
 
       setVersions(metaIndex.versions);
@@ -33,7 +34,7 @@ const ExtDetailPage: FC = () => {
       setCurrentVersion(metaIndex.versions[0].hash);
     },
     {
-      refreshDeps: [params.id, prefix],
+      refreshDeps: [params.id],
     },
   );
 
@@ -44,10 +45,12 @@ const ExtDetailPage: FC = () => {
   } = useRequest(
     async (hash: string) => {
       setCurrentVersion(hash);
-      const response = await fetch(`${prefix}/${params.id}/${hash}.json`);
+      const response = await fetch(
+        `${config.metaPrefix}/${params.id}/${hash}.json`,
+      );
       setCurrentMeta({ ...(await response.json()), id: String(params.id) });
     },
-    { manual: true, refreshDeps: [prefix, params.id] },
+    { manual: true, refreshDeps: [params.id] },
   );
 
   if (allLoading) {

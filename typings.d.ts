@@ -27,3 +27,7 @@ declare module '!!raw-loader!*' {
 }
 
 declare module 'workerize';
+
+declare interface Window {
+  _hmt: any[][];
+}

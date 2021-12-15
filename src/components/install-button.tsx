@@ -1,5 +1,6 @@
 import { MetaDetailContext } from '@/contexts/meta-detail';
 import { browser } from '@/lib';
+import { Events, trackEvent } from '@/util/tracker';
 import {
   DefaultButton,
   Dialog,
@@ -35,6 +36,7 @@ export const InstallButton: FC = () => {
 
   const onClick = () => {
     if (showUninstall) {
+      trackEvent(Events.metaUninstall, currentMeta?.id);
       console.log(
         browser.call('uninstall', {
           ...currentMeta,
@@ -42,6 +44,7 @@ export const InstallButton: FC = () => {
         }),
       );
     } else if (browser.support('install')) {
+      trackEvent(Events.metaInstallSuccess, currentMeta?.id);
       console.log(
         browser.call('install', {
           ...currentMeta,
@@ -57,7 +60,14 @@ export const InstallButton: FC = () => {
   return (
     <PrimaryButton
       className="ml-2"
-      onClick={showUninstall ? onClick : showConfirm}
+      onClick={
+        showUninstall
+          ? onClick
+          : () => {
+              trackEvent(Events.metaInstallClick, currentMeta?.id);
+              showConfirm();
+            }
+      }
       disabled={metaLoading}
     >
       {showUninstall ? '卸载' : '安装此版本'}

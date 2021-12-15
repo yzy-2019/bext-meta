@@ -1,4 +1,4 @@
-type Broswer = 'via' | 'alook' | 'x' | 'bz' | 'shark' | 'lit';
+export type Broswer = 'via' | 'alook' | 'x' | 'bz' | 'shark' | 'lit';
 
 export interface Meta {
   version: string;
@@ -11,8 +11,6 @@ export interface Meta {
   type: 'javascript'; // 类型
   source: string; // 源代码
   build: string; // 产物
-  // 编译选项
-  options?: {};
   extra?: {
     xMetaComment?: string; // x 浏览器元信息注释，https://www.xbext.com/docs/tutorials/write-user-script-for-xbrowser-part2/
   };

@@ -1,14 +1,17 @@
 import { ReactComponent as DragHandle } from '@/assets/drag-handle.svg';
 import { BuildPreview } from '@/components/build-preview';
-import { Editor } from '@/components/editor';
+import { BextThemeContext } from '@/contexts/custom-theme-provider';
 import { useDraft } from '@/contexts/use-draft';
 import { useTheme } from '@fluentui/react';
+import Editor from '@monaco-editor/react';
 import { Resizable } from 're-resizable';
-import { FC } from 'react';
+import { FC, useContext } from 'react';
 
 const ScriptDev: FC = () => {
   const { draft, setDraft } = useDraft();
   const theme = useTheme();
+  const bextTheme = useContext(BextThemeContext);
+
   return (
     <div className="h-full w-full flex overflow-hidden">
       <Resizable
@@ -41,9 +44,10 @@ const ScriptDev: FC = () => {
       >
         <Editor
           value={draft?.source}
-          onChange={(source) => setDraft({ source })}
+          onChange={(source) => setDraft({ source: source || '' })}
           className="h-full pr-[5px]"
-          options={{ language: 'javascript' }}
+          language="javascript"
+          theme={bextTheme === 'light' ? 'vs' : 'vs-dark'}
         />
       </Resizable>
       <div className="w-full pl-4 min-w-[300px]">

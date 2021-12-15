@@ -1,7 +1,7 @@
-import { Editor } from './editor';
-import { useMetaPrefix } from '@/contexts/meta-prefix';
+import { BextThemeContext } from '@/contexts/custom-theme-provider';
 import { useDraft } from '@/contexts/use-draft';
 import { excuteCompile } from '@/util/compile';
+import { config } from '@/util/config';
 import {
   DefaultButton,
   Label,
@@ -10,9 +10,10 @@ import {
   PrimaryButton,
   TextField,
 } from '@fluentui/react';
+import Editor from '@monaco-editor/react';
 import { useBoolean, useDebounceEffect } from 'ahooks';
 import dayjs from 'dayjs';
-import { FC, useMemo, useState } from 'react';
+import { FC, useContext, useMemo, useState } from 'react';
 
 export const BuildPreview: FC = () => {
   const [build, setBuild] = useState<string>();
@@ -22,10 +23,11 @@ export const BuildPreview: FC = () => {
   const [url, setUrl] = useState('');
   const [debugWindow, setDebugWindow] = useState<Window | null>(null);
 
-  const { prefix } = useMetaPrefix();
   const debugClientLink = useMemo(() => {
-    return prefix.replace(/meta$/, 'lib/debug-client.user.js');
-  }, [prefix]);
+    return config.metaPrefix.replace(/meta$/, 'lib/debug-client.user.js');
+  }, []);
+
+  const theme = useContext(BextThemeContext);
 
   const pushScript = () => {
     debugWindow?.postMessage(
@@ -40,7 +42,7 @@ export const BuildPreview: FC = () => {
   useDebounceEffect(
     () => {
       if (draft) {
-        const { id, name, version, source, options } = draft;
+        const { id, name, version, source } = draft;
         if (id && name && version && source) {
           console.log(`[compile] start at ${dayjs().format('HH:mm:ss')} ==`);
 
@@ -50,7 +52,6 @@ export const BuildPreview: FC = () => {
               name,
               version,
               source,
-              options,
             },
           }).then((build) => {
             console.log('[compile] end');
@@ -61,7 +62,7 @@ export const BuildPreview: FC = () => {
         }
       }
     },
-    [draft?.id, draft?.name, draft?.version, draft?.source, !draft?.options],
+    [draft?.id, draft?.name, draft?.version, draft?.source],
     {
       wait: 1000,
     },
@@ -110,8 +111,10 @@ export const BuildPreview: FC = () => {
       </div>
       <Editor
         value={build}
-        options={{ readOnly: true, language: 'javascript' }}
+        options={{ readOnly: true }}
+        language="javascript"
         className="flex-1"
+        theme={theme === 'light' ? 'vs' : 'vs-dark'}
       />
     </div>
   );

@@ -1,10 +1,15 @@
 import { useDraft } from '@/contexts/use-draft';
+import { Events, trackEvent } from '@/util/tracker';
 import { CompoundButton } from '@fluentui/react';
 import { useHistory } from 'umi';
 
 const DevPage = () => {
   const history = useHistory();
   const { cacheDraft, setDraftObject } = useDraft();
+  const gotoDevScript = () => {
+    history.push('/dev/script');
+  };
+
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="max-w-[300px] pt-4">
@@ -18,7 +23,11 @@ const DevPage = () => {
         secondaryText={`${
           cacheDraft ? '发现本地草稿' : '本地暂无草稿'
         }（清理缓存、卸载浏览器都会导致草稿丢失哦）`}
-        onClick={() => setDraftObject(cacheDraft)}
+        onClick={() => {
+          trackEvent(Events.devNew);
+          setDraftObject(cacheDraft);
+          gotoDevScript();
+        }}
         disabled={!cacheDraft}
       >
         载入草稿
@@ -27,7 +36,11 @@ const DevPage = () => {
         className="w-52 mt-6"
         primary={!cacheDraft}
         secondaryText="将会覆盖现存的草稿，请谨慎操作"
-        onClick={() => setDraftObject({ type: 'javascript', options: {} })}
+        onClick={() => {
+          trackEvent(Events.devNew);
+          setDraftObject({ type: 'javascript' });
+          gotoDevScript();
+        }}
       >
         创建新脚本
       </CompoundButton>

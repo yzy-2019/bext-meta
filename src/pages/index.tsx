@@ -2,9 +2,10 @@ import { CurrentUpdate } from '@/components/current-update';
 import { MetaList } from '@/components/meta-list';
 import { TagList } from '@/components/tag-list';
 import { useMeta } from '@/contexts/use-meta';
+import { Events, trackEvent } from '@/util/tracker';
 import { SearchBox } from '@fluentui/react';
 import { useThrottle } from 'ahooks';
-import { FC, useMemo, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 
 const HomePage: FC = () => {
   const { metaList } = useMeta();
@@ -22,6 +23,12 @@ const HomePage: FC = () => {
       }),
     [throttledText, metaList],
   );
+
+  useEffect(() => {
+    if (throttledText) {
+      trackEvent(Events.search, throttledText);
+    }
+  }, [throttledText]);
 
   return (
     <div className="pt-4 px-6">
