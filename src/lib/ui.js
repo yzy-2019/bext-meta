@@ -1,9 +1,9 @@
 /*
  * 新建 / 获取 bextBar
  * getBextBar()
- * >> {
- *      bar: { Element } ,        // bextBar DOM 元素
- *      buttons: [ String ] ,     // 包含所有按钮 ID 的数组
+ * >> <div id='bextBar'> + { // bextBar DOM 元素, 附带以下函数
+ *      queryAll: (),             // 查询所有按钮 ID
+ *        >> [ String, ... ]      // 包含所有按钮 ID 的数组
  *      add: ( id 'String', opt { // 添加一个按钮
  *                                text: 'String',      // 按钮文字
  *                                textcolor: 'String', // 按钮文字颜色
@@ -20,6 +20,7 @@
  *       change: ( id, opt ),       // 修改一个按钮，参数同 add(),
  *            >> 0   // 成功
  *            >> 1-6 // 参数错误
+ *            >> 8   // 按钮元素被外部脚本删除了
  *       query: ( id ),             // 查询按钮样式
  *         >> {
  *              button: { Element }, // 按钮 DOM 元素
@@ -27,6 +28,8 @@
  *              textcolor: 'String', // 按钮文字颜色
  *              backcolor: 'String', // 按钮背景颜色
  *            }
+ *         >> 1 // 按钮不存在
+ *         >> 8 // 按钮元素被外部脚本删除了
  *       del: ( id ),               // 删除一个按钮
  *         >> 0 // 成功
  *         >> 1 // 不存在指定 id 的按钮
@@ -37,10 +40,9 @@
  * 2. 保存被删除的按钮 ( 或是提示用户删除脚本 ？
  */
 export function getBextBar() {
-    if (!window.bextBar) {
+    if (!document.querySelector('#bextBar')) {
         let enableFreeFeature = false, drag = null, ghost, ghostbox,
-            bar = document.querySelector('#bextBar'), sty,
-            buttons = [], pos = [], downPos = 0,
+            bar, sty, buttons = [], pos = [], downPos = 0,
             first, unlock = () => document.onmousemove = null,
             isObj = o => (typeof o == 'object' && !(o instanceof Array || o instanceof Function)),
             optCheck = (opt, strict) => {
@@ -188,18 +190,22 @@ export function getBextBar() {
             document.body.appendChild(ghostbox);
         }
 
-        window.bextBar = {
-            bar, buttons,
+        Object.assign(bar,{
+            queryAll: function () { return buttons },
             del: function (id) {
-                if (!bextBar.buttons.includes(id)) return 1;
-                let button = this.bar.querySelector(`#bextButton-${id}`);
-                if (button) this.bar.removeChild(button);
-                bextBar.buttons.splice(bextBar.buttons.indexOf(id), 1);
+                if (!buttons.includes(id)) return 1;
+                let button = this.querySelector(`#bextButton-${id}`);
+                if (button) this.removeChild(button);
+                buttons.splice(buttons.indexOf(id), 1);
                 return 0;
             },
             query: function (id) {
-                if (!bextBar.buttons.includes(id)) return 1;
-                let button = this.bar.querySelector(`#bextButton-${id}`);
+                if (!buttons.includes(id)) return 1;
+                let button = this.querySelector(`#bextButton-${id}`);
+                if (!button) {
+                  buttons.splice(buttons.indexOf(id), 1);
+                  return 8;
+                }
                 return {
                     button: button,
                     text: button.querySelector('span').innerText,
@@ -208,16 +214,19 @@ export function getBextBar() {
                 }
             },
             change: function (id, opt) {
-                if (!bextBar.buttons.includes(id)) return 1;
+                if (!buttons.includes(id)) return 1;
                 let optret = optCheck(opt, false);
                 if (optret !== 0) return optret;
-                let button = this.bar.querySelector(`#bextButton-${id}`);
+                let button = this.querySelector(`#bextButton-${id}`);
                 if (button) {
                     if (opt.textcolor) button.style.color = opt.textcolor;
                     if (opt.backcolor) button.style.backgroundColor = opt.backcolor;
                     if (opt.text) button.querySelector('span').innerText = opt.text;
                     if (opt.callback) button.onclick = opt.callback.bind(window, this, button);
                     return 0;
+                } else {
+                  buttons.splice(buttons.indexOf(id), 1);
+                  return 8;
                 }
             },
             add: function (id, opt) {
@@ -228,7 +237,7 @@ export function getBextBar() {
                 if (typeof id !== 'string') return 7;
                 let optret = optCheck(opt, true);
                 if (optret !== 0) return optret;
-                if (!this.bar.querySelector(`#bextButton-${id}`)) {
+                if (!this.querySelector(`#bextButton-${id}`)) {
                     let button = document.createElement('button'),
                         btext = document.createElement('span'),
                         idBtn = id => bar.querySelector(`#bextButton-${id}`),
@@ -242,25 +251,25 @@ export function getBextBar() {
                             tobtn.parentNode.removeChild(a);
                         },
                         switchArr = (fromid, toid) => {
-                            let fromPos = bextBar.buttons.indexOf(fromid),
-                                toPos = bextBar.buttons.indexOf(toid);
-                            bextBar.buttons[toPos] = fromid;
-                            bextBar.buttons[fromPos] = toid;
+                            let fromPos = buttons.indexOf(fromid),
+                                toPos = buttons.indexOf(toid);
+                            buttons[toPos] = fromid;
+                            buttons[fromPos] = toid;
                         },
                         shuffleBtn = function (frombtn, tobtn) {
                             let fromid = frombtn.id.slice(11), toid = tobtn.id.slice(11),
-                                fromPos = bextBar.buttons.indexOf(fromid), toPos = bextBar.buttons.indexOf(toid),
+                                fromPos = buttons.indexOf(fromid), toPos = buttons.indexOf(toid),
                                 movePos = Math.max(fromPos, toPos) - Math.min(fromPos, toPos);
                             if (movePos > 1) {
                                 if (fromPos > toPos) {
                                     for (let i = fromPos; i > toPos; i--) {
-                                        switchBtn(idBtn(bextBar.buttons[i]), idBtn(bextBar.buttons[i - 1]));
-                                        switchArr(bextBar.buttons[i], bextBar.buttons[i - 1]);
+                                        switchBtn(idBtn(buttons[i]), idBtn(buttons[i - 1]));
+                                        switchArr(buttons[i], buttons[i - 1]);
                                     }
                                 } else {
                                     for (let i = fromPos; i < toPos; i++) {
-                                        switchBtn(idBtn(bextBar.buttons[i]), idBtn(bextBar.buttons[i + 1]));
-                                        switchArr(bextBar.buttons[i], bextBar.buttons[i + 1]);
+                                        switchBtn(idBtn(buttons[i]), idBtn(buttons[i + 1]));
+                                        switchArr(buttons[i], buttons[i + 1]);
                                     }
                                 }
                             } else {
@@ -273,7 +282,7 @@ export function getBextBar() {
                     button.className = 'bextButton';
                     if (enableFreeFeature) button.draggable = true;
                     button.appendChild(btext);
-                    bextBar.buttons.push(id);
+                    buttons.push(id);
                     if (enableFreeFeature) {
                         if ('ontouchend' in document) {
                             button.addEventListener('touchstart', e => {
@@ -300,7 +309,7 @@ export function getBextBar() {
                                 if (drag && target.className.includes('bextButton') && drag != target) {
                                     shuffleBtn(drag, target);
                                 }
-                                bextBar.bar.querySelectorAll('.bextButton').forEach(btn => btn.classList.remove('ghost'));
+                                bextBar.querySelectorAll('.bextButton').forEach(btn => btn.classList.remove('ghost'));
                                 ghostbox.style.top = ghostbox.style.bottom = '-150%';
                                 drag = null;
                             });
@@ -320,7 +329,7 @@ export function getBextBar() {
                             });
                             button.addEventListener('dragover', e => e.preventDefault());
                             button.addEventListener('dragend', () => {
-                                bextBar.bar.querySelectorAll('.button').forEach(
+                                bextBar.querySelectorAll('.button').forEach(
                                     b => b.classList.remove('ghost')
                                 )
                             });
@@ -341,15 +350,15 @@ export function getBextBar() {
                         }
                         button.appendChild(close);
                     }
-                    this.bar.appendChild(button);
+                    this.appendChild(button);
                     let change = this.change(id, opt);
                     if (change != 0) this.del(id);
                     return change;
                 } else return 10;
             }
-        }
+        });
     }
-    return window.bextBar;
+    return document.querySelector('#bextBar');
 }
 
 /*
