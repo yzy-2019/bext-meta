@@ -44,6 +44,7 @@ export const RichEditor: FC<{
               ],
         },
         readOnly: defaultReadOnly,
+        bounds: ref.current,
       });
       quill.on('text-change', () => {
         const el = ref.current?.querySelector('.ql-editor') as HTMLDivElement;
