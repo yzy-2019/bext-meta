@@ -1,4 +1,5 @@
 import { useMemoizedFn } from 'ahooks';
+import { noop } from 'lodash-es';
 import Quill from 'quill';
 import { FC, useEffect, useRef } from 'react';
 
@@ -46,11 +47,14 @@ export const RichEditor: FC<{
         readOnly: defaultReadOnly,
         bounds: ref.current,
       });
-      quill.on('text-change', () => {
+      const handler = () => {
         const el = ref.current?.querySelector('.ql-editor') as HTMLDivElement;
         getProps()?.onChange?.(el.innerHTML || '');
-      });
+      };
+      quill.on('text-change', handler);
+      return () => quill.off('text-change', handler);
     }
+    return noop;
   }, []);
 
   return <div ref={ref} />;
