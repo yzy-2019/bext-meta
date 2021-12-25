@@ -1,6 +1,7 @@
 import './index.less';
 import { Header } from '@/components/header';
 import { CommonProvider } from '@/contexts';
+import { useQuill } from '@/contexts/use-quill';
 import { initializeIcons } from '@fluentui/react';
 import dayjs from 'dayjs';
 import zhCn from 'dayjs/locale/zh-cn';
@@ -20,6 +21,8 @@ export default function Layout({
   history,
   match,
 }: IRouteComponentProps) {
+  useQuill();
+
   return (
     <CommonProvider>
       <div className="flex flex-col h-screen">

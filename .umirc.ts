@@ -19,18 +19,14 @@ export default defineConfig({
       href,
     })),
     {
-      rel: 'stylesheet',
-      href: 'https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css',
+      rel: 'dns-prefetch',
+      href: 'https://cdn.jsdelivr.net',
     },
   ],
   define: {
     BUILD_TIMESTAMP: dayjs().unix(),
     BUILD_HASH: shelljs.exec('git rev-parse HEAD').toString(),
   },
-  externals: {
-    quill: 'window.Quill',
-  },
-  headScripts: ['https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js'],
   chainWebpack: (config) => {
     config.module
       .rule('lib')
