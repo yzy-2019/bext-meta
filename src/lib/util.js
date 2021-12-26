@@ -11,7 +11,7 @@ export function detectBrowser() {
     ? 'shark'
     : window.lit && window.lit.addon
     ? 'lit'
-    : window.via
+    : window.via && window.via.addon
     ? 'via'
     : undefined;
 }
@@ -29,11 +29,113 @@ export function runOnce(fn) {
   fn && fn();
 }
 
+/*
+ * runAt('document-end',alert,'a');  DOM 加载完成以后执行
+ * runAt('document-idle',alert,'a'); window.onload 触发执行
+ * runAt(500,alert,'a');             打开页面以后延时 500ms 执行
+ * runAt('+500',alert,'a');          window.onload 触发以后延时 500ms 执行
+ */
+export function runAt(start, fn, ...args) {
+  if (typeof fn !== 'function') return;
+  switch (start) {
+    case 'document-body':
+      document.addEventListener('readystatechange', function () {
+        if (document.readyState === 'interactive') fn.bind(this, ...args);
+      });
+      break;
+    case 'document-end':
+      document.addEventListener('DOMContentLoaded', fn.bind(this, ...args));
+      break;
+    case 'document-idle':
+      window.addEventListener('load', fn.bind(this, ...args));
+      break;
+    default:
+      if (typeof start == 'number') {
+        setTimeout(fn, start, ...args);
+      } else {
+        window.addEventListener('load', function () {
+          setTimeout(fn, start, ...args);
+        });
+      }
+  }
+}
+
 export function addElement({ tag, attrs = {}, to = document.body }) {
   const el = document.createElement(tag);
   Object.assign(el, attrs);
   to.appendChild(el);
   return el;
+}
+
+export function getElement(rules, all = false, parent = document) {
+  let rulearray = [],
+    elemarray = [];
+  if (rules instanceof Array) {
+    rulearray.push(...rules);
+  } else {
+    rulearray.push(rules);
+  }
+  rulearray.forEach((rule) => {
+    let temparray = [],
+      xtype = all ? 7 : 9,
+      xr;
+    try {
+      // CSS 选择器
+      if (all) {
+        temparray.push(...parent.querySelectorAll(rule));
+      } else {
+        temparray.push(parent.querySelector(rule));
+      }
+    } catch {
+      // XPath
+      try {
+        xr = document.evaluate(rule, parent, null, xtype, null);
+        if (all) {
+          for (let i = 0; i < xr.snapshotLength; i++) {
+            temparray.push(xr.snapshotItem(i));
+          }
+        } else {
+          temparray.push(xr.singleNodeValue);
+        }
+      } catch {
+        console.log('规则错误');
+      }
+    }
+    elemarray.push(...temparray);
+  });
+  return elemarray.length == 1 ? elemarray[0] : elemarray;
+}
+
+export function removeElement(rules, withParent, out = 20) {
+  let elemarray = [],
+    elems = getElement(rules),
+    getSize = (elem, prop) => {
+      return parseInt(getComputedStyle(elem)[prop]);
+    };
+  if (elems instanceof Array) {
+    elemarray.push(...elems);
+  } else {
+    elemarray.push(elems);
+  }
+  elemarray.forEach((elem) => {
+    if (withParent) {
+      let parent = elem.parentNode,
+        eHeight =
+          elem.offsetHeight +
+          getSize(elem, 'marginTop') +
+          getSize(elem, 'marginBottom'),
+        eWidth =
+          elem.offsetWidth +
+          getSize(elem, 'marginLeft') +
+          getSize(elem, 'marginRight');
+      if (
+        parent.offsetHeight < eHeight + out &&
+        parent.offsetWidth < eWidth + out
+      )
+        parent.remove();
+    }
+    elem.remove();
+  });
 }
 
 export function loadScript(src) {
@@ -57,6 +159,20 @@ export function addStyle(css) {
       textContent: css,
     },
     to: document.head,
+  });
+}
+
+export function loadStyle(url) {
+  return new Promise((resolve, reject) => {
+    addElement({
+      tag: 'link',
+      attrs: {
+        href: url,
+        rel: 'stylesheet',
+        onload: resolve,
+        onerror: reject,
+      },
+    });
   });
 }
 
