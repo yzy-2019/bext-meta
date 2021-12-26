@@ -1,10 +1,10 @@
-import { useQuill } from '@/contexts/use-quill';
-import { Spinner } from '@fluentui/react';
 import { useMemoizedFn } from 'ahooks';
 import { noop } from 'lodash-es';
+import Quill from 'quill';
+import 'quill/dist/quill.snow.css';
 import { FC, useEffect, useRef } from 'react';
 
-const RichEditorImpl: FC<{
+export const RichEditor: FC<{
   defaultHtml?: string;
   defaultReadOnly?: boolean;
   onChange?: (html: string) => void;
@@ -16,7 +16,7 @@ const RichEditorImpl: FC<{
     const { defaultHtml, defaultReadOnly } = getProps();
     if (ref.current) {
       ref.current.innerHTML = defaultHtml || '';
-      const quill = new window.Quill(ref.current, {
+      const quill = new Quill(ref.current, {
         theme: 'snow',
         modules: {
           toolbar: defaultReadOnly
@@ -60,10 +60,3 @@ const RichEditorImpl: FC<{
 
   return <div ref={ref} />;
 };
-
-export const RichEditor: typeof RichEditorImpl = (props) =>
-  useQuill() ? (
-    <RichEditorImpl {...props} />
-  ) : (
-    <Spinner label="加载中..." className="my-6" />
-  );

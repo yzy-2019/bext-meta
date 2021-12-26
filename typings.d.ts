@@ -30,5 +30,4 @@ declare module 'workerize';
 
 declare interface Window {
   _hmt: any[][];
-  Quill: typeof import('quill').Quill;
 }
