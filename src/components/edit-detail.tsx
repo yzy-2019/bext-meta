@@ -101,7 +101,7 @@ const Content: FC = () => {
             extra: set(cloneDeep(draft?.extra ?? {}), 'xMetaComment', text),
           });
         }}
-        description="专用于 X 浏览器的元信息，填写示例：'// @run-at document-start'（需要注释符号），已自动生成无需在这里填写的：name、namespace、version、description、author、match"
+        description="专用于 X 浏览器的元信息，填写示例：'// @run-at document-start'（去除单引号，保留注释符号），已自动生成无需在这里填写的：name、namespace、version、description、author、match"
       />
     </>
   );
