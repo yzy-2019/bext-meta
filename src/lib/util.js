@@ -54,7 +54,7 @@ export function runAt(start, fn, ...args) {
         setTimeout(fn, start, ...args);
       } else {
         window.addEventListener('load', function () {
-          setTimeout(fn, start, ...args);
+          setTimeout(fn, parseInt(start), ...args);
         });
       }
   }
