@@ -40,7 +40,7 @@ export function runAt(start, fn, ...args) {
   switch (start) {
     case 'document-body':
       document.addEventListener('readystatechange', function () {
-        if (document.readyState === 'interactive') fn.bind(this, ...args);
+        if (document.readyState === 'interactive') fn.call(this, ...args);
       });
       break;
     case 'document-end':
@@ -67,6 +67,13 @@ export function addElement({ tag, attrs = {}, to = document.body }) {
   return el;
 }
 
+/*
+ * rules   String || [String]   指定一个或一组 选择器 或 XPath 规则
+ * all     Bool                 匹配 全部元素 或是 首个元素
+ * parent  Node                 指定 查找位置
+ *
+ * 如果只找到一个元素，返回它，否则返回包含所有元素的数组，未找到返回空数组
+ */
 export function getElement(rules, all = false, parent = document) {
   let rulearray = [],
     elemarray = [];
@@ -106,7 +113,14 @@ export function getElement(rules, all = false, parent = document) {
   return elemarray.length == 1 ? elemarray[0] : elemarray;
 }
 
-export function removeElement(rules, withParent, out = 20) {
+/*
+ * rules      String || [String]   指定一个或一组 CSS 选择器 或 XPath 规则
+ * withParent Bool                 是否删除 外层 盒子
+ * out        Number               阈值，默认 20 px ，
+ *                                 如果只比广告元素多出这点大小，
+ *                                 即判定为广告的盒子，一并去除
+ */
+export function removeElement(rules, withParent = false, out = 20) {
   let elemarray = [],
     elems = getElement(rules),
     getSize = (elem, prop) => {
