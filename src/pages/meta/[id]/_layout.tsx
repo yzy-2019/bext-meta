@@ -1,19 +1,12 @@
-import { DetailHeader } from '@/components/detail-header';
-import { MetaContent } from '@/components/meta-content';
 import { MetaDetailContext } from '@/contexts/meta-detail';
 import { Meta, MetaIndex, MetaVersion } from '@/types';
 import { config } from '@/util/config';
-import {
-  ProgressIndicator,
-  Separator,
-  Spinner,
-  SpinnerSize,
-} from '@fluentui/react';
+import { Spinner, SpinnerSize } from '@fluentui/react';
 import { useRequest } from 'ahooks';
 import { FC, useState } from 'react';
 import { useParams } from 'umi';
 
-const ExtDetailPage: FC = () => {
+const MetaLayout: FC = ({ children }) => {
   const params = useParams<{ id: string }>();
 
   const [versions, setVersions] = useState<MetaVersion[]>();
@@ -76,23 +69,9 @@ const ExtDetailPage: FC = () => {
         metaLoading,
       }}
     >
-      <div className="px-6 pt-4">
-        <DetailHeader />
-        {!metaLoading ? (
-          <Separator />
-        ) : (
-          <div className="h-[29px] flex flex-col justify-center">
-            <ProgressIndicator barHeight={1} />
-          </div>
-        )}
-        {currentMeta ? (
-          <MetaContent meta={currentMeta} />
-        ) : (
-          <Spinner size={SpinnerSize.large} className="pt-20 w-full" />
-        )}
-      </div>
+      {children}
     </MetaDetailContext.Provider>
   );
 };
 
-export default ExtDetailPage;
+export default MetaLayout;

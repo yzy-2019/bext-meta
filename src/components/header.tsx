@@ -3,7 +3,7 @@ import { useInDev } from '@/contexts/use-in-dev';
 import { usePreference } from '@/contexts/use-preference';
 import { Coachmark, DirectionalHint, Pivot, PivotItem } from '@fluentui/react';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { useHistory, useLocation } from 'umi';
+import { useHistory, useLocation, useRouteMatch } from 'umi';
 
 const NormalHeader = () => {
   const location = useLocation();
@@ -72,5 +72,10 @@ const NormalHeader = () => {
 
 export const Header: FC = () => {
   const inDev = useInDev();
+  const inReview = !!useRouteMatch('/meta/:id/review');
+  if (inReview) {
+    return null;
+  }
+
   return inDev ? <DevHeader /> : <NormalHeader />;
 };

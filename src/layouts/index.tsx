@@ -27,7 +27,7 @@ export default function Layout({
     <CommonProvider>
       <div className="flex flex-col h-screen">
         <Header />
-        <div className="flex-1 overflow-auto">{children}</div>
+        <div className="flex-1 overflow-auto flex flex-col">{children}</div>
       </div>
     </CommonProvider>
   );
