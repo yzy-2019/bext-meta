@@ -1,4 +1,5 @@
 import { createTheme } from '@fluentui/react';
+import isMobile from 'is-mobile';
 
 export const ID_RULE = /^[0-9]+$/;
 
@@ -28,3 +29,5 @@ export const DARK_THEME = createTheme({
     white: '#1e1e1e',
   },
 });
+
+export const IS_MOBILE = isMobile();

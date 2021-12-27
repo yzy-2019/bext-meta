@@ -1,6 +1,6 @@
 import { ReactComponent as DragHandle } from '@/assets/drag-handle.svg';
 import { BuildPreview } from '@/components/build-preview';
-import { BextThemeContext } from '@/hooks/custom-theme-provider';
+import { useBextTheme } from '@/hooks/custom-theme-provider';
 import { useDraft } from '@/hooks/use-draft';
 import { useTheme } from '@fluentui/react';
 import Editor from '@monaco-editor/react';
@@ -10,7 +10,7 @@ import { FC, useContext } from 'react';
 const ScriptDev: FC = () => {
   const { draft, setDraft } = useDraft();
   const theme = useTheme();
-  const bextTheme = useContext(BextThemeContext);
+  const bextTheme = useBextTheme();
 
   return (
     <div className="h-full w-full flex overflow-hidden">

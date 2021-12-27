@@ -1,11 +1,13 @@
 import { Preference, usePreference } from './use-preference';
 import { DARK_THEME } from '@/constants';
 import { ThemeProvider } from '@fluentui/react';
-import { FC, createContext, useMemo } from 'react';
+import { FC, createContext, useContext, useMemo } from 'react';
 import useMedia from 'use-media';
 
 export const BextThemeContext =
   createContext<Preference['darkMode']>(undefined);
+
+export const useBextTheme = () => useContext(BextThemeContext);
 
 export const CustomThemeProvider: FC = ({ children }) => {
   const { preference } = usePreference();

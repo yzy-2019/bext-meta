@@ -1,4 +1,4 @@
-import { BextThemeContext } from '@/hooks/custom-theme-provider';
+import { useBextTheme } from '@/hooks/custom-theme-provider';
 import { useBuild } from '@/hooks/use-build';
 import { config } from '@/util/config';
 import {
@@ -24,7 +24,7 @@ export const BuildPreview: FC = () => {
     return config.metaPrefix.replace(/meta$/, 'lib/debug-client.user.js');
   }, []);
 
-  const theme = useContext(BextThemeContext);
+  const theme = useBextTheme();
 
   const pushScript = () => {
     debugWindow?.postMessage(

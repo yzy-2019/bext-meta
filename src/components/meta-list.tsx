@@ -28,7 +28,7 @@ const MetaItem: FC<{ meta: Meta; withPaddingX?: boolean }> = ({
   withPaddingX,
 }) => {
   const theme = useTheme();
-  const [query] = useUrlState({ from: undefined });
+  const [query] = useUrlState({ from: undefined, devPath: undefined });
   const { setDraftObject } = useDraft();
   const history = useHistory();
 
@@ -43,14 +43,14 @@ const MetaItem: FC<{ meta: Meta; withPaddingX?: boolean }> = ({
               ? { ...metaIndex.meta, id: meta.id }
               : { type: 'javascript' },
           );
-          history.push('/dev/script');
+          history.push(query.devPath);
         })
         .catch(console.error);
     } else {
       trackEvent(Events.metaClick, meta.id);
       history.push(`/meta/${meta?.id ?? ''}`);
     }
-  }, [history, query.from, setDraftObject, meta]);
+  }, [history, query.from, query.devPath, setDraftObject, meta]);
 
   return (
     <div

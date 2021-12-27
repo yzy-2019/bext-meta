@@ -1,4 +1,4 @@
-import { BextThemeContext } from '@/hooks/custom-theme-provider';
+import { useBextTheme } from '@/hooks/custom-theme-provider';
 import { useMetaDetail } from '@/hooks/use-meta-detail';
 import { Events, trackEvent } from '@/util/tracker';
 import {
@@ -25,7 +25,7 @@ const MetaReview: FC = () => {
   const [monaco, setMonaco] = useLocalStorageState('BEXT.DETAIL_MONACO', {
     defaultValue: false,
   });
-  const bextTheme = useContext(BextThemeContext);
+  const bextTheme = useBextTheme();
   const history = useHistory();
 
   return (
