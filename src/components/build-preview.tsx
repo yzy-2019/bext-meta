@@ -1,6 +1,5 @@
-import { BextThemeContext } from '@/contexts/custom-theme-provider';
-import { useDraft } from '@/contexts/use-draft';
-import { excuteCompile } from '@/util/compile';
+import { BextThemeContext } from '@/hooks/custom-theme-provider';
+import { useBuild } from '@/hooks/use-build';
 import { config } from '@/util/config';
 import {
   DefaultButton,
@@ -11,13 +10,11 @@ import {
   TextField,
 } from '@fluentui/react';
 import Editor from '@monaco-editor/react';
-import { useBoolean, useDebounceEffect } from 'ahooks';
-import dayjs from 'dayjs';
+import { useBoolean } from 'ahooks';
 import { FC, useContext, useMemo, useState } from 'react';
 
 export const BuildPreview: FC = () => {
-  const [build, setBuild] = useState<string>();
-  const { draft } = useDraft();
+  const build = useBuild();
   const [modalVisible, { setTrue: showModal, setFalse: hideModal }] =
     useBoolean(false);
   const [url, setUrl] = useState('');
@@ -38,35 +35,6 @@ export const BuildPreview: FC = () => {
       '*',
     );
   };
-
-  useDebounceEffect(
-    () => {
-      if (draft) {
-        const { id, name, version, source } = draft;
-        if (id && name && version && source) {
-          console.log(`[compile] start at ${dayjs().format('HH:mm:ss')} ==`);
-
-          excuteCompile({
-            meta: {
-              id,
-              name,
-              version,
-              source,
-            },
-          }).then((build) => {
-            console.log('[compile] end');
-            setBuild(build);
-          });
-        } else {
-          console.log('[compile] 请填写完整 ID，名称，版本');
-        }
-      }
-    },
-    [draft?.id, draft?.name, draft?.version, draft?.source],
-    {
-      wait: 1000,
-    },
-  );
 
   return (
     <div className="flex-1 flex flex-col pt-2 h-full">

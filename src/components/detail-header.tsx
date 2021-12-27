@@ -1,6 +1,6 @@
 import packageJson from '../../package.json';
 import { InstallButton } from './install-button';
-import { MetaDetailContext } from '@/contexts/meta-detail';
+import { useMetaDetail } from '@/hooks/use-meta-detail';
 import { MetaVersion } from '@/types';
 import { Events, trackEvent } from '@/util/tracker';
 import {
@@ -10,14 +10,13 @@ import {
   ResponsiveMode,
 } from '@fluentui/react';
 import dayjs from 'dayjs';
-import { FC, useContext, useMemo } from 'react';
+import { FC, useMemo } from 'react';
 import { useHistory } from 'umi';
 
 const DROPDOWN_ITEM_STYLE = { height: 'auto' };
 
 export const DetailHeader: FC = () => {
-  const { currentMeta, currentVersion, versions, setVersion } =
-    useContext(MetaDetailContext);
+  const { currentMeta, currentVersion, versions, setVersion } = useMetaDetail();
   const history = useHistory();
 
   const onMenuClick = (item?: IContextualMenuItem) => {

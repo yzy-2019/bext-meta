@@ -1,6 +1,6 @@
 import { MetaList } from './meta-list';
 import { Title } from './title';
-import { useMeta } from '@/contexts/use-meta';
+import { useMeta } from '@/hooks/use-meta';
 import { FC } from 'react';
 
 export const CurrentUpdate: FC = () => {

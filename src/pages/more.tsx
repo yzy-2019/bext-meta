@@ -1,6 +1,6 @@
 import packageJson from '../../package.json';
 import { Title } from '@/components/title';
-import { Preference, usePreference } from '@/contexts/use-preference';
+import { Preference, usePreference } from '@/hooks/use-preference';
 import { ChoiceGroup, IChoiceGroupOption } from '@fluentui/react';
 import dayjs from 'dayjs';
 

@@ -1,4 +1,4 @@
-import { MetaDetailContext } from '@/contexts/meta-detail';
+import { useMetaDetail } from '@/hooks/use-meta-detail';
 import { browser } from '@/lib';
 import { Events, trackEvent } from '@/util/tracker';
 import {
@@ -8,12 +8,12 @@ import {
   PrimaryButton,
 } from '@fluentui/react';
 import { useBoolean, useInterval, useMemoizedFn } from 'ahooks';
-import { FC, useContext, useState } from 'react';
+import { FC, useState } from 'react';
 
 type InstallStatus = 'installed' | 'notinstalled' | 'unknown';
 
 export const InstallButton: FC = () => {
-  const { currentMeta, metaLoading } = useContext(MetaDetailContext);
+  const { currentMeta, metaLoading } = useMetaDetail();
   const [confirmVisible, { setTrue: showConfirm, setFalse: hideComfirm }] =
     useBoolean(false);
 

@@ -1,5 +1,5 @@
-import { useDraft } from '@/contexts/use-draft';
-import { useUrlState } from '@/contexts/use-url-state';
+import { useDraft } from '@/hooks/use-draft';
+import { useUrlState } from '@/hooks/use-url-state';
 import { Meta, MetaIndex } from '@/types';
 import { classnames } from '@/util/classnames';
 import { config } from '@/util/config';

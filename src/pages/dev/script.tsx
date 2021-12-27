@@ -1,7 +1,7 @@
 import { ReactComponent as DragHandle } from '@/assets/drag-handle.svg';
 import { BuildPreview } from '@/components/build-preview';
-import { BextThemeContext } from '@/contexts/custom-theme-provider';
-import { useDraft } from '@/contexts/use-draft';
+import { BextThemeContext } from '@/hooks/custom-theme-provider';
+import { useDraft } from '@/hooks/use-draft';
 import { useTheme } from '@fluentui/react';
 import Editor from '@monaco-editor/react';
 import { Resizable } from 're-resizable';

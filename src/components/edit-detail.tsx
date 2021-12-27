@@ -1,7 +1,7 @@
 import { RichEditor } from './rich-editor';
 import { ID_RULE } from '@/constants';
-import { useDraft } from '@/contexts/use-draft';
-import { useMeta } from '@/contexts/use-meta';
+import { useDraft } from '@/hooks/use-draft';
+import { useMeta } from '@/hooks/use-meta';
 import { Dropdown, Label, Panel, PanelType, TextField } from '@fluentui/react';
 import { cloneDeep, set, uniq } from 'lodash-es';
 import { FC, useEffect, useMemo, useState } from 'react';

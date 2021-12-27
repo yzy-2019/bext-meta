@@ -1,16 +1,16 @@
 import { DetailHeader } from '@/components/detail-header';
 import { MetaContent } from '@/components/meta-content';
-import { MetaDetailContext } from '@/contexts/meta-detail';
+import { useMetaDetail } from '@/hooks/use-meta-detail';
 import {
   ProgressIndicator,
   Separator,
   Spinner,
   SpinnerSize,
 } from '@fluentui/react';
-import { FC, useContext } from 'react';
+import { FC } from 'react';
 
 const ExtDetailPage: FC = () => {
-  const { currentMeta, metaLoading } = useContext(MetaDetailContext);
+  const { currentMeta, metaLoading } = useMetaDetail();
   return (
     <div className="px-6 pt-4">
       <DetailHeader />

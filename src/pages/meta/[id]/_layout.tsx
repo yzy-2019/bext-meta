@@ -1,4 +1,4 @@
-import { MetaDetailContext } from '@/contexts/meta-detail';
+import { MetaDetailContext } from '@/hooks/use-meta-detail';
 import { Meta, MetaIndex, MetaVersion } from '@/types';
 import { config } from '@/util/config';
 import { Spinner, SpinnerSize } from '@fluentui/react';

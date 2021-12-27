@@ -1,7 +1,7 @@
 import { EditDetail } from './edit-detail';
 import { ExportDialog } from './export-dialog';
-import { useDraft } from '@/contexts/use-draft';
-import { useInDev } from '@/contexts/use-in-dev';
+import { useDraft } from '@/hooks/use-draft';
+import { useInDev } from '@/hooks/use-in-dev';
 import {
   CommandBarButton,
   DefaultButton,

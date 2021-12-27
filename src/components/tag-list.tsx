@@ -1,5 +1,5 @@
 import { Title } from './title';
-import { useMeta } from '@/contexts/use-meta';
+import { useMeta } from '@/hooks/use-meta';
 import { Events, trackEvent } from '@/util/tracker';
 import { useTheme } from '@fluentui/react';
 import { FC } from 'react';

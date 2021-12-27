@@ -1,5 +1,5 @@
 import { Meta, MetaVersion } from '@/types';
-import { createContext } from 'react';
+import { createContext, useContext } from 'react';
 
 export const MetaDetailContext = createContext<{
   versions?: MetaVersion[];
@@ -9,3 +9,5 @@ export const MetaDetailContext = createContext<{
   allLoading?: boolean;
   metaLoading?: boolean;
 }>({});
+
+export const useMetaDetail = () => useContext(MetaDetailContext);

@@ -1,6 +1,6 @@
 import { DevHeader } from './dev-header';
-import { useInDev } from '@/contexts/use-in-dev';
-import { usePreference } from '@/contexts/use-preference';
+import { useInDev } from '@/hooks/use-in-dev';
+import { usePreference } from '@/hooks/use-preference';
 import { Coachmark, DirectionalHint, Pivot, PivotItem } from '@fluentui/react';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { useHistory, useLocation, useRouteMatch } from 'umi';

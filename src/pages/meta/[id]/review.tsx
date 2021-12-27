@@ -1,5 +1,5 @@
-import { BextThemeContext } from '@/contexts/custom-theme-provider';
-import { MetaDetailContext } from '@/contexts/meta-detail';
+import { BextThemeContext } from '@/hooks/custom-theme-provider';
+import { useMetaDetail } from '@/hooks/use-meta-detail';
 import { Events, trackEvent } from '@/util/tracker';
 import {
   Checkbox,
@@ -18,7 +18,7 @@ const MetaReview: FC = () => {
     trackEvent(Events.metaReview, currentMeta?.id);
   });
 
-  const { currentMeta } = useContext(MetaDetailContext);
+  const { currentMeta } = useMetaDetail();
   const theme = useTheme();
 
   const [reviewKey, setReviewKey] = useState('source');

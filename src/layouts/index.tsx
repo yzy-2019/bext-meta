@@ -1,6 +1,6 @@
 import './index.less';
 import { Header } from '@/components/header';
-import { CommonProvider } from '@/contexts';
+import { CommonProvider } from '@/hooks';
 import { initializeIcons } from '@fluentui/react';
 import dayjs from 'dayjs';
 import zhCn from 'dayjs/locale/zh-cn';
