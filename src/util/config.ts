@@ -20,3 +20,5 @@ export const config: Config = {
       ? `https://cdn.jsdelivr.net/gh/ikkz/bext@${BUILD_HASH}/public/meta`
       : `/meta`,
 };
+
+export const isBextClient = !!window.ReactNativeWebView;

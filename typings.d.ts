@@ -30,4 +30,8 @@ declare module 'workerize';
 
 declare interface Window {
   _hmt: any[][];
+  ReactNativeWebView?: {
+    postMessage: (msg: string) => void;
+  };
+  injectDraft?: (draft: string) => void;
 }

@@ -1,6 +1,7 @@
 import { DevHeader } from './dev-header';
 import { useInDev } from '@/hooks/use-in-dev';
 import { usePreference } from '@/hooks/use-preference';
+import { isBextClient } from '@/util/config';
 import { Coachmark, DirectionalHint, Pivot, PivotItem } from '@fluentui/react';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { useHistory, useLocation, useRouteMatch } from 'umi';
@@ -77,5 +78,5 @@ export const Header: FC = () => {
     return null;
   }
 
-  return inDev ? <DevHeader /> : <NormalHeader />;
+  return inDev ? <DevHeader /> : isBextClient ? null : <NormalHeader />;
 };

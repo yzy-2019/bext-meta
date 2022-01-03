@@ -2,6 +2,8 @@ import { EditDetail } from './edit-detail';
 import { ExportDialog } from './export-dialog';
 import { useDraft } from '@/hooks/use-draft';
 import { useInDev } from '@/hooks/use-in-dev';
+import { excuteCompile } from '@/util/compile';
+import { isBextClient } from '@/util/config';
 import {
   CommandBarButton,
   DefaultButton,
@@ -30,6 +32,32 @@ export const DevHeader: FC = () => {
     useBoolean(false);
   const theme = useTheme();
 
+  const onDebug = async () => {
+    const { id, name, version, source } = draft!;
+    if (id && name && version) {
+      try {
+        const build = await excuteCompile({
+          meta: {
+            id,
+            name,
+            version,
+            source: source || '',
+          },
+        });
+        window.ReactNativeWebView?.postMessage(
+          JSON.stringify({
+            type: 'debug',
+            payload: build,
+          }),
+        );
+      } catch (error) {
+        alert('编译失败，请查看控制台');
+      }
+    } else {
+      alert('请填写完整 ID，名称，版本号');
+    }
+  };
+
   return (
     <>
       <header
@@ -38,17 +66,24 @@ export const DevHeader: FC = () => {
           borderBottom: `1px solid ${theme.semanticColors.bodyDivider}`,
         }}
       >
-        <CommandBarButton
-          text="返回"
-          iconProps={{ iconName: 'ChevronLeft' }}
-          className="h-8"
-          onClick={() => {
-            saveDraft();
-            history.replace('/dev');
-          }}
-        />
+        {isBextClient ? null : (
+          <CommandBarButton
+            text="返回"
+            iconProps={{ iconName: 'ChevronLeft' }}
+            className="h-8"
+            onClick={() => {
+              saveDraft();
+              history.replace('/dev');
+            }}
+          />
+        )}
         <div>
           <DefaultButton onClick={showPanel}>编辑详情</DefaultButton>
+          {isBextClient ? (
+            <DefaultButton className="ml-3" onClick={onDebug}>
+              调试
+            </DefaultButton>
+          ) : null}
           <PrimaryButton className="ml-3" onClick={showExport}>
             准备发布
           </PrimaryButton>
