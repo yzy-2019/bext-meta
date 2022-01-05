@@ -37,6 +37,9 @@ import { addElement, addStyle } from '@bext/util';
  *         >> 1 // 不存在指定 id 的按钮
  *    }
  *
+ * WebView 51+ ( addEventListener(e,f,{ passive: true }) )
+ * WebView 51+ ( NodeList.forEach )
+ *
  * TODO:
  * 1. 保存并同步按钮排序位置
  * 2. 保存被删除的按钮状态 ( 或是提示用户删除脚本 ？
@@ -96,7 +99,7 @@ export function getBextBar() {
             padding: 2px;
             background: white;
             border-radius: 5px;
-            opacity: 0.7;
+            opacity: 0.9;
             z-index: 1000000;
             box-shadow: 0 2px 5px gray;
             user-select: none;
@@ -104,7 +107,7 @@ export function getBextBar() {
         #bextBar.close {
             width: 23px;
             height: 33px;
-            overflow: clip;
+            overflow: hidden;
         }
         #bextBarExpand {
             margin: 10px;
@@ -123,8 +126,8 @@ export function getBextBar() {
             margin-left: 3px;
         }
         .bextButton {
-            margin: 5px .5em;
-            padding: 4px .75em;
+            margin: 7px 5px;
+            padding: 4px 8px;
             background: whitesmoke;
             color: #333;
             border: none;
@@ -471,6 +474,8 @@ export function getBextBar() {
  *    onclick: 点击按钮的回调函数
  *    onclose: Toast 消失后的回调函数
  * }
+ *
+ * WebView 46+ ( width: max-content )
  */
 export function toast(t, s = 3, c) {
   let isObj = (o) =>
@@ -531,8 +536,7 @@ export function toast(t, s = 3, c) {
       td.remove();
       if (c && c.onclose) c.onclose.call(this);
     };
-  td.onanimationend = tt;
-  td.onwebkitanimationend = tt;
+  td.addEventListener('animationend', tt);
   if (c) {
     let tc = addElement({
       tag: 'span',
