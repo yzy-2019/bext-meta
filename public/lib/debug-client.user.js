@@ -1,9 +1,10 @@
 // ==UserScript==
 // @name         Bext debug client
-// @version      0.1
+// @version      0.2
 // @description  调试脚本
 // @include      *
 // @author       ikkz
+// @run-at       document-start
 // ==/UserScript==
 
 (function () {
