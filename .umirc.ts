@@ -42,4 +42,12 @@ export default defineConfig({
   analytics: {
     baidu: process.env.BAIDU_TOKEN || false,
   },
+  dynamicImport: {
+    loading: '@/components/page-loading',
+  },
+  targets: {
+    chrome: 70,
+    firefox: false,
+    edge: false,
+  },
 });
