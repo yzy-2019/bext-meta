@@ -216,12 +216,16 @@ export function getBextBar() {
             e.touches[0].clientX - bar.offsetLeft,
             e.touches[0].clientY - bar.offsetTop,
           ];
+          if (bar.className.indexOf('flip') >= 0) {
+            pos[0] = e.touches[0].clientX - (window.innerWidth - 27);
+          }
         },
         { passive: true },
       );
       first.addEventListener(
         'touchmove',
         function (e) {
+          bar.classList.add('close');
           bar.style.left =
             Math.max(
               0,
