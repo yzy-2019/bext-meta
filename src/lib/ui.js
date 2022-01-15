@@ -113,6 +113,9 @@ export function getBextBar() {
         #bextBar.flip {
             transform: rotateY(180deg);
         }
+        #bextBar.flip .bextButton {
+            transform: rotateY(180deg);
+        }
         #bextBarExpand {
             margin: 10px;
             margin-right: 0;
