@@ -1,4 +1,4 @@
-import { useBextTheme } from '@/hooks/custom-theme-provider';
+import { Editor } from '@/components/editor';
 import { useMetaDetail } from '@/hooks/use-meta-detail';
 import { Events, trackEvent } from '@/util/tracker';
 import {
@@ -8,9 +8,8 @@ import {
   PivotItem,
   useTheme,
 } from '@fluentui/react';
-import Editor from '@monaco-editor/react';
 import { useLocalStorageState, useMount } from 'ahooks';
-import { FC, useContext, useState } from 'react';
+import { FC, useState } from 'react';
 import { useHistory } from 'umi';
 
 const MetaReview: FC = () => {
@@ -25,7 +24,6 @@ const MetaReview: FC = () => {
   const [monaco, setMonaco] = useLocalStorageState('BEXT.DETAIL_MONACO', {
     defaultValue: false,
   });
-  const bextTheme = useBextTheme();
   const history = useHistory();
 
   return (
@@ -71,7 +69,6 @@ const MetaReview: FC = () => {
           }}
           className="h-full z-10"
           language={reviewKey === 'detail' ? 'html' : 'javascript'}
-          theme={bextTheme === 'light' ? 'vs' : 'vs-dark'}
         />
       ) : (
         <div className="p-4 overflow-auto flex-1">

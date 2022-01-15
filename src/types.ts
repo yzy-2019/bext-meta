@@ -14,6 +14,9 @@ export interface Meta {
   extra?: {
     xMetaComment?: string; // x 浏览器元信息注释，https://www.xbext.com/docs/tutorials/write-user-script-for-xbrowser-part2/
   };
+
+  configSchema?: any;
+  defaultConfig?: any;
 }
 
 export interface MetaVersion {

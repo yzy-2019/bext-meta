@@ -1,16 +1,17 @@
+import styles from './index.less';
 import { ReactComponent as DragHandle } from '@/assets/drag-handle.svg';
 import { BuildPreview } from '@/components/build-preview';
-import { useBextTheme } from '@/hooks/custom-theme-provider';
+import { ConfigSchema, DefaultConfig } from '@/components/config-setting';
+import { Editor } from '@/components/editor';
 import { useDraft } from '@/hooks/use-draft';
-import { useTheme } from '@fluentui/react';
-import Editor from '@monaco-editor/react';
+import { classnames } from '@/util/classnames';
+import { Pivot, PivotItem, useTheme } from '@fluentui/react';
 import { Resizable } from 're-resizable';
-import { FC, useContext } from 'react';
+import { FC } from 'react';
 
 const ScriptDev: FC = () => {
   const { draft, setDraft } = useDraft();
   const theme = useTheme();
-  const bextTheme = useBextTheme();
 
   return (
     <div className="h-full w-full flex overflow-hidden">
@@ -47,11 +48,20 @@ const ScriptDev: FC = () => {
           onChange={(source) => setDraft({ source: source || '' })}
           className="h-full pr-[5px]"
           language="javascript"
-          theme={bextTheme === 'light' ? 'vs' : 'vs-dark'}
         />
       </Resizable>
       <div className="w-full pl-4 min-w-[300px]">
-        <BuildPreview />
+        <Pivot className={classnames('h-full flex flex-col', styles.pivot)}>
+          <PivotItem headerText="预览" className="h-full">
+            <BuildPreview />
+          </PivotItem>
+          <PivotItem headerText="配置表单" className="h-full">
+            <ConfigSchema />
+          </PivotItem>
+          <PivotItem headerText="默认配置" className="h-full">
+            <DefaultConfig />
+          </PivotItem>
+        </Pivot>
       </div>
     </div>
   );

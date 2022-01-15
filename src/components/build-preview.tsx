@@ -1,17 +1,15 @@
-import { useBextTheme } from '@/hooks/custom-theme-provider';
+import { Editor } from './editor';
 import { useBuild } from '@/hooks/use-build';
 import { config } from '@/util/config';
 import {
   DefaultButton,
-  Label,
   Link,
   Modal,
   PrimaryButton,
   TextField,
 } from '@fluentui/react';
-import Editor from '@monaco-editor/react';
 import { useBoolean } from 'ahooks';
-import { FC, useContext, useMemo, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 
 export const BuildPreview: FC = () => {
   const build = useBuild();
@@ -23,9 +21,6 @@ export const BuildPreview: FC = () => {
   const debugClientLink = useMemo(() => {
     return config.metaPrefix.replace(/meta$/, 'lib/debug-client.user.js');
   }, []);
-
-  const theme = useBextTheme();
-
   const pushScript = () => {
     debugWindow?.postMessage(
       {
@@ -38,17 +33,14 @@ export const BuildPreview: FC = () => {
 
   return (
     <div className="flex-1 flex flex-col pt-2 h-full">
-      <Label className="text-base flex items-center justify-between">
-        脚本预览
-        <div>
-          <DefaultButton className="h-6 px-1" onClick={showModal}>
-            打开调试窗口
-          </DefaultButton>
-          <PrimaryButton className="h-6 px-1 mx-2" onClick={pushScript}>
-            推送脚本
-          </PrimaryButton>
-        </div>
-      </Label>
+      <div>
+        <DefaultButton className="h-6 px-1 mr-2" onClick={showModal}>
+          调试
+        </DefaultButton>
+        <PrimaryButton className="h-6 px-1 mr-2" onClick={pushScript}>
+          推送脚本
+        </PrimaryButton>
+      </div>
       <Modal isOpen={modalVisible} onDismiss={hideModal}>
         <div className="w-[640px]">
           <div className="p-4">
@@ -75,14 +67,13 @@ export const BuildPreview: FC = () => {
         </div>
       </Modal>
       <div className="text-sm pb-2">
-        错误警告在请按 F12 打开浏览器开发者工具查看
+        脚本预览（错误警告在请按 F12 打开浏览器开发者工具查看）
       </div>
       <Editor
         value={build}
         options={{ readOnly: true }}
         language="javascript"
         className="flex-1"
-        theme={theme === 'light' ? 'vs' : 'vs-dark'}
       />
     </div>
   );

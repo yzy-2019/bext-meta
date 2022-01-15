@@ -9,10 +9,13 @@ import workerize from 'workerize';
 const compileWorker = workerize(COMPILE_WORKER);
 
 export function excuteCompile(context: {
-  meta: Required<Pick<Meta, 'id' | 'name' | 'source' | 'version'>>;
+  meta: Required<
+    Pick<Meta, 'id' | 'name' | 'source' | 'version' | 'defaultConfig'>
+  >;
 }): Promise<string> {
+  const { meta } = context;
   return compileWorker.compile({
-    ...context,
+    meta,
     env: {
       // bextHome: BEXT_HOME,
     },
@@ -21,6 +24,9 @@ export function excuteCompile(context: {
       util: LIB_UTIL,
       ui: LIB_UI,
       preact: LIB_PREACT,
+      config: `export default ${
+        meta.defaultConfig ? JSON.stringify(meta.defaultConfig) : 'undefined'
+      }`,
     },
   });
 }

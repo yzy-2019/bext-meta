@@ -11,7 +11,7 @@ export const useBuild = () => {
   useDebounceEffect(
     () => {
       if (draft) {
-        const { id, name, version, source } = draft;
+        const { id, name, version, source, defaultConfig } = draft;
         if (id && name && version && source) {
           console.log(`[compile] start at ${dayjs().format('HH:mm:ss')} ==`);
 
@@ -21,6 +21,7 @@ export const useBuild = () => {
               name,
               version,
               source,
+              defaultConfig,
             },
           }).then((build) => {
             console.log('[compile] end');
@@ -31,7 +32,13 @@ export const useBuild = () => {
         }
       }
     },
-    [draft?.id, draft?.name, draft?.version, draft?.source],
+    [
+      draft?.id,
+      draft?.name,
+      draft?.version,
+      draft?.source,
+      draft?.defaultConfig,
+    ],
     {
       wait: 1000,
     },

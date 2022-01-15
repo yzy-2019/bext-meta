@@ -33,7 +33,7 @@ export const DevHeader: FC = () => {
   const theme = useTheme();
 
   const onDebug = async () => {
-    const { id, name, version, source } = draft!;
+    const { id, name, version, source, defaultConfig } = draft!;
     if (id && name && version) {
       try {
         const build = await excuteCompile({
@@ -42,6 +42,7 @@ export const DevHeader: FC = () => {
             name,
             version,
             source: source || '',
+            defaultConfig,
           },
         });
         window.ReactNativeWebView?.postMessage(

@@ -17,7 +17,7 @@ export const ExportDialog: FC = () => {
   const unmounted = useUnmountedRef();
 
   const generate = async () => {
-    const { id, name, version, source } = draft!;
+    const { id, name, version, source, defaultConfig } = draft!;
     if (id && name && version) {
       try {
         const build = await excuteCompile({
@@ -26,6 +26,7 @@ export const ExportDialog: FC = () => {
             name,
             version,
             source: source || '',
+            defaultConfig,
           },
         });
         const content = omit(cloneDeep(draft), 'id');

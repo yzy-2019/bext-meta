@@ -39,6 +39,8 @@
     "@codemirror/lang-javascript": "^0.19.3",
     "@fluentui/react": "^8.42.0",
     "@monaco-editor/react": "^4.3.1",
+    "@rjsf/core": "^3.2.1",
+    "@rjsf/fluent-ui": "^3.2.1",
     "@uiw/react-codemirror": "^4.2.4",
     "@umijs/plugin-analytics": "^0.2.2",
     "ahooks": "^3.0.0",
