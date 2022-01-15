@@ -34,4 +34,5 @@ declare interface Window {
     postMessage: (msg: string) => void;
   };
   injectDraft?: (draft: string) => void;
+  alook?: any;
 }

@@ -1,6 +1,6 @@
 import { Editor } from './editor';
 import { useDraft } from '@/hooks/use-draft';
-import { Link } from '@fluentui/react';
+import { Link, Separator } from '@fluentui/react';
 import Form from '@rjsf/fluent-ui';
 import { useUpdateEffect } from 'ahooks';
 import { FC, useMemo, useState } from 'react';
@@ -59,10 +59,11 @@ export const DefaultConfig: FC = () => {
       在代码编辑器内通过
       <br />
       <code>import config from '@bext/config'</code>
-      <br /> 可以取到配置选项，当前默认的配置为
+      <br /> 可以取到配置选项，在下方表单填写默认配置，当前值：
       <code>{config}</code>
       <br />
-      具体使用方式也可以查看脚本 #648648 。以下表单将会在用户安装时展示：
+      具体使用方式也可以查看脚本 #648648 。
+      <Separator>以下表单将在用户安装时展示</Separator>
       {draft?.configSchema ? (
         <Form
           schema={draft.configSchema}

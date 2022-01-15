@@ -1,3 +1,4 @@
+import { config } from '@/util/config';
 import {
   alook_install,
   bz_install,
@@ -15,6 +16,13 @@ import {
   x_uninstall,
 } from '@bext/browser';
 import { buildMethods } from '@bext/browser';
+
+// mock
+if (config.env === 'dev' && !window?.alook?.addon) {
+  window.alook = {
+    addon: console.log,
+  };
+}
 
 export const browser = buildMethods({
   alook_install,
