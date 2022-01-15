@@ -43,9 +43,9 @@ import { addElement, addStyle } from '@bext/util';
  * TODO:
  * 1. 保存并同步按钮排序位置
  * 2. 保存被删除的按钮状态 ( 或是提示用户删除脚本 ？
- * 3. 自由移动 还是 边缘贴靠 ?
+ * 3. 提供给用户的自定义选项，并保存它
  * 4. 收缩动画 ?
- * 5. 提供给用户的自定义选项，并保存它
+ * 5. 按钮长度不统一，空间浪费...
  */
 export function getBextBar() {
   if (!document.querySelector('#bextBar')) {
@@ -95,7 +95,7 @@ export function getBextBar() {
             max-width: 80vw;
             height: max-content;
             top: calc(95vh - 110px);
-            margin: 5px;
+            margin: 5px 0;
             padding: 2px;
             background: white;
             border-radius: 5px;
@@ -103,11 +103,15 @@ export function getBextBar() {
             z-index: 1000000;
             box-shadow: 0 2px 5px gray;
             user-select: none;
+            transition: left .125s, right .125s;
         }
         #bextBar.close {
             width: 23px;
             height: 33px;
             overflow: hidden;
+        }
+        #bextBar.flip {
+            transform: rotateY(180deg);
         }
         #bextBarExpand {
             margin: 10px;
@@ -220,11 +224,32 @@ export function getBextBar() {
               0,
               Math.min(e.touches[0].clientX - pos[0], window.innerWidth - 27),
             ) + 'px';
+          bar.style.right = 'auto';
+          if (e.touches[0].clientX >= window.innerWidth / 2) {
+            bar.classList.add('flip');
+          } else {
+            bar.classList.remove('flip');
+          }
           bar.style.top =
             Math.max(
               0,
               Math.min(e.touches[0].clientY - pos[1], window.innerHeight - 37),
             ) + 'px';
+        },
+        { passive: true },
+      );
+      first.addEventListener(
+        'touchend',
+        function (e) {
+          if (e.changedTouches[0].clientX >= window.innerWidth / 2) {
+            bar.style.left = 'auto';
+            bar.style.right = 0;
+            bar.classList.add('flip');
+          } else {
+            bar.style.left = 0;
+            bar.style.right = 'auto';
+            bar.classList.remove('flip');
+          }
         },
         { passive: true },
       );
@@ -299,7 +324,10 @@ export function getBextBar() {
           if (opt.backcolor) button.style.backgroundColor = opt.backcolor;
           if (opt.text) button.querySelector('span').innerText = opt.text;
           if (opt.callback)
-            button.onclick = opt.callback.bind(window, this, button);
+            button.addEventListener(
+              'click',
+              opt.callback.bind(window, this, button),
+            );
           return 0;
         } else {
           buttons.splice(buttons.indexOf(id), 1);
@@ -455,6 +483,9 @@ export function getBextBar() {
               to: button,
             });
           }
+          button.addEventListener('click', function () {
+            bar.classList.add('close');
+          });
           let change = this.change(id, opt);
           if (change != 0) this.del(id);
           return change;
