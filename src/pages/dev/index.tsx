@@ -1,7 +1,8 @@
+import packageJson from '../../../package.json';
 import { IS_MOBILE } from '@/constants';
 import { useDraft } from '@/hooks/use-draft';
 import { Events, trackEvent } from '@/util/tracker';
-import { CompoundButton } from '@fluentui/react';
+import { CompoundButton, Link } from '@fluentui/react';
 import { useHistory } from 'umi';
 
 const DevPage = () => {
@@ -16,8 +17,14 @@ const DevPage = () => {
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="max-w-[300px] p-4">
-        !!! 在开始开发之前，请点击下方“修改现有脚本”，选择 “示例脚本#example”
-        查看内置能力。
+        !!! 在开始开发之前，请先阅读
+        <Link
+          href={`${packageJson.repository.url}/blob/master/README.md`}
+          underline
+          target="_blank"
+        >
+          开发文档
+        </Link>
       </div>
       <CompoundButton
         className="w-52 mt-2"
