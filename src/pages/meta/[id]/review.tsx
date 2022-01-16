@@ -55,21 +55,21 @@ const MetaReview: FC = () => {
           <PivotItem headerText="Detail" itemKey="detail" />
         </Pivot>
         <Checkbox
-          key={String(monaco)}
           label="Monaco"
           checked={monaco}
           onChange={() => setMonaco(!monaco)}
         />
       </header>
       {monaco ? (
-        <Editor
-          value={(currentMeta as any)?.[reviewKey]}
-          options={{
-            readOnly: true,
-          }}
-          className="h-full z-10"
-          language={reviewKey === 'detail' ? 'html' : 'javascript'}
-        />
+        <div className="flex-1 overflow-y-hidden">
+          <Editor
+            value={(currentMeta as any)?.[reviewKey]}
+            options={{
+              readOnly: true,
+            }}
+            language={reviewKey === 'detail' ? 'html' : 'javascript'}
+          />
+        </div>
       ) : (
         <div className="p-4 overflow-auto flex-1">
           <code className="whitespace-pre text-xs">
