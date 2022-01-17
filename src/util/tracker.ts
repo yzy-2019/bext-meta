@@ -14,6 +14,7 @@ export enum Events {
   metaReport = 'metaReport',
   tagClick = 'tagClick',
   tagView = 'tagView',
+  configInstall = 'configInstall',
 }
 
 export const trackEvent = (event: Events, label?: string, value?: number) => {

@@ -1,5 +1,6 @@
 import { useMetaDetail } from '@/hooks/use-meta-detail';
 import { excuteCompile } from '@/util/compile';
+import { Events, trackEvent } from '@/util/tracker';
 import {
   DefaultButton,
   Dialog,
@@ -38,6 +39,7 @@ export const ConfigInstall: FC<{ onInstall: (build?: string) => void }> = ({
           },
         }),
       );
+      trackEvent(Events.configInstall, currentMeta?.id);
     },
     {
       manual: true,
