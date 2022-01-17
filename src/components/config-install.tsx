@@ -13,7 +13,7 @@ import Form from '@rjsf/fluent-ui';
 import { useBoolean, useRequest } from 'ahooks';
 import { FC, useState } from 'react';
 
-export const ConfigInstall: FC<{ onInstall: (build?: string) => void }> = ({
+export const ConfigInstall: FC<{ onInstall: (build: string) => void }> = ({
   onInstall,
 }) => {
   const [dialogVisible, { setTrue: showDialog, setFalse: hideDialog }] =
@@ -25,9 +25,9 @@ export const ConfigInstall: FC<{ onInstall: (build?: string) => void }> = ({
   );
   const [hasError, setHasError] = useState(false);
 
-  const { run: configInstall, loading } = useRequest(
-    async () => {
-      const { id, name, version, source } = currentMeta!;
+  const { run: install, loading } = useRequest(
+    async (config?: any) => {
+      const { id, name, version, source, defaultConfig } = currentMeta!;
       onInstall(
         await excuteCompile({
           meta: {
@@ -35,7 +35,7 @@ export const ConfigInstall: FC<{ onInstall: (build?: string) => void }> = ({
             name,
             version,
             source,
-            defaultConfig: formData,
+            defaultConfig: config ?? defaultConfig,
           },
         }),
       );
@@ -58,7 +58,10 @@ export const ConfigInstall: FC<{ onInstall: (build?: string) => void }> = ({
       >
         你可以选择使用默认的配置进行安装，不支持自定义配置安装时请选择此种安装方式
         <div className="text-right pb-2">
-          <PrimaryButton text="默认安装" onClick={() => onInstall()} />
+          <PrimaryButton
+            text={loading ? '处理中...' : '默认安装'}
+            onClick={() => install()}
+          />
         </div>
         <Separator>或者自定义配置</Separator>
         <Form
@@ -76,7 +79,7 @@ export const ConfigInstall: FC<{ onInstall: (build?: string) => void }> = ({
         </Form>
         <DialogFooter>
           <PrimaryButton
-            onClick={configInstall}
+            onClick={() => install(formData)}
             text={loading ? '处理中...' : '使用此配置安装'}
             disabled={hasError}
           />

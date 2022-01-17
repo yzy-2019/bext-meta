@@ -30,7 +30,6 @@ export const ExportDialog: FC = () => {
           },
         });
         const content = omit(cloneDeep(draft), 'id');
-        content.build = build;
         content.detail = DOMPurify.sanitize(content.detail || '');
         setDraft({ detail: content.detail });
         return JSON.stringify(content);

@@ -1,6 +1,7 @@
 import { ConfigInstall } from './config-install';
 import { useMetaDetail } from '@/hooks/use-meta-detail';
 import { browser } from '@/lib';
+import { excuteCompile } from '@/util/compile';
 import { Events, trackEvent } from '@/util/tracker';
 import {
   DefaultButton,
@@ -8,7 +9,7 @@ import {
   DialogFooter,
   PrimaryButton,
 } from '@fluentui/react';
-import { useBoolean, useInterval, useMemoizedFn } from 'ahooks';
+import { useBoolean, useInterval, useMemoizedFn, useRequest } from 'ahooks';
 import { FC, useState } from 'react';
 
 type InstallStatus = 'installed' | 'notinstalled' | 'unknown';
@@ -45,17 +46,39 @@ export const InstallButton: FC = () => {
     );
   };
 
-  const onInstall = (build?: string) => {
+  const onInstall = (build: string) => {
     hideComfirm();
     trackEvent(Events.metaInstallSuccess, currentMeta?.id);
     console.log(
       browser.call('install', {
         ...currentMeta,
         author: `bext/${currentMeta?.id}`,
-        ...(build ? { build } : undefined),
+        build,
       }),
     );
   };
+
+  const { run: install, loading } = useRequest(
+    async () => {
+      const { id, name, version, source, defaultConfig } = currentMeta!;
+      onInstall(
+        await excuteCompile({
+          meta: {
+            id,
+            name,
+            version,
+            source,
+            defaultConfig,
+          },
+        }),
+      );
+      trackEvent(Events.configInstall, currentMeta?.id);
+    },
+    {
+      manual: true,
+      onError: () => alert('编译失败，请点击“更多” -> “报告问题”'),
+    },
+  );
 
   return showUninstall ? (
     <PrimaryButton
@@ -92,7 +115,10 @@ export const InstallButton: FC = () => {
           {currentMeta?.configSchema ? (
             <ConfigInstall onInstall={onInstall} />
           ) : (
-            <PrimaryButton onClick={() => onInstall()} text="同意并安装" />
+            <PrimaryButton
+              onClick={install}
+              text={loading ? '处理中' : '同意并安装'}
+            />
           )}
           <DefaultButton onClick={hideComfirm} text="取消" />
         </DialogFooter>

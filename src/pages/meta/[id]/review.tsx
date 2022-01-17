@@ -51,7 +51,6 @@ const MetaReview: FC = () => {
           className="flex-1"
         >
           <PivotItem headerText="Source" itemKey="source" />
-          <PivotItem headerText="Build" itemKey="build" />
           <PivotItem headerText="Detail" itemKey="detail" />
         </Pivot>
         <Checkbox

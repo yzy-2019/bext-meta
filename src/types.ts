@@ -10,7 +10,6 @@ export interface Meta {
   detail: string; // 详情
   type: 'javascript'; // 类型
   source: string; // 源代码
-  build: string; // 产物
   extra?: {
     xMetaComment?: string; // x 浏览器元信息注释，https://www.xbext.com/docs/tutorials/write-user-script-for-xbrowser-part2/
   };
