@@ -19,7 +19,17 @@ export const [DraftProvider, useDraft] = constate(() => {
 
   const setDraft = useCallback(
     (state: Draft) =>
-      setDraftObject((prev) => (state === null ? null : { ...prev, ...state })),
+      setDraftObject((prev) =>
+        state === null
+          ? null
+          : {
+              ...prev,
+              ...state,
+              // FIXME: 清理存量数据
+              build: undefined,
+              options: undefined,
+            },
+      ),
     [],
   );
 

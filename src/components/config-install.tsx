@@ -39,7 +39,10 @@ export const ConfigInstall: FC<{ onInstall: (build: string) => void }> = ({
           },
         }),
       );
-      trackEvent(Events.configInstall, currentMeta?.id);
+      trackEvent(
+        config ? Events.configInstall : Events.defaultInstall,
+        currentMeta?.id,
+      );
     },
     {
       manual: true,
@@ -61,6 +64,7 @@ export const ConfigInstall: FC<{ onInstall: (build: string) => void }> = ({
           <PrimaryButton
             text={loading ? '处理中...' : '默认安装'}
             onClick={() => install()}
+            disabled={loading}
           />
         </div>
         <Separator>或者自定义配置</Separator>
@@ -81,7 +85,7 @@ export const ConfigInstall: FC<{ onInstall: (build: string) => void }> = ({
           <PrimaryButton
             onClick={() => install(formData)}
             text={loading ? '处理中...' : '使用此配置安装'}
-            disabled={hasError}
+            disabled={hasError || loading}
           />
           <DefaultButton onClick={hideDialog} text="取消" />
         </DialogFooter>

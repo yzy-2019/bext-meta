@@ -63,16 +63,10 @@ export const InstallButton: FC = () => {
       const { id, name, version, source, defaultConfig } = currentMeta!;
       onInstall(
         await excuteCompile({
-          meta: {
-            id,
-            name,
-            version,
-            source,
-            defaultConfig,
-          },
+          meta: { id, name, version, source, defaultConfig },
         }),
       );
-      trackEvent(Events.configInstall, currentMeta?.id);
+      trackEvent(Events.defaultInstall, currentMeta?.id);
     },
     {
       manual: true,
@@ -118,6 +112,7 @@ export const InstallButton: FC = () => {
             <PrimaryButton
               onClick={install}
               text={loading ? '处理中' : '同意并安装'}
+              disabled={loading}
             />
           )}
           <DefaultButton onClick={hideComfirm} text="取消" />

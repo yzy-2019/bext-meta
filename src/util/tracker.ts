@@ -14,6 +14,7 @@ export enum Events {
   metaReport = 'metaReport',
   tagClick = 'tagClick',
   tagView = 'tagView',
+  defaultInstall = 'defaultInstall',
   configInstall = 'configInstall',
 }
 
