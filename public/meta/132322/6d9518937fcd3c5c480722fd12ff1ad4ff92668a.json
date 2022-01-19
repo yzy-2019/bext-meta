@@ -1,0 +1,1 @@
+{"type":"javascript","name":"vconsole 本地版","version":"1","tags":["工具脚本"],"synopsis":"vconsole 调试工具本地版，无视 CSP 规则","detail":"<p>vconsole 调试工具本地版，无视 CSP 规则，理论上可用于任何网站</p>","source":"import { runOnce } from '@bext/util';\nimport 'https://cdn.jsdelivr.net/npm/vconsole@3.9.5/dist/vconsole.min.js';\n\nrunOnce(() => {\n    new window.VConsole();\n});"}
