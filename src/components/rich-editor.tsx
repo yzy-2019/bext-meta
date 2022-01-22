@@ -48,6 +48,22 @@ export const RichEditor: FC<{
         readOnly: defaultReadOnly,
         bounds: ref.current,
       });
+
+      const toolbar = quill.getModule('toolbar');
+      const originImageHandler = toolbar.handlers.image;
+      toolbar.handlers.image = function (...args: any[]) {
+        if (confirm('选择文件（确定）/输入图片链接（取消）')) {
+          originImageHandler?.call(this, ...args);
+          return;
+        }
+
+        const url = prompt('请输入图片链接');
+        const range = quill.getSelection();
+        if (url && range) {
+          quill.insertEmbed(range.index, 'image', url, Quill.sources.USER);
+        }
+      };
+
       const handler = () => {
         const el = ref.current?.querySelector('.ql-editor') as HTMLDivElement;
         getProps()?.onChange?.(el.innerHTML || '');
