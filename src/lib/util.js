@@ -154,12 +154,12 @@ export function removeElement(rules, withParent = false, out = 20) {
 
 export function loadScript(src) {
   return new Promise((resolve, reject) => {
-    addElement({
+    const el = addElement({
       tag: 'script',
       attrs: {
         src,
         type: 'text/javascript',
-        onload: resolve,
+        onload: () => resolve(el),
         onerror: reject,
       },
     });
@@ -178,12 +178,12 @@ export function addStyle(css) {
 
 export function loadStyle(url) {
   return new Promise((resolve, reject) => {
-    addElement({
+    const el = addElement({
       tag: 'link',
       attrs: {
         href: url,
         rel: 'stylesheet',
-        onload: resolve,
+        onload: () => resolve(el),
         onerror: reject,
       },
     });

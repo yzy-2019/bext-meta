@@ -40,3 +40,6 @@ export const browser = buildMethods({
   x_installed,
   x_uninstall,
 });
+
+export { default as LIB_UTIL_DTS } from '!!raw-loader!./util.d.ts';
+export { default as LIB_CONTEXT_DTS } from '!!raw-loader!./context.d.ts';
