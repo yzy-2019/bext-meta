@@ -30,11 +30,7 @@ declare module '@bext/util' {
     parent?: Element,
   ): Element | Element[];
 
-  export function removeElement(
-    rules: string | string[],
-    withParent: boolean,
-    out: number,
-  ): void;
+  export function removeElement(rules: string | string[]): void;
 
   export function loadScript(src: string): Promise<HTMLScriptElement>;
 

@@ -33,7 +33,6 @@ export function runOnce(fn) {
  * runAt('document-end',alert,'a');  DOM 加载完成以后执行
  * runAt('document-idle',alert,'a'); window.onload 触发执行
  * runAt(500,alert,'a');             打开页面以后延时 500ms 执行
- * runAt('+500',alert,'a');          window.onload 触发以后延时 500ms 执行
  */
 export function runAt(start, fn, ...args) {
   if (typeof fn !== 'function') return;
@@ -50,13 +49,7 @@ export function runAt(start, fn, ...args) {
       window.addEventListener('load', fn.bind(this, ...args));
       break;
     default:
-      if (typeof start == 'number') {
-        setTimeout(fn, start, ...args);
-      } else {
-        window.addEventListener('load', function () {
-          setTimeout(fn, parseInt(start), ...args);
-        });
-      }
+      setTimeout(fn, start, ...args);
   }
 }
 
@@ -93,7 +86,7 @@ export function getElement(rules, all = false, parent = document) {
       } else {
         temparray.push(parent.querySelector(rule));
       }
-    } catch {
+    } catch (e) {
       // XPath
       try {
         xr = document.evaluate(rule, parent, null, xtype, null);
@@ -104,8 +97,8 @@ export function getElement(rules, all = false, parent = document) {
         } else {
           temparray.push(xr.singleNodeValue);
         }
-      } catch {
-        console.log('规则错误');
+      } catch (e) {
+        console.log('规则错误', e);
       }
     }
     elemarray.push(...temparray);
@@ -115,40 +108,17 @@ export function getElement(rules, all = false, parent = document) {
 
 /*
  * rules      String || [String]   指定一个或一组 CSS 选择器 或 XPath 规则
- * withParent Bool                 是否删除 外层 盒子
- * out        Number               阈值，默认 20 px ，
- *                                 如果只比广告元素多出这点大小，
- *                                 即判定为广告的盒子，一并去除
  */
-export function removeElement(rules, withParent = false, out = 20) {
+export function removeElement(rules) {
   let elemarray = [],
-    elems = getElement(rules),
-    getSize = (elem, prop) => {
-      return parseInt(getComputedStyle(elem)[prop]);
-    };
+    elems = getElement(rules);
   if (elems instanceof Array) {
     elemarray.push(...elems);
   } else {
     elemarray.push(elems);
   }
   elemarray.forEach((elem) => {
-    if (withParent) {
-      let parent = elem.parentNode,
-        eHeight =
-          elem.offsetHeight +
-          getSize(elem, 'marginTop') +
-          getSize(elem, 'marginBottom'),
-        eWidth =
-          elem.offsetWidth +
-          getSize(elem, 'marginLeft') +
-          getSize(elem, 'marginRight');
-      if (
-        parent.offsetHeight < eHeight + out &&
-        parent.offsetWidth < eWidth + out
-      )
-        parent.remove();
-    }
-    elem.remove();
+    elem.parentNode.removeChild(elem);
   });
 }
 

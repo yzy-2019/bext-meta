@@ -41,5 +41,6 @@ export const browser = buildMethods({
   x_uninstall,
 });
 
+export { default as LIB_UI_DTS } from '!!raw-loader!./ui.d.ts';
 export { default as LIB_UTIL_DTS } from '!!raw-loader!./util.d.ts';
 export { default as LIB_CONTEXT_DTS } from '!!raw-loader!./context.d.ts';

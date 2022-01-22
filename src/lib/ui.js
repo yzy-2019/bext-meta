@@ -50,6 +50,7 @@ import { addElement, addStyle } from '@bext/util';
 export function getBextBar() {
   if (!document.querySelector('#bextBar')) {
     let enableFreeFeature = false,
+      isTouch = 'ontouchend' in document,
       drag = null,
       ghost,
       ghostbox,
@@ -103,7 +104,6 @@ export function getBextBar() {
             z-index: 1000000;
             box-shadow: 0 2px 5px gray;
             user-select: none;
-            transition: left .125s, right .125s;
         }
         #bextBar.close {
             width: 23px;
@@ -190,6 +190,9 @@ export function getBextBar() {
       attrs: {
         id: 'bextBar',
         className: 'close',
+        onclick: function (e) {
+          bar.classList.toggle('close');
+        },
       },
     });
     first = addElement({
@@ -197,10 +200,8 @@ export function getBextBar() {
       attrs: {
         id: 'bextBarExpand',
         onclick: function (e) {
-          if (
-            'ontouchend' in document ||
-            Math.abs(downPos - e.clientX * e.clientY) <= clickmove
-          )
+          e.stopPropagation();
+          if (isTouch || Math.abs(downPos - e.clientX * e.clientY) <= clickmove)
             bar.classList.toggle('close');
         },
       },
@@ -208,7 +209,8 @@ export function getBextBar() {
     });
 
     /* BEGIN bextBar move */
-    if ('ontouchend' in document) {
+    if (isTouch) {
+      bar.style.transition = 'left .125s, right .125s';
       first.addEventListener(
         'touchstart',
         function (e) {
@@ -408,7 +410,7 @@ export function getBextBar() {
                   switchArr(fromid, toid);
                 }
               });
-            if ('ontouchend' in document) {
+            if (isTouch) {
               button.addEventListener('touchstart', (e) => {
                 ghostbox.innerHTML = '';
                 ghost = document.importNode(e.currentTarget, true);
@@ -490,9 +492,6 @@ export function getBextBar() {
               to: button,
             });
           }
-          button.addEventListener('click', function () {
-            bar.classList.add('close');
-          });
           let change = this.change(id, opt);
           if (change != 0) this.del(id);
           return change;
@@ -529,7 +528,7 @@ export function toast(t, s = 3, c) {
     if (c.onclose && typeof c.onclose !== 'function') return 7;
   }
 
-  addStyle(`
+  let ts = addStyle(`
   @-webkit-keyframes toast {
     0% { opacity: 0%; }
     20% { opacity: 100%; }
@@ -561,9 +560,8 @@ export function toast(t, s = 3, c) {
     animation: toast ${s}s ease;
     -webkit-animation: toast ${s}s ease;
   }
-    `);
-
-  let td = addElement({
+    `),
+    td = addElement({
       tag: 'div',
       attrs: {
         id: 'bextToast',
@@ -572,6 +570,7 @@ export function toast(t, s = 3, c) {
     }),
     tt = function () {
       td.remove();
+      ts.remove();
       if (c && c.onclose) c.onclose.call(this);
     };
   td.addEventListener('animationend', tt);
