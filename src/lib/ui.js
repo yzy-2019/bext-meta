@@ -345,12 +345,6 @@ export function getBextBar() {
       },
       add: function (id, opt) {
         if (!id || !isObj(opt)) return 1;
-        opt = Object.assign(
-          {
-            text: '按钮',
-          },
-          opt,
-        );
         if (typeof id !== 'string') return 7;
         let optret = optCheck(opt, true);
         if (optret !== 0) return optret;

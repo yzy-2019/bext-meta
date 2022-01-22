@@ -10,7 +10,7 @@ declare module '@bext/ui' {
     add(
       id: string,
       opt: {
-        text?: string;
+        text: string;
         callback: (
           bar: HTMLDivElement,
           button: HTMLButtonElement,
