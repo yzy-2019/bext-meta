@@ -1,20 +1,22 @@
 declare module '@bext/ui' {
   interface BextBar extends HTMLDivElement {
     queryAll(): string[];
-    query(id: string): {
-      button: HTMLButtonElement;
-      text: string;
-      textcolor: string;
-      backcolor: string;
-    };
+    query(id: string):
+      | {
+          button: HTMLButtonElement;
+          text: string;
+          textcolor: string;
+          backcolor: string;
+        }
+      | number;
     add(
       id: string,
       opt: {
         text: string;
         callback: (
-          bar: HTMLDivElement,
+          bar: BextBar,
           button: HTMLButtonElement,
-          e: Event,
+          e: PointerEvent,
         ) => void;
         textcolor?: string;
         backcolor?: string;
@@ -25,9 +27,9 @@ declare module '@bext/ui' {
       opt: {
         text?: string;
         callback?: (
-          bar: HTMLDivElement,
+          bar: BextBar,
           button: HTMLButtonElement,
-          e: Event,
+          e: PointerEvent,
         ) => void;
         textcolor?: string;
         backcolor?: string;

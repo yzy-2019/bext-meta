@@ -5,17 +5,7 @@ import { addElement, addStyle } from '@bext/util';
  * getBextBar()
  * >> <div id='bextBar'> + { // bextBar DOM 元素, 附带以下函数
  *      queryAll: (),             // 查询所有按钮 ID
- *        >> [ String, ... ]      // 包含所有按钮 ID 的数组
  *      add: ( id 'String', opt { // 添加一个按钮
- *                                text: 'String',      // 按钮文字
- *                                textcolor: 'String', // 按钮文字颜色
- *                                backcolor: 'String', // 按钮背景颜色
- *                                callback: Function(  // 点击回调
- *                                            { bextBar },
- *                                            { Element }, // 按钮 DOM 元素
- *                                            { Event }    // 点击事件
- *                                          )
- *                              } )
  *            >> 0   // 成功
  *            >> 1-7 // 参数错误
  *            >> 10  // 已存在重复 ID
@@ -24,12 +14,6 @@ import { addElement, addStyle } from '@bext/util';
  *            >> 1-6 // 参数错误
  *            >> 8   // 按钮元素被外部脚本删除了
  *       query: ( id ),             // 查询按钮样式
- *         >> {
- *              button: { Element }, // 按钮 DOM 元素
- *              text: 'String',      // 按钮文字
- *              textcolor: 'String', // 按钮文字颜色
- *              backcolor: 'String', // 按钮背景颜色
- *            }
  *         >> 1 // 按钮不存在
  *         >> 8 // 按钮元素被外部脚本删除了
  *       del: ( id ),               // 删除一个按钮
@@ -45,7 +29,6 @@ import { addElement, addStyle } from '@bext/util';
  * 2. 保存被删除的按钮状态 ( 或是提示用户删除脚本 ？
  * 3. 提供给用户的自定义选项，并保存它
  * 4. 收缩动画 ?
- * 5. 按钮长度不统一，空间浪费...
  */
 export function getBextBar() {
   if (!document.querySelector('#bextBar')) {
@@ -60,6 +43,7 @@ export function getBextBar() {
       downPos = 0,
       clickmove = 50,
       first,
+      flag,
       unlock = () => (document.onmousemove = null),
       isObj = (o) =>
         typeof o == 'object' && !(o instanceof Array || o instanceof Function),
@@ -110,13 +94,17 @@ export function getBextBar() {
             height: 33px;
             overflow: hidden;
         }
-        #bextBar.flip {
-            transform: rotateY(180deg);
-        }
+        #bextBar.flip,
         #bextBar.flip .bextButton {
             transform: rotateY(180deg);
         }
         #bextBarExpand {
+          height: 30px;
+          width: 20px;
+          display: inline-flex;
+          vertical-align: bottom;
+        }
+        #bextBarFlag {
             margin: 10px;
             margin-right: 0;
             padding: 0;
@@ -128,13 +116,13 @@ export function getBextBar() {
             transform: rotate(315deg);
             float: left;
         }
-        #bextBar.close #bextBarExpand {
+        #bextBar.close #bextBarFlag {
             transform: rotate(135deg);
             margin-left: 3px;
         }
         .bextButton {
-            margin: 7px 5px;
-            padding: 4px 8px;
+            margin: 5px;
+            padding: 2px 8px;
             background: whitesmoke;
             color: #333;
             border: none;
@@ -148,7 +136,12 @@ export function getBextBar() {
         }
         .bextButton span {
             margin: .125rem;
-            display: inline;
+            display: inline-block;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            max-width: 5.5em;
+            vertical-align: middle;
         }
         .delButton {
             font-family: sans-serif;
@@ -206,6 +199,13 @@ export function getBextBar() {
         },
       },
       to: bar,
+    });
+    flag = addElement({
+      tag: 'div',
+      attrs: {
+        id: 'bextBarFlag',
+      },
+      to: first,
     });
 
     /* BEGIN bextBar move */
@@ -460,7 +460,7 @@ export function getBextBar() {
               });
               button.addEventListener('dragover', (e) => e.preventDefault());
               button.addEventListener('dragend', () => {
-                bar.querySelectorAll('.button').forEach((b) => {
+                bar.querySelectorAll('.bextButton').forEach((b) => {
                   b.classList.remove('ghost');
                 });
               });
@@ -549,7 +549,7 @@ export function toast(t, s = 3, c) {
     background-color: rgba(0,0,0,0.5);
     color: white;
     text-align: center;
-    z-index: 1000000;
+    z-index: 1000002;
     opacity: 0%;
     animation: toast ${s}s ease;
     -webkit-animation: toast ${s}s ease;
