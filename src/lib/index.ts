@@ -16,9 +16,10 @@ import {
   x_uninstall,
 } from '@bext/browser';
 import { buildMethods } from '@bext/browser';
+import { detectBrowser } from '@bext/util';
 
 // mock
-if (config.env === 'dev' && !window?.alook?.addon) {
+if (config.env === 'dev' && !detectBrowser()) {
   window.alook = {
     addon: console.log,
   };
