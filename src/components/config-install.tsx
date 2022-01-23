@@ -78,6 +78,7 @@ export const ConfigInstall: FC<{ onInstall: (build: string) => void }> = ({
           omitExtraData
           liveOmit
           liveValidate
+          className="overflow-y-auto"
         >
           <></>
         </Form>
