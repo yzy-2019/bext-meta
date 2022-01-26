@@ -135,6 +135,17 @@ export const lit_installed = errorCatch((meta) =>
 
 export const lit_uninstall = lit_install;
 
+export const mixia_install = errorCatch((meta) => {
+  let multiSign =
+    typeof meta.match === 'object' && meta.match.length >= 2 ? '@' : '';
+
+  window.mx_browser_obj.sethostjs(
+    meta.name,
+    multiSign + buildMatch(meta.match, ' ', '*'),
+    `mxjshost:${base64(meta.build)}`,
+  );
+});
+
 export const buildMethods = (impls) => {
   const browser = detectBrowser();
 

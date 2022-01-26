@@ -11,6 +11,8 @@ export function detectBrowser() {
     ? 'shark'
     : window.lit && window.lit.addon
     ? 'lit'
+    : window.mx_browser_obj && window.mx_browser_obj.sethostjs
+    ? 'mixia'
     : window.via && window.via.addon
     ? 'via'
     : undefined;
