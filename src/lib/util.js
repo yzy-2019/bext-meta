@@ -13,6 +13,8 @@ export function detectBrowser() {
     ? 'lit'
     : window.mx_browser_obj && window.mx_browser_obj.sethostjs
     ? 'mixia'
+    : window.meta && window.meta.getWebAppManifestArray
+    ? 'meta'
     : window.via && window.via.addon
     ? 'via'
     : undefined;

@@ -5,6 +5,9 @@ import {
   lit_install,
   lit_installed,
   lit_uninstall,
+  meta_install,
+  meta_installed,
+  meta_uninstall,
   mixia_install,
   shark_install,
   shark_installed,
@@ -32,6 +35,10 @@ export const browser = buildMethods({
   lit_install,
   lit_installed,
   lit_uninstall,
+  meta_install,
+  meta_installed,
+  meta_uninstall,
+  mixia_install,
   shark_install,
   shark_installed,
   shark_uninstall,
@@ -41,7 +48,6 @@ export const browser = buildMethods({
   x_install,
   x_installed,
   x_uninstall,
-  mixia_install,
 });
 
 export { default as LIB_UI_DTS } from '!!raw-loader!./ui.d.ts';
