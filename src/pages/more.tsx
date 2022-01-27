@@ -26,9 +26,15 @@ const MorePage = () => {
       如果存在侵犯您权益的内容，请通过下面“联系我们”处理。
       <Title>开放源代码</Title>
       <div>
-        <a href="https://github.com/ikkz/bext" className="underline">
-          Github
+        <a
+          href={packageJson.repository.url}
+          className="underline"
+          target="_blank"
+        >
+          {packageJson.repository.url}
         </a>
+        （本站域名可能失效/更换，最新地址将更新在此 Github 主页，推荐点个
+        Star~）
       </div>
       <Title>开发者们</Title>
       <div className="flex flex-wrap">
