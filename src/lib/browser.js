@@ -136,11 +136,7 @@ export const lit_installed = errorCatch((meta) =>
 export const lit_uninstall = lit_install;
 
 export const mixia_install = errorCatch((meta) => {
-  let multiSign =
-    meta.match &&
-    (meta.match.length >= 2 || meta.match[0].match(/\./g).length >= 2)
-      ? '@'
-      : '';
+  let multiSign = match && match.length ? '@' : '';
 
   window.mx_browser_obj.sethostjs(
     meta.name,
