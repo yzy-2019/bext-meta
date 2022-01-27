@@ -146,7 +146,7 @@ export const mixia_install = errorCatch((meta) => {
   );
 });
 
-export const meta_install = errorCatch((mett) => {
+export const meta_install = errorCatch((meta) => {
   let metaIds = [];
 
   // 0. 获取各种 ID
@@ -173,14 +173,14 @@ export const meta_install = errorCatch((mett) => {
   // http://uujian.cn/assets/js/metax/webapp/manifest.js
   window.meta.putWebAppManifest(
     JSON.stringify({
-      id: +mett.id,
-      name: mett.name,
+      id: +meta.id,
+      name: meta.name,
       type: 1,
-      version: parseInt(mett.version),
-      author: mett.author,
-      brief: mett.synopsis,
+      version: parseInt(meta.version),
+      author: meta.author,
+      brief: meta.synopsis,
       icon: '',
-      host: buildMatch(mett.match, ',', ''),
+      host: buildMatch(meta.match, ',', ''),
       js: true,
       html: false,
       system: false,
@@ -193,8 +193,8 @@ export const meta_install = errorCatch((mett) => {
   window.meta.putWebAppJs(
     JSON.stringify({
       id: id,
-      name: mett.name,
-      appid: +mett.id,
+      name: meta.name,
+      appid: +meta.id,
       regex: '*',
       url: url,
       debug: '',
@@ -209,8 +209,8 @@ export const meta_install = errorCatch((mett) => {
   window.meta.putWebAppRes(
     JSON.stringify({
       id: id,
-      name: mett.name,
-      appid: +mett.id,
+      name: meta.name,
+      appid: +meta.id,
       url: url,
       mime: '',
       encoding: '',
@@ -219,18 +219,18 @@ export const meta_install = errorCatch((mett) => {
   );
 
   // 5. 推送代码
-  window.meta.putText('res/' + md5(url).substring(8, 24), mett.build, false);
+  window.meta.putText('res/' + md5(url).substring(8, 24), meta.build, false);
 });
 
-export const meta_installed = errorCatch((mett) => {
+export const meta_installed = errorCatch((meta) => {
   let metaApps = JSON.parse(window.meta.getWebAppManifestArray()),
     metaAppIds = [];
   for (let { id: m } of metaApps) metaAppIds.push(m);
-  return metaAppIds.includes(+mett.id);
+  return metaAppIds.includes(+meta.id);
 });
 
-export const meta_uninstall = errorCatch((mett) =>
-  window.meta.removeWebApp(+mett.id),
+export const meta_uninstall = errorCatch((meta) =>
+  window.meta.removeWebApp(+meta.id),
 );
 
 export const buildMethods = (impls) => {
