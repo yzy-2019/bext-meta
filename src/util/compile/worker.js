@@ -88,6 +88,11 @@ export async function compile(payload) {
     input: '@bext/entry',
     plugins: [bext(payload), url()],
   });
-  const { output } = await bundle.generate({ format: 'iife' });
-  return output[0].code;
+  const { output } = await bundle.generate({
+    format: 'iife',
+    output: { strict: false },
+  });
+  return `(function(){
+${output[0].code}
+})();`;
 }
