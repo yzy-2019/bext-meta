@@ -1,7 +1,7 @@
 import styles from './index.less';
 import { ReactComponent as DragHandle } from '@/assets/drag-handle.svg';
 import { BuildPreview } from '@/components/build-preview';
-import { ConfigSchema, DefaultConfig } from '@/components/config-setting';
+import { ConfigSetting } from '@/components/config-setting';
 import { Editor } from '@/components/editor';
 import { useDraft } from '@/hooks/use-draft';
 import { classnames } from '@/util/classnames';
@@ -55,11 +55,8 @@ const ScriptDev: FC = () => {
           <PivotItem headerText="预览" className="h-full">
             <BuildPreview />
           </PivotItem>
-          <PivotItem headerText="配置表单" className="h-full">
-            <ConfigSchema />
-          </PivotItem>
-          <PivotItem headerText="默认配置" className="h-full">
-            <DefaultConfig />
+          <PivotItem headerText="安装配置" className="h-full">
+            <ConfigSetting />
           </PivotItem>
         </Pivot>
       </div>

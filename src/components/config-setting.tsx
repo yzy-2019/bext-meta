@@ -1,61 +1,48 @@
-import { Editor } from './editor';
 import { useDraft } from '@/hooks/use-draft';
-import { Link, Separator } from '@fluentui/react';
+import { config } from '@/util/config';
+import {
+  Link,
+  Panel,
+  PanelType,
+  PrimaryButton,
+  Separator,
+} from '@fluentui/react';
 import Form from '@rjsf/fluent-ui';
-import { useUpdateEffect } from 'ahooks';
-import { FC, useMemo, useState } from 'react';
+import { useBoolean, useEventListener, useUnmount } from 'ahooks';
+import { FC, useMemo, useRef } from 'react';
 
-export const ConfigSchema: FC = () => {
-  const { draft, setDraft } = useDraft();
-  const [schemaText, setSchemaText] = useState(() =>
-    draft?.configSchema ? JSON.stringify(draft.configSchema, null, 4) : '',
-  );
-
-  useUpdateEffect(() => {
-    try {
-      setDraft({
-        configSchema: schemaText.trim().length
-          ? JSON.parse(schemaText)
-          : undefined,
-        defaultConfig: undefined,
-      });
-    } catch (error) {
-      console.log('json 格式错误');
-    }
-  }, [schemaText]);
-
-  return (
-    <div className="h-full flex flex-col">
-      <div className="py-3">
-        请先点击前往
-        <Link
-          href="https://hellosean1025.github.io/json-schema-visual-editor/"
-          underline
-          target="_blank"
-        >
-          这里
-        </Link>
-        配置该脚本的安装选项，右边内容粘贴到最下面的编辑器中，然后前往“默认配置”
-        Tab 配置默认值。
-      </div>
-      <Editor
-        value={schemaText}
-        onChange={(value) => setSchemaText(value || '')}
-        language="json"
-        className="flex-1 min-h-[300px]"
-      />
-    </div>
-  );
-};
-
-export const DefaultConfig: FC = () => {
+export const ConfigSetting: FC = () => {
   const { draft, setDraft } = useDraft();
   const config = useMemo(
     () => JSON.stringify(draft?.defaultConfig),
     [draft?.defaultConfig],
   );
+  const [modalVisible, { setTrue: showModal, setFalse: hideModal }] =
+    useBoolean(false);
+
   return (
     <div className="p-4">
+      <PrimaryButton onClick={showModal}>配置表单</PrimaryButton>
+      <Panel
+        isOpen={modalVisible}
+        onDismiss={hideModal}
+        type={PanelType.smallFluid}
+        headerText="配置表单"
+        styles={{
+          content: {
+            padding: 0,
+            flex: 1,
+          },
+          scrollableContent: {
+            minHeight: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+          },
+        }}
+        isLightDismiss
+      >
+        {modalVisible ? <SchemaEditor /> : null}
+      </Panel>
       在代码编辑器内通过
       <br />
       <code>import config from '@bext/config'</code>
@@ -72,10 +59,46 @@ export const DefaultConfig: FC = () => {
           formData={draft.defaultConfig}
           onChange={({ formData }) => setDraft({ defaultConfig: formData })}
           liveValidate
+          className="overflow-auto"
         >
           <></>
         </Form>
       ) : null}
     </div>
   );
+};
+
+const SchemaEditor: FC = () => {
+  const { draft, setDraft } = useDraft();
+  const defaultContent = useMemo(
+    () => (draft?.configSchema ? JSON.stringify(draft?.configSchema) : ''),
+    [],
+  );
+  const currentContent = useRef(defaultContent);
+
+  useUnmount(() => {
+    try {
+      setDraft({ configSchema: JSON.parse(currentContent.current) });
+    } catch (error) {}
+  });
+
+  const ref = useRef<HTMLIFrameElement>(null);
+
+  useEventListener('message', ({ data }) => {
+    switch (data?.type) {
+      case 'jse/init':
+        ref.current?.contentWindow?.postMessage(
+          { type: 'jse/set', payload: defaultContent },
+          '*',
+        );
+        break;
+      case 'jse/content':
+        currentContent.current = data.payload;
+        break;
+      default:
+        break;
+    }
+  });
+
+  return <iframe src={config.jse} ref={ref} className="w-full h-full" />;
 };
