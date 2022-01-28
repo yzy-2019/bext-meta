@@ -22,7 +22,7 @@ const buildMatch = (match, sep, all) => {
 };
 
 export const via_install = errorCatch((meta) => {
-  let domain = window.via.addon(
+  window.via.addon(
     base64(
       JSON.stringify({
         id: +meta.id,
@@ -254,8 +254,9 @@ ${meta.build}
         : meta.build,
     name = (meta.name + '，' + meta.id)
       .replace(/\s+/g, '')
-      .replace('@', '')
-      .replace('￥', '')
+      .replace(/@/g, '')
+      .replace(/_/g, '')
+      .replace(/￥/g, '')
       .slice(0, 32);
 
   window.fy_bridge_app.importRule(
