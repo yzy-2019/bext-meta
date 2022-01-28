@@ -15,6 +15,8 @@ export function detectBrowser() {
     ? 'mixia'
     : window.meta && window.meta.getWebAppManifestArray
     ? 'meta'
+    : window.fy_bridge_app && window.fy_bridge_app.importRule
+    ? 'hiker'
     : window.via && window.via.addon
     ? 'via'
     : undefined;

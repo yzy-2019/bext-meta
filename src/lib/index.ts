@@ -2,6 +2,7 @@ import { config } from '@/util/config';
 import {
   alook_install,
   bz_install,
+  hiker_install,
   lit_install,
   lit_installed,
   lit_uninstall,
@@ -39,6 +40,7 @@ export const browser = buildMethods({
   meta_installed,
   meta_uninstall,
   mixia_install,
+  hiker_install,
   shark_install,
   shark_installed,
   shark_uninstall,

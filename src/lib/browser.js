@@ -21,19 +21,27 @@ const buildMatch = (match, sep, all) => {
   return all;
 };
 
-export const via_install = errorCatch((meta) =>
-  window.via.addon(
+export const via_install = errorCatch((meta) => {
+  let domain = window.via.addon(
     base64(
       JSON.stringify({
         id: +meta.id,
         name: meta.name,
         author: meta.author,
         url: buildMatch(meta.match, ',', '*'),
-        code: base64(meta.build),
+        code: base64(`/*
+ * @name: ${meta.name}
+ * @Author: ${meta.author}
+ * @version: ${meta.version}
+ * @description: ${meta.synopsis}${
+          meta.match?.map((match) => '\n * @include: ' + match).join('') || ''
+        }
+ */
+${meta.build}`),
       }),
     ),
-  ),
-);
+  );
+});
 
 export const via_installed = errorCatch((meta) =>
   JSON.parse(window.via.getInstalledAddonID()).includes(+meta.id),
@@ -232,6 +240,30 @@ export const meta_installed = errorCatch((meta) => {
 export const meta_uninstall = errorCatch((meta) =>
   window.meta.removeWebApp(+meta.id),
 );
+
+export const hiker_install = errorCatch((meta) => {
+  let domain = meta.match && meta.match.length == 1 ? meta.match[0] : 'global',
+    code =
+      meta.match && meta.match.length > 1
+        ? `(function(){
+if (!${JSON.stringify(meta.match)}.some(
+  white => location.host.indexOf(white) >= 0
+)) return;
+${meta.build}
+})();`
+        : meta.build,
+    name = (meta.name + '，' + meta.id)
+      .replace(/\s+/g, '')
+      .replace('@', '')
+      .replace('￥', '')
+      .slice(0, 32);
+
+  window.fy_bridge_app.importRule(
+    `海阔视界，来自 Bext 的脚本￥js_url￥${domain}_${name}@base64://${base64(
+      code,
+    )}`,
+  );
+});
 
 export const buildMethods = (impls) => {
   const browser = detectBrowser();
