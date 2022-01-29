@@ -266,6 +266,16 @@ ${meta.build}
   );
 });
 
+export const m_install = errorCatch((meta) => {
+  window.webmx.copyCode(`
+// @name ${meta.name}${
+    meta.match?.map((match) => '\n// @match: ' + match).join('') ||
+    '\n// @match: *'
+  }
+// m-script-end
+${meta.build}`);
+});
+
 export const buildMethods = (impls) => {
   const browser = detectBrowser();
 

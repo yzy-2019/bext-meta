@@ -3,6 +3,8 @@ import { id, version } from '@bext/context';
 export function detectBrowser() {
   return window.alook && window.alook.addon
     ? 'alook'
+    : window.webmx && window.webmx.copyCode
+    ? 'm'
     : window.mbrowser && window.mbrowser.getBrowsreInfo
     ? 'x'
     : window.bz && window.bz.addScript
