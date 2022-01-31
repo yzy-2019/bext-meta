@@ -27,7 +27,6 @@ export const via_install = errorCatch((meta) => {
       JSON.stringify({
         id: +meta.id,
         name: meta.name,
-        author: meta.author,
         url: buildMatch(meta.match, ',', '*'),
         code: base64(`/*
  * @name: ${meta.name}
@@ -54,9 +53,7 @@ export const alook_install = errorCatch((meta) =>
     base64(
       encodeURIComponent(
         JSON.stringify({
-          id: +meta.id,
           name: meta.name,
-          author: meta.author,
           url: buildMatch(meta.match, '@@', '*'),
           code: base64(meta.build),
         }),
@@ -111,7 +108,6 @@ export const shark_install = errorCatch((meta) =>
       JSON.stringify({
         id: +meta.id,
         name: meta.name,
-        author: meta.author,
         code: base64(meta.build),
       }),
     ),
@@ -184,7 +180,7 @@ export const meta_install = errorCatch((meta) => {
       id: +meta.id,
       name: meta.name,
       type: 1,
-      version: parseInt(meta.version),
+      version: +meta.version,
       author: meta.author,
       brief: meta.synopsis,
       icon: '',
