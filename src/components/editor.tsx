@@ -7,9 +7,18 @@ export const Editor: FC<ComponentProps<typeof MonacoEditor>> = (props) => {
   const theme = useBextTheme();
 
   const onMount = useCallback((_, monaco: Monaco) => {
-    monaco.languages.typescript.javascriptDefaults.addExtraLib(LIB_UI_DTS);
-    monaco.languages.typescript.javascriptDefaults.addExtraLib(LIB_UTIL_DTS);
-    monaco.languages.typescript.javascriptDefaults.addExtraLib(LIB_CONTEXT_DTS);
+    monaco.languages.typescript.javascriptDefaults.addExtraLib(
+      LIB_UI_DTS,
+      '@bext/ui.d.ts',
+    );
+    monaco.languages.typescript.javascriptDefaults.addExtraLib(
+      LIB_UTIL_DTS,
+      '@bext/util.d.ts',
+    );
+    monaco.languages.typescript.javascriptDefaults.addExtraLib(
+      LIB_CONTEXT_DTS,
+      '@bext/context.d.ts',
+    );
   }, []);
 
   return (

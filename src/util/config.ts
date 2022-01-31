@@ -14,18 +14,20 @@ const env: Config['env'] = origin.startsWith(BEXT_HOME)
   ? 'preview'
   : 'dev';
 
+// 加上 ?jse-dev 切换至本地 jse
+const JSE_EDITOR = location.search.includes('jse-dev')
+  ? 'http://localhost:1234/'
+  : 'https://lemon399.gitee.io/json-schema-editor-visual/';
+
 const defaultConfig: Config = {
   env: 'production',
   metaPrefix: `https://cdn.jsdelivr.net/gh/ikkz/bext@${BUILD_HASH}/public/meta`,
-  jse: 'https://lemon399.gitee.io/json-schema-editor-visual/',
+  jse: JSE_EDITOR,
 };
 
 const devConfig: Partial<Config> = {
   env: 'dev',
   metaPrefix: '/meta',
-  jse: location.search.includes('jse-dev')
-    ? 'http://127.0.0.1:8082/index.html'
-    : defaultConfig.jse,
 };
 
 const previewConfig: Partial<Config> = {

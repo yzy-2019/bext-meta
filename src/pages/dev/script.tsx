@@ -52,7 +52,7 @@ const ScriptDev: FC = () => {
       </Resizable>
       <div className="w-full pl-4 min-w-[300px]">
         <Pivot className={classnames('h-full flex flex-col', styles.pivot)}>
-          <PivotItem headerText="预览" className="h-full">
+          <PivotItem headerText="预览" className="h-full" alwaysRender>
             <BuildPreview />
           </PivotItem>
           <PivotItem headerText="安装配置" className="h-full">

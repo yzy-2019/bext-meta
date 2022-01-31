@@ -31,3 +31,18 @@ export const DARK_THEME = createTheme({
 });
 
 export const IS_MOBILE = isMobile();
+
+export const DEFAULT_SCHEMA = {
+  type: 'object',
+  properties: {
+    key1: {
+      type: 'string',
+      title: '示例选项1',
+    },
+    key2: {
+      type: 'string',
+      title: '示例选项2',
+    },
+  },
+  required: ['key2'],
+};
