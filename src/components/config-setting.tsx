@@ -4,17 +4,20 @@ import { useDraft } from '@/hooks/use-draft';
 import { config } from '@/util/config';
 import { Link, Panel, PanelType, Separator, Toggle } from '@fluentui/react';
 import Form from '@rjsf/fluent-ui';
-import { useBoolean, useEventListener, useUnmount } from 'ahooks';
-import { FC, useMemo, useRef } from 'react';
+import { useBoolean, useCounter, useEventListener, useUnmount } from 'ahooks';
+import { FC, useEffect, useMemo, useRef } from 'react';
 
 export const ConfigSetting: FC = () => {
+  const [formKey, { inc: resetForm }] = useCounter(0);
   const { draft, setDraft } = useDraft();
-  const schema = useMemo(
-    () => JSON.stringify(draft?.configSchema),
-    [draft?.configSchema],
-  );
   const [modalVisible, { setTrue: showModal, setFalse: hideModal }] =
     useBoolean(false);
+
+  useEffect(() => {
+    if (!modalVisible) {
+      resetForm();
+    }
+  }, [modalVisible]);
 
   return (
     <div className="p-4">
@@ -55,7 +58,6 @@ export const ConfigSetting: FC = () => {
           >
             {modalVisible ? <SchemaEditor /> : null}
           </Panel>
-
           <Editor
             value={`// 使用示例
 import config from '@bext/config';
@@ -78,7 +80,7 @@ https://bext.ketra.fun/meta/648648
           <Separator>配置默认值</Separator>
           {draft?.configSchema ? (
             <Form
-              key={schema}
+              key={String(formKey)}
               schema={draft.configSchema}
               omitExtraData
               liveOmit
@@ -99,7 +101,7 @@ https://bext.ketra.fun/meta/648648
 const SchemaEditor: FC = () => {
   const { draft, setDraft } = useDraft();
   const defaultContent = useMemo(
-    () => (draft?.configSchema ? JSON.stringify(draft?.configSchema) : ''),
+    () => JSON.stringify(draft?.configSchema || {}),
     [],
   );
   const currentContent = useRef(defaultContent);
