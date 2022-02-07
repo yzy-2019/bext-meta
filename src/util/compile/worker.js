@@ -1,6 +1,11 @@
+// FIXME: jsdelivr
+// importScripts(
+//   'https://cdn.jsdelivr.net/npm/rollup@2.60.1/dist/rollup.browser.js',
+//   'https://cdn.jsdelivr.net/npm/path-browser@2.2.1/path.min.js',
+// );
 importScripts(
-  'https://cdn.jsdelivr.net/npm/rollup@2.60.1/dist/rollup.browser.js',
-  'https://cdn.jsdelivr.net/npm/path-browser@2.2.1/path.min.js',
+  'https://unpkg.com/rollup@2.60.1/dist/rollup.browser.js',
+  'https://unpkg.com/path-browser@2.2.1/path.min.js',
 );
 
 const BUILTIN_PREFIX = '@bext/';
@@ -66,17 +71,24 @@ const url = () => {
     },
     async load(id) {
       if (URL_REG.test(id)) {
-        const parsedUrl = new URL(id);
-        const fileName = parsedUrl.pathname.split('/').pop();
-        if (
-          parsedUrl.searchParams.has('min') &&
-          fileName.endsWith('.js') &&
-          !fileName.endsWith('min.js')
-        ) {
-          const minFileName = fileName.replace(/\.js$/, '.min.js');
-          id = path.resolve(id, '..', minFileName);
-        }
-        return (await fetch(id)).text();
+        // FIXME: jsdelivr
+        // const parsedUrl = new URL(id);
+        // const fileName = parsedUrl.pathname.split('/').pop();
+        // if (
+        //   parsedUrl.searchParams.has('min') &&
+        //   fileName.endsWith('.js') &&
+        //   !fileName.endsWith('min.js')
+        // ) {
+        //   const minFileName = fileName.replace(/\.js$/, '.min.js');
+        //   id = path.resolve(id, '..', minFileName);
+        // }
+        return (
+          await fetch(
+            id
+              .replace('cdn.jsdelivr.net/npm', 'unpkg.com')
+              .replace('cdn.jsdelivr.net/gh', 'cdn.staticaly.com/gh'),
+          )
+        ).text();
       }
       return null;
     },

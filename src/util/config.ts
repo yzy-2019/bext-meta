@@ -21,6 +21,8 @@ const JSE_EDITOR = location.search.includes('jse-dev')
 
 const defaultConfig: Config = {
   env: 'production',
+  // FIXME: jsdelivr
+  // metaPrefix: `https://cdn.jsdelivr.net/gh/ikkz/bext@${BUILD_HASH}/public/meta`,
   metaPrefix: `https://cdn.staticaly.com/gh/ikkz/bext@${BUILD_HASH}/public/meta`,
   jse: JSE_EDITOR,
 };
