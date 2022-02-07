@@ -22,6 +22,10 @@ export default defineConfig({
       rel: 'dns-prefetch',
       href: 'https://cdn.jsdelivr.net',
     },
+    {
+      rel: 'dns-prefetch',
+      href: 'https://cdn.staticaly.com',
+    },
   ],
   define: {
     BUILD_TIMESTAMP: dayjs().unix(),
