@@ -248,7 +248,7 @@ if (!${JSON.stringify(meta.match)}.some(
 ${meta.build}
 })();`
         : meta.build,
-    name = (meta.name + '，' + meta.id)
+    name = (meta.name + '，id:' + meta.id)
       .replace(/\s+/g, '')
       .replace(/@/g, '')
       .replace(/_/g, '')
@@ -270,6 +270,25 @@ export const m_install = errorCatch((meta) => {
   }
 // m-script-end
 ${meta.build}`);
+});
+
+export const mt_install = errorCatch((meta) => {
+  let domain = meta.match && meta.match.length == 1 ? meta.match[0] : '*',
+    code =
+      meta.match && meta.match.length > 1
+        ? `(function(){
+if (!${JSON.stringify(meta.match)}.some(
+  white => location.host.indexOf(white) >= 0
+)) return;
+${meta.build}
+})();`
+        : meta.build;
+
+  window.mthtml.mtjs(
+    base64(meta.name + '，id:' + meta.id),
+    base64(domain),
+    base64(code),
+  );
 });
 
 export const buildMethods = (impls) => {

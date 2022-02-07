@@ -1,10 +1,15 @@
 declare module '@bext/util' {
   export function detectBrowser():
     | 'alook'
+    | 'm'
     | 'x'
     | 'bz'
     | 'shark'
     | 'lit'
+    | 'mixia'
+    | 'meta'
+    | 'hiker'
+    | 'mt'
     | 'via'
     | undefined;
 

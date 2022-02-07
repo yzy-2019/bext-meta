@@ -19,6 +19,8 @@ export function detectBrowser() {
     ? 'meta'
     : window.fy_bridge_app && window.fy_bridge_app.importRule
     ? 'hiker'
+    : window.mthtml && window.mthtml.mtjs
+    ? 'mt'
     : window.via && window.via.addon
     ? 'via'
     : undefined;
