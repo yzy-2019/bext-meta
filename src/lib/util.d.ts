@@ -11,7 +11,7 @@ declare module '@bext/util' {
     | 'hiker'
     | 'mt'
     | 'via'
-    | undefined;
+    | 'unknown';
 
   export function base64(str: string): string;
 

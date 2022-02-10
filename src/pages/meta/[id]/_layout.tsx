@@ -2,7 +2,8 @@ import { MetaDetailContext } from '@/hooks/use-meta-detail';
 import { Meta, MetaIndex, MetaVersion } from '@/types';
 import { config } from '@/util/config';
 import { Spinner, SpinnerSize } from '@fluentui/react';
-import { useRequest } from 'ahooks';
+import { useEventListener, useRequest } from 'ahooks';
+import copy from 'copy-to-clipboard';
 import { FC, useState } from 'react';
 import { useParams } from 'umi';
 
@@ -45,6 +46,16 @@ const MetaLayout: FC = ({ children }) => {
     },
     { manual: true, refreshDeps: [params.id] },
   );
+
+  useEventListener('message', ({ data }) => {
+    if (
+      data?.type === 'bext/unknown_install' &&
+      typeof data?.payload?.build === 'string'
+    ) {
+      copy(data.payload.build);
+      alert('当前浏览器不支持安装，已将脚本内容复制到剪切板');
+    }
+  });
 
   if (allLoading) {
     return <Spinner size={SpinnerSize.large} className="w-full h-full" />;

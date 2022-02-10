@@ -1,4 +1,3 @@
-import { config } from '@/util/config';
 import {
   alook_install,
   bz_install,
@@ -15,6 +14,7 @@ import {
   shark_install,
   shark_installed,
   shark_uninstall,
+  unknown_install,
   via_install,
   via_installed,
   via_uninstall,
@@ -23,14 +23,6 @@ import {
   x_uninstall,
 } from '@bext/browser';
 import { buildMethods } from '@bext/browser';
-import { detectBrowser } from '@bext/util';
-
-// mock
-if (config.env === 'dev' && !detectBrowser()) {
-  window.alook = {
-    addon: console.log,
-  };
-}
 
 export const browser = buildMethods({
   alook_install,
@@ -54,6 +46,7 @@ export const browser = buildMethods({
   x_install,
   x_installed,
   x_uninstall,
+  unknown_install,
 });
 
 export { default as LIB_UI_DTS } from '!!raw-loader!./ui.d.ts';

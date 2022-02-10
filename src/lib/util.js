@@ -23,7 +23,7 @@ export function detectBrowser() {
     ? 'mt'
     : window.via && window.via.addon
     ? 'via'
-    : undefined;
+    : 'unknown';
 }
 
 export function base64(str) {

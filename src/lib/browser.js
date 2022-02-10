@@ -291,6 +291,13 @@ ${meta.build}
   );
 });
 
+export const unknown_install = errorCatch((meta) => {
+  window.postMessage({
+    type: 'bext/unknown_install',
+    payload: meta,
+  });
+});
+
 export const buildMethods = (impls) => {
   const browser = detectBrowser();
 
