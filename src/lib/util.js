@@ -23,7 +23,7 @@ export function detectBrowser() {
     ? 'mt'
     : window.via && window.via.addon
     ? 'via'
-    : 'unknown';
+    : undefined;
 }
 
 export function base64(str) {
@@ -161,6 +161,62 @@ export function md5(str) {
   return rh(a) + rh(b) + rh(c) + rh(d);
 }
 
+function calcHash(content, algo = 512) {
+  return new Promise((resolve) => {
+    let alg = 'SHA-' + algo,
+      uar,
+      ab = new TextEncoder().encode(content);
+    crypto.subtle.digest(alg, ab).then((v) => {
+      uar = new Uint8Array(v);
+      resolve(
+        [].slice
+          .call(uar)
+          .map((o) => o.toString(16).padStart(2, '0'))
+          .join(''),
+      );
+    });
+  });
+}
+
+export async function sha1(cont) {
+  return await calcHash(cont, 1);
+}
+
+export async function sha256(cont) {
+  return await calcHash(cont, 256);
+}
+
+export async function sha384(cont) {
+  return await calcHash(cont, 384);
+}
+
+export async function sha512(cont) {
+  return await calcHash(cont);
+}
+
+function hex2sri(hex) {
+  let type,
+    ar = [],
+    i = 0;
+  switch (hex.length) {
+    case 64:
+      type = 'sha256-';
+      break;
+    case 96:
+      type = 'sha384-';
+      break;
+    case 128:
+      type = 'sha512-';
+      break;
+    default:
+      return false;
+  }
+  for (i = 0; i < hex.length; i = i + 2) {
+    ar.push(parseInt(hex.slice(i, i + 2), 16));
+  }
+  return type + btoa(String.fromCharCode.apply(null, ar));
+}
+
 export function runOnce(fn) {
   const uniqId = 'BEXT_UNIQ_ID_' + id;
   if (window[uniqId]) {
@@ -194,7 +250,11 @@ export function runAt(start, fn, ...args) {
   }
 }
 
-export function addElement({ tag, attrs = {}, to = document.body }) {
+export function addElement({
+  tag,
+  attrs = {},
+  to = document.body || document.documentElement,
+}) {
   const el = document.createElement(tag);
   Object.assign(el, attrs);
   to.appendChild(el);
@@ -263,13 +323,16 @@ export function removeElement(rules) {
   });
 }
 
-export function loadScript(src) {
+export function loadScript(src, hash) {
+  if (hash && hash.slice(0, 3) !== 'sha') hash = hex2sri(hash);
   return new Promise((resolve, reject) => {
     const el = addElement({
       tag: 'script',
       attrs: {
         src,
         type: 'text/javascript',
+        integrity: hash ? hash : '',
+        crossOrigin: 'anonymous',
         onload: () => resolve(el),
         onerror: reject,
       },
@@ -287,13 +350,16 @@ export function addStyle(css) {
   });
 }
 
-export function loadStyle(url) {
+export function loadStyle(url, hash) {
+  if (hash && !hash.slice(0, 3) == 'sha') hash = hex2sri(hash);
   return new Promise((resolve, reject) => {
     const el = addElement({
       tag: 'link',
       attrs: {
         href: url,
         rel: 'stylesheet',
+        integrity: hash ? hash : '',
+        crossOrigin: 'anonymous',
         onload: () => resolve(el),
         onerror: reject,
       },

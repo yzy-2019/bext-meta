@@ -11,9 +11,16 @@ declare module '@bext/util' {
     | 'hiker'
     | 'mt'
     | 'via'
-    | 'unknown';
+    | undefined;
 
   export function base64(str: string): string;
+
+  export function md5(str: string): string;
+
+  export async function sha1(cont: string): Promise<string>;
+  export async function sha256(cont: string): Promise<string>;
+  export async function sha384(cont: string): Promise<string>;
+  export async function sha512(cont: string): Promise<string>;
 
   export function runOnce(fn: () => void): void;
 
@@ -37,11 +44,17 @@ declare module '@bext/util' {
 
   export function removeElement(rules: string | string[]): void;
 
-  export function loadScript(src: string): Promise<HTMLScriptElement>;
+  export function loadScript(
+    src: string,
+    hash?: string,
+  ): Promise<HTMLScriptElement>;
 
   export function addStyle(css: string): HTMLStyleElement;
 
-  export function loadStyle(url: string): Promise<HTMLLinkElement>;
+  export function loadStyle(
+    url: string,
+    hash?: string,
+  ): Promise<HTMLLinkElement>;
 
   export function getBextHome(): Promise<string>;
 
