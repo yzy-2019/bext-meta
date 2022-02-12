@@ -9,7 +9,7 @@ import {
   PrimaryButton,
   Separator,
 } from '@fluentui/react';
-import Form from '@rjsf/fluent-ui';
+import Form from '@rjsf/core';
 import { useBoolean, useRequest } from 'ahooks';
 import { FC, useState } from 'react';
 
@@ -78,7 +78,7 @@ export const ConfigInstall: FC<{ onInstall: (build: string) => void }> = ({
           omitExtraData
           liveOmit
           liveValidate
-          className="overflow-y-auto"
+          className="twbs-form"
         >
           <></>
         </Form>

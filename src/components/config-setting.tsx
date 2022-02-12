@@ -3,7 +3,7 @@ import { DEFAULT_SCHEMA } from '@/constants';
 import { useDraft } from '@/hooks/use-draft';
 import { config } from '@/util/config';
 import { Link, Panel, PanelType, Separator, Toggle } from '@fluentui/react';
-import Form from '@rjsf/fluent-ui';
+import Form from '@rjsf/core';
 import { useBoolean, useCounter, useEventListener, useUnmount } from 'ahooks';
 import { FC, useEffect, useMemo, useRef } from 'react';
 
@@ -87,7 +87,7 @@ https://bext.ketra.fun/meta/648648
               formData={draft.defaultConfig}
               onChange={({ formData }) => setDraft({ defaultConfig: formData })}
               liveValidate
-              className="overflow-auto"
+              className="twbs-form"
             >
               <></>
             </Form>
