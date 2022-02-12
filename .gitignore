@@ -18,6 +18,4 @@
 /src/.umi-test
 /.env.local
 
-public/meta
-
 .vercel
