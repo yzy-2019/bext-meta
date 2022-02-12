@@ -1,21 +1,55 @@
 {
-  "name": "bext-meta",
+  "version": "0.1.0",
   "license": "MIT",
-  "repository": {
-    "url": "https://github.com/ikkz/bext-meta"
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=10"
   },
-  "contributors": [
+  "scripts": {
+    "start": "tsdx watch",
+    "build": "tsdx build",
+    "test": "tsdx test",
+    "lint": "tsdx lint",
+    "prepare": "tsdx build",
+    "size": "size-limit",
+    "analyze": "size-limit --why"
+  },
+  "peerDependencies": {},
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "name": "bext-meta",
+  "author": "LeiLeiLei",
+  "module": "dist/bext-meta.esm.js",
+  "size-limit": [
     {
-      "name": "ikkz",
-      "url": "https://github.com/ikkz"
+      "path": "dist/bext-meta.cjs.production.min.js",
+      "limit": "10 KB"
     },
     {
-      "name": "lemon399",
-      "url": "https://gitee.com/lemon399"
+      "path": "dist/bext-meta.esm.js",
+      "limit": "10 KB"
     }
   ],
-  "scripts": {},
-  "gitHooks": {},
-  "dependencies": {},
-  "version": "1.0.0"
+  "devDependencies": {
+    "@size-limit/preset-small-lib": "^7.0.8",
+    "husky": "^7.0.4",
+    "size-limit": "^7.0.8",
+    "tsdx": "^0.14.1",
+    "tslib": "^2.3.1",
+    "typescript": "^4.5.5"
+  }
 }
