@@ -99,6 +99,7 @@ export async function compile(payload) {
   const bundle = await rollup.rollup({
     input: '@bext/entry',
     plugins: [bext(payload), url()],
+    context: 'window',
   });
   const { output } = await bundle.generate({
     format: 'iife',
