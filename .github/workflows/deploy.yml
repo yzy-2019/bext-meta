@@ -20,7 +20,7 @@ jobs:
         run: yarn --frozen-lockfile
       - run: yarn build
       - run: yarn test
-      - run: yarn generate
+      - run: yarn run bext generate
       - name: Generate meta
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
