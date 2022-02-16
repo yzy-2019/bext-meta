@@ -1,0 +1,42 @@
+name: preview
+on: pull_request_target
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: comment preview links
+      uses: actions/github-script@v6
+      with:
+        script: |
+          if (context.payload?.pull_request?.base?.ref !== 'master') {
+            return;
+          }
+          const previewRef = context.payload.pull_request.head?.ref;
+          const previewUser = context.payload.pull_request.head?.user?.login;
+          console.log(previewRef, previewUser);
+          const response = await github.rest.pulls.listFiles({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            pull_number: context.issue.number,
+          });
+          const previewLinks = response.data
+            .map(file => file.filename.match(/^meta\/(.+).json$/)[1])
+            .filter(id => id)
+            .map(
+              id =>
+                `https://bext.ketra.fun/?previewId=${id}&previewMeta=https://cdn.staticaly.com/gh/${previewUser}/bext-meta@${previewRef}/meta/${id}.json`
+            );
+          console.log(previewLinks);
+          if (!previewLinks.length) {
+            return;
+          }
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: `${previewLinks.join(
+              '\n'
+            )}\n请访问以上链接预览效果，没有问题在下方回复确认。（回复确认即表示您已了解并同意：本站不对该内容及版权进行审核，该脚本造成的一切后果均与本站无关）`,
+          });
