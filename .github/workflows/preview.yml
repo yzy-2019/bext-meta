@@ -15,7 +15,6 @@ jobs:
           }
           const previewRef = context.payload.pull_request.head?.ref;
           const previewUser = context.payload.pull_request.head?.user?.login;
-          console.log(previewRef, previewUser);
           const response = await github.rest.pulls.listFiles({
             owner: context.repo.owner,
             repo: context.repo.repo,
@@ -28,7 +27,6 @@ jobs:
               id =>
                 `https://bext.ketra.fun/?previewId=${id}&previewMeta=https://cdn.staticaly.com/gh/${previewUser}/bext-meta@${previewRef}/meta/${id}.json`
             );
-          console.log(previewLinks);
           if (!previewLinks.length) {
             return;
           }
