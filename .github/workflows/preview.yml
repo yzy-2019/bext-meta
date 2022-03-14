@@ -25,7 +25,7 @@ jobs:
             .filter(id => id)
             .map(
               id =>
-                `https://bext.ketra.fun/?previewId=${id}&previewMeta=https://cdn.staticaly.com/gh/${previewUser}/bext-meta@${previewRef}/meta/${id}.json`
+                `https://bext.ketra.fun/meta/preview?previewId=${id}&previewMeta=https://cdn.staticaly.com/gh/${previewUser}/bext-meta@${previewRef}/meta/${id}.json`
             );
           if (!previewLinks.length) {
             return;
