@@ -81,7 +81,7 @@ async function generatePublicMeta() {
 
   return {
     metas: shuffle(metas),
-    latestUpdate: takeRight(sortBy(latestUpdate, 'date'), 6)
+    latestUpdate: takeRight(sortBy(latestUpdate, 'date'), 10)
       .map(({ id }) => id)
       .reverse(),
   };
