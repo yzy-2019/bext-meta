@@ -47,6 +47,7 @@
   ],
   "devDependencies": {
     "@size-limit/preset-small-lib": "^7.0.8",
+    "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
     "@types/lodash-es": "^4.17.6",
     "@types/shelljs": "^0.8.11",
@@ -58,10 +59,12 @@
   },
   "dependencies": {
     "@vercel/node": "^1.12.1",
+    "cors": "^2.8.5",
     "dayjs": "^1.10.7",
     "express": "^4.17.2",
     "lodash-es": "^4.17.21",
     "meow": "^10.1.2",
+    "open": "^8.4.0",
     "shelljs": "^0.8.5",
     "simple-git": "^3.1.1"
   }

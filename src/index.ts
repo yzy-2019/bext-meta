@@ -1,6 +1,6 @@
 import meow from 'meow';
 import generate from './generate';
-import server from './server';
+import preview from './preview';
 
 const cli = meow(
   `
@@ -17,8 +17,8 @@ switch (cli.input[0]) {
   case 'generate':
     generate();
     break;
-  case 'server':
-    server();
+  case 'preview':
+    preview(cli.input[1]);
     break;
   default:
     break;
