@@ -45,6 +45,12 @@ describe('Meta 格式校验', () => {
     test(meta.id, () => {
       expect(ID_RULE.test(meta.id) || meta.id === 'example').toBeTruthy();
 
+      const idNum = Number(meta.id);
+      if (!Number.isNaN(idNum)) {
+        // 支持的浏览器中的 ID 限制
+        expect(idNum).toBeLessThanOrEqual(2147483647);
+      }
+
       expect(() => {
         const result = validate(meta);
         if (!result) {

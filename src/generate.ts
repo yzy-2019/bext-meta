@@ -1,10 +1,10 @@
 import dayjs from 'dayjs';
 import fs from 'fs';
 import { first } from 'lodash-es';
-import { pick } from  'lodash-es';
-import { shuffle } from  'lodash-es';
-import { sortBy } from  'lodash-es';
-import { takeRight } from  'lodash-es';
+import { pick } from 'lodash-es';
+import { shuffle } from 'lodash-es';
+import { sortBy } from 'lodash-es';
+import { takeRight } from 'lodash-es';
 import path from 'path';
 import shelljs from 'shelljs';
 import simpleGit from 'simple-git';
@@ -75,7 +75,7 @@ async function generatePublicMeta() {
       );
 
       latestUpdate.push({ id, date: first(versions)?.date || 0 });
-      return { id, fileMap, currentJson };
+      return { id, fileMap, currentJson, hash: first(versions)?.hash };
     })
   );
 
@@ -100,8 +100,9 @@ export default async function() {
   fs.writeFileSync(
     path.join(metaConfig.public, '_index.json'),
     JSON.stringify({
-      metas: metas.map(({ currentJson, id }) => ({
+      metas: metas.map(({ currentJson, id, hash }) => ({
         id,
+        hash,
         ...pick(currentJson, ['name', 'version', 'tags', 'type', 'synopsis']),
       })),
       latestUpdate,
