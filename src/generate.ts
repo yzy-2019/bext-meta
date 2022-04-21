@@ -75,7 +75,7 @@ async function generatePublicMeta() {
       );
 
       latestUpdate.push({ id, date: first(versions)?.date || 0 });
-      return { id, fileMap, currentJson, hash: first(versions)?.hash };
+      return { id, fileMap, currentJson };
     })
   );
 
@@ -100,9 +100,8 @@ export default async function() {
   fs.writeFileSync(
     path.join(metaConfig.public, '_index.json'),
     JSON.stringify({
-      metas: metas.map(({ currentJson, id, hash }) => ({
+      metas: metas.map(({ currentJson, id }) => ({
         id,
-        hash,
         ...pick(currentJson, ['name', 'version', 'tags', 'type', 'synopsis']),
       })),
       latestUpdate,
